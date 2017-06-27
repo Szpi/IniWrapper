@@ -4,7 +4,7 @@ namespace INILocalConfiguration.TestConfiguration
 {
     public sealed class TestConfiguration
     {
-        [INIOptions(Section = "sda")]
-        public string IpAddress { get; set; }
+        public Test Test;
+        public string IpAddress;
     }
 }

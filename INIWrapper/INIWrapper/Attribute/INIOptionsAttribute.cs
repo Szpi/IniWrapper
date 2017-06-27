@@ -7,6 +7,6 @@ namespace INIWrapper.Attribute
     {
         public string Section { get; set; }
         public string Key { get; set; }
-        public string DefaultValue { get; set; }
+        public string DefaultValue { get; set; } = string.Empty;
     }
 }
