@@ -49,6 +49,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attribute\INIOptionsAttribute.cs" />
+    <Compile Include="Contract\TypeContractFactory.cs" />
+    <Compile Include="Manager\ILocalConfigurationManager.cs" />
+    <Compile Include="Manager\INILocalConfigurationManagerFactory.cs" />
+    <Compile Include="Parsers\DefaultParser.cs" />
+    <Compile Include="Parsers\ValueReferenceTypeParser.cs" />
+    <Compile Include="Parsers\CustomPropertyParser.cs" />
+    <Compile Include="Parsers\IParser.cs" />
+    <Compile Include="Contract\ITypeContract.cs" />
+    <Compile Include="Contract\TypeContract.cs" />
+    <Compile Include="PrimitivesParsers\Enumerable\EnumerableParser.cs" />
+    <Compile Include="PrimitivesParsers\Field\IPrimitivesFieldParser.cs" />
+    <Compile Include="PrimitivesParsers\IPrimitivesParser.cs" />
+    <Compile Include="PrimitivesParsers\Property\IPrimitivesPropertyParser.cs" />
+    <Compile Include="PrimitivesParsers\PrimitiveParser.cs" />
+    <Compile Include="PrimitivesParsers\Field\PrimitivesFieldParser.cs" />
+    <Compile Include="PrimitivesParsers\Property\PrimitivesPropertyParser.cs" />
     <Compile Include="Wrapper\IINIWrapper.cs" />
     <Compile Include="Manager\INILocalConfigurationManager.cs" />
     <Compile Include="Wrapper\INIWrapper.cs" />
@@ -58,5 +74,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace INIWrapper
+﻿namespace INIWrapper.Wrapper
 {
     public interface IINIWrapper
     {

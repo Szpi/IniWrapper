@@ -3,28 +3,33 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Reflection;
 using INIWrapper.Attribute;
+using INIWrapper.Contract;
+using INIWrapper.Wrapper;
 
 namespace INIWrapper
 {
-    public sealed class INILocalConfigurationManager<T> where T : new()
+    public sealed class INILocalConfigurationManager<T> : ILocalConfigurationManager<T> where T : new()
     {
         private readonly string m_file_path;
         private readonly IINIWrapper m_ini_wrapper;
         private readonly IFileSystem m_file_system;
+        private readonly ITypeContract m_type_contract;
 
-        public INILocalConfigurationManager(string file_path, IINIWrapper ini_wrapper, IFileSystem file_system)
+        public INILocalConfigurationManager(string file_path, IINIWrapper ini_wrapper, IFileSystem file_system, ITypeContract type_contract)
         {
             m_file_path = file_path;
             m_ini_wrapper = ini_wrapper;
             m_file_system = file_system;
+            m_type_contract = type_contract;
         }
 
         public T LoadConfiguration()
         {
             if (!m_file_system.File.Exists(m_file_path))
             {
-                //todo generate default values save and return
-                return new T();
+                var default_configuration = new T();
+                SaveConfiguration(default_configuration);
+                return default_configuration;
             }
 
             var result = new T();
@@ -43,37 +48,14 @@ namespace INIWrapper
             var fields = configuration.GetType().GetFields();
             foreach (var field in fields)
             {
-                var attribute = field.GetCustomAttributes(typeof(INIOptionsAttribute), true);
-                var key = field.Name;
-                var section = configuration.GetType().Name;
-                var read_value_from_ini = string.Empty;
+                var parser = m_type_contract.GetParser(field, configuration);
+                var parsed = parser.Parse(configuration, field);
 
-                var custom_property = attribute.FirstOrDefault() as INIOptionsAttribute;
-
-                if (custom_property != null)
+                if (ShouldBeParsedRecursively(parsed))
                 {
-                    key = string.IsNullOrEmpty(custom_property.Key) ? key : custom_property.Key;
-                    section = string.IsNullOrEmpty(custom_property.Section) ? section : custom_property.Section;
-                    read_value_from_ini = m_ini_wrapper.Read(key, section);
-
-                    read_value_from_ini = string.IsNullOrEmpty(read_value_from_ini)
-                        ? custom_property.DefaultValue
-                        : read_value_from_ini;
-
-                    field.SetValue(configuration, read_value_from_ini);
-                    continue;
+                    ReadFields(parsed);
                 }
-
-                if (!field.FieldType.IsPrimitive && field.FieldType != typeof(string))
-                {
-                    var new_field_instance = Activator.CreateInstance(field.FieldType);
-                    ReadFields(new_field_instance);
-                    field.SetValue(configuration, new_field_instance);
-                    continue;
-                }
-
-                read_value_from_ini = m_ini_wrapper.Read(key, section);
-                field.SetValue(configuration, read_value_from_ini);
+                field.SetValue(configuration, parsed);
             }
         }
 
@@ -82,39 +64,21 @@ namespace INIWrapper
             var properties = configuration.GetType().GetProperties();
             foreach (var property in properties)
             {
-                var attribute = property.GetCustomAttributes(typeof(INIOptionsAttribute), true);
-                var key = property.Name;
-                var section = configuration.GetType().Name;
-                var read_value_from_ini = string.Empty;
+                var parser = m_type_contract.GetParser(property, configuration);
+                var parsed = parser.Parse(configuration, property);
 
-                var custom_property = attribute.FirstOrDefault() as INIOptionsAttribute;
-
-                if (custom_property != null)
+                if (ShouldBeParsedRecursively(parsed))
                 {
-                    key = string.IsNullOrEmpty(custom_property.Key) ? key : custom_property.Key;
-                    section = string.IsNullOrEmpty(custom_property.Section) ? section : custom_property.Section;
-                    read_value_from_ini = m_ini_wrapper.Read(key, section);
-                    read_value_from_ini = string.IsNullOrEmpty(read_value_from_ini)
-                        ? custom_property.DefaultValue
-                        : read_value_from_ini;
-
-                    property.SetValue(configuration, read_value_from_ini);
-                    continue;
+                    ReadProperties(parsed);
                 }
 
-                if (!property.PropertyType.IsPrimitive && property.PropertyType != typeof(string))
-                {
-                    var new_field_instance = Activator.CreateInstance(property.PropertyType);
-                    ReadFields(new_field_instance);
-                    property.SetValue(configuration, new_field_instance);
-                    continue;
-                }
-
-                read_value_from_ini = m_ini_wrapper.Read(key, section);
-                property.SetValue(configuration, read_value_from_ini);
+                property.SetValue(configuration, parsed);
             }
         }
-
+        private static bool ShouldBeParsedRecursively(object parsed)
+        {
+            return !parsed.GetType().IsPrimitive && !(parsed is string);
+        }
         public void SaveConfiguration(T configuration)
         {
             SaveProperties(configuration);
@@ -128,6 +92,7 @@ namespace INIWrapper
                 var attribute = field.GetCustomAttributes(typeof(INIOptionsAttribute), true);
                 var key = field.Name;
                 var section = configuration.GetType().Name;
+                ChangeNullStringToEmptyOne(field, configuration);
 
                 var custom_property = attribute.FirstOrDefault() as INIOptionsAttribute;
                 if (custom_property != null)
@@ -157,6 +122,7 @@ namespace INIWrapper
                 var key = property.Name;
                 var section = configuration.GetType().Name;
 
+                ChangeNullStringToEmptyOne(property, configuration);
                 var custom_property = attribute.FirstOrDefault() as INIOptionsAttribute;
                 if (custom_property != null)
                 {
@@ -173,6 +139,21 @@ namespace INIWrapper
                 }
 
                 m_ini_wrapper.Write(key, property.GetValue(configuration).ToString(), section);
+            }
+        }
+
+        private void ChangeNullStringToEmptyOne(PropertyInfo property_info, object configuration)
+        {
+            if (property_info.PropertyType == typeof(string) && property_info.GetValue(configuration) == null)
+            {
+                property_info.SetValue(configuration, string.Empty);
+            }
+        }
+        private void ChangeNullStringToEmptyOne(FieldInfo field_info, object configuration)
+        {
+            if (field_info.FieldType == typeof(string) && field_info.GetValue(configuration) == null)
+            {
+                field_info.SetValue(configuration, string.Empty);
             }
         }
     }

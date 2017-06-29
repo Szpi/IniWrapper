@@ -1,10 +1,10 @@
-﻿using INIWrapper.Attribute;
+﻿using System.Collections.Generic;
+using INIWrapper.Attribute;
 
 namespace INILocalConfiguration.TestConfiguration
 {
     public sealed class TestConfiguration
     {
-        public Test Test;
-        public string IpAddress;
+        public List<string> test_list;
     }
 }
