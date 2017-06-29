@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
 using INIWrapper.Attribute;
 using INIWrapper.Parsers;
 using INIWrapper.PrimitivesParsers;
+using INIWrapper.PrimitivesParsers.Enumerable;
+using INIWrapper.PrimitivesParsers.Writer;
 using INIWrapper.Wrapper;
-using INIWrapper.Writer;
 
 namespace INIWrapper.Contract
 {
@@ -16,15 +14,18 @@ namespace INIWrapper.Contract
         private readonly IINIWrapper m_ini_wrapper;
         private readonly IPrimitivesParser m_primitives_parser;
         private readonly IMemberWriter m_member_writer;
+        private readonly IEnumerableParser m_enumerable_parser;
 
         public TypeContract(
             IINIWrapper ini_wrapper,
             IPrimitivesParser primitives_parser,
-            IMemberWriter member_writer)
+            IMemberWriter member_writer,
+            IEnumerableParser enumerable_parser)
         {
             m_ini_wrapper = ini_wrapper;
             m_primitives_parser = primitives_parser;
             m_member_writer = member_writer;
+            m_enumerable_parser = enumerable_parser;
         }
 
         public IParser GetParser(MemberInfo member_info, object configuration)
@@ -38,10 +39,10 @@ namespace INIWrapper.Contract
             var custom_property = attribute.FirstOrDefault() as INIOptionsAttribute;
             if (custom_property != null)
             {
-                return new CustomPropertyParser(custom_property, m_ini_wrapper, m_primitives_parser, m_member_writer);
+                return new CustomPropertyParser(custom_property, m_ini_wrapper, m_primitives_parser, m_member_writer, m_enumerable_parser);
             }
 
-            return new DefaultParser(m_ini_wrapper, m_primitives_parser, m_member_writer);
+            return new DefaultParser(m_ini_wrapper, m_primitives_parser, m_member_writer, m_enumerable_parser);
         }
 
         private bool GetParserFromMemberInfo(MemberInfo member_info, object configuration, out IParser value_reference_type_parser)

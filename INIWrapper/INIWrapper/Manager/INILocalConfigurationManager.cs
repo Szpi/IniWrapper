@@ -53,10 +53,18 @@ namespace INIWrapper
                 var parser = m_type_contract.GetParser(field, configuration);
                 var reading_state = parser.Read(configuration, field);
 
-                if (reading_state.ParsingStage == ParsingStage.NeedRecursiveParse)
+                if (reading_state.ParsingStage == ParsingStage.NeedRecursiveCall)
                 {
                     ReadProperties(reading_state.ParsedObject);
                     ReadFields(reading_state.ParsedObject);
+                }
+
+                if (reading_state.ParsingStage == ParsingStage.NeedReparse)
+                {
+                    field.SetValue(configuration, reading_state.ParsedObject);
+
+                    parser = m_type_contract.GetParser(field, configuration);
+                    reading_state = parser.Read(configuration, field);
                 }
 
                 field.SetValue(configuration, reading_state.ParsedObject);
@@ -71,10 +79,17 @@ namespace INIWrapper
                 var parser = m_type_contract.GetParser(property, configuration);
                 var reading_state = parser.Read(configuration, property);
 
-                if (reading_state.ParsingStage == ParsingStage.NeedRecursiveParse)
+                if (reading_state.ParsingStage == ParsingStage.NeedRecursiveCall)
                 {
                     ReadProperties(reading_state.ParsedObject);
                     ReadFields(reading_state.ParsedObject);
+                }
+                if (reading_state.ParsingStage == ParsingStage.NeedReparse)
+                {
+                    property.SetValue(configuration, reading_state.ParsedObject);
+
+                    parser = m_type_contract.GetParser(property, configuration);
+                    reading_state = parser.Read(configuration, property);
                 }
 
                 property.SetValue(configuration, reading_state.ParsedObject);
@@ -96,7 +111,7 @@ namespace INIWrapper
                 ChangeNullStringToEmptyOne(field, configuration);
                 var parsing_stage = parser.Write(configuration, field);
 
-                if (parsing_stage == ParsingStage.NeedRecursiveParse)
+                if (parsing_stage == ParsingStage.NeedRecursiveCall)
                 {
                     SaveFields(field.GetValue(configuration));
                     SaveProperties(field.GetValue(configuration));
@@ -114,7 +129,7 @@ namespace INIWrapper
                 ChangeNullStringToEmptyOne(property, configuration);
                 var parsing_stage = parser.Write(configuration, property);
 
-                if (parsing_stage == ParsingStage.NeedRecursiveParse)
+                if (parsing_stage == ParsingStage.NeedRecursiveCall)
                 {
                     SaveFields(property.GetValue(configuration));
                     SaveProperties(property.GetValue(configuration));

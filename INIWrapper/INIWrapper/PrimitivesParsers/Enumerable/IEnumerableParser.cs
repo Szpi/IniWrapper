@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 
-namespace INIWrapper.Parsers
+namespace INIWrapper.PrimitivesParsers.Enumerable
 {
     public interface IEnumerableParser
     {
-        IEnumerable Read(object configuration, string read_value);
+        IEnumerable Read(string read_value);
+        string FormatToWrite(IEnumerable enumerable);
     }
 }

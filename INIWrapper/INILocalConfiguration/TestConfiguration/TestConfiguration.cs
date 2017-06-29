@@ -5,7 +5,7 @@ namespace INILocalConfiguration.TestConfiguration
 {
     public sealed class TestConfiguration
     {
-        public List<string> Test;
-        public int IpAddress;
+        [INIOptions(Section = "pendzel",Key = "pendzel")]
+        public List<string> Test = new List<string>() {"a","b","c","d" };
     }
 }

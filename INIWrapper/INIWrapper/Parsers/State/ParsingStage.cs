@@ -3,6 +3,7 @@
     public enum ParsingStage
     {
         Finished,
-        NeedRecursiveParse,
+        NeedRecursiveCall,
+        NeedReparse,
     }
 }

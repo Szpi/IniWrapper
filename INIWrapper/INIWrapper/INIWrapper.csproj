@@ -73,8 +73,8 @@
     <Compile Include="Manager\INILocalConfigurationManager.cs" />
     <Compile Include="Wrapper\INIWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Writer\IMemberWriter.cs" />
-    <Compile Include="Writer\MemberWriter.cs" />
+    <Compile Include="PrimitivesParsers\Writer\IMemberWriter.cs" />
+    <Compile Include="PrimitivesParsers\Writer\MemberWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

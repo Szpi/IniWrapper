@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
 using INIWrapper.Parsers.State;
 
-namespace INIWrapper.Writer
+namespace INIWrapper.PrimitivesParsers.Writer
 {
     public interface IMemberWriter
     {

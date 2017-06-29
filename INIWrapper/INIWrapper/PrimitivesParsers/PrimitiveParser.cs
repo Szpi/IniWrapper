@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Reflection;
+using INIWrapper.Parsers;
+using INIWrapper.PrimitivesParsers.Enumerable;
 
 namespace INIWrapper.PrimitivesParsers
 {
@@ -8,7 +11,9 @@ namespace INIWrapper.PrimitivesParsers
         private readonly IPrimitivesFieldParser m_field_parser;
         private readonly IPrimitivesPropertyParser m_property_parser;
 
-        public PrimitiveParser(IPrimitivesPropertyParser property_parser, IPrimitivesFieldParser field_parser)
+        public PrimitiveParser(
+            IPrimitivesPropertyParser property_parser, 
+            IPrimitivesFieldParser field_parser)
         {
             m_property_parser = property_parser;
             m_field_parser = field_parser;
@@ -22,7 +27,7 @@ namespace INIWrapper.PrimitivesParsers
             }
             if (member_info is PropertyInfo property_info)
             {
-                return m_property_parser.Parse(property_info, read_value);
+                return  m_property_parser.Parse(property_info, read_value);
             }
 
             throw new NotImplementedException("Only supports field and properties info");
