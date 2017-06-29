@@ -13,9 +13,9 @@ namespace INILocalConfiguration
             var ini = Path.Combine(Directory.GetCurrentDirectory(), "config.ini");
             var manager = new INILocalConfigurationManagerFactory<TestConfiguration.TestConfiguration>().Create(ini);
 
-            manager.SaveConfiguration(new TestConfiguration.TestConfiguration() { IpAddress = 1221 , Test = new Test(){Test1 = "test1_string"}});
+            // manager.SaveConfiguration(new TestConfiguration.TestConfiguration() { IpAddress = 1221 , Test = new Test(){Test1 = "test1_string"}});
 
-            //var test1 = manager.LoadConfiguration();
+            var test1 = manager.LoadConfiguration();
             //var a = true;
         }
     }

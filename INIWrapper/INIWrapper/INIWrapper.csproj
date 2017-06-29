@@ -53,8 +53,9 @@
     <Compile Include="Manager\ILocalConfigurationManager.cs" />
     <Compile Include="Manager\INILocalConfigurationManagerFactory.cs" />
     <Compile Include="Parsers\DefaultParser.cs" />
-    <Compile Include="Parsers\INIStructure.cs" />
-    <Compile Include="Parsers\ParsingStage.cs" />
+    <Compile Include="Parsers\State\INIReadingState.cs" />
+    <Compile Include="Parsers\State\INIStructure.cs" />
+    <Compile Include="Parsers\State\ParsingStage.cs" />
     <Compile Include="Parsers\ValueReferenceTypeParser.cs" />
     <Compile Include="Parsers\CustomPropertyParser.cs" />
     <Compile Include="Parsers\IParser.cs" />

@@ -5,6 +5,7 @@ using System.Reflection;
 using INIWrapper.Attribute;
 using INIWrapper.Contract;
 using INIWrapper.Parsers;
+using INIWrapper.Parsers.State;
 using INIWrapper.Wrapper;
 
 namespace INIWrapper
@@ -50,13 +51,15 @@ namespace INIWrapper
             foreach (var field in fields)
             {
                 var parser = m_type_contract.GetParser(field, configuration);
-                var parsed = parser.Read(configuration, field);
+                var reading_state = parser.Read(configuration, field);
 
-                if (ShouldBeParsedRecursively(parsed))
+                if (reading_state.ParsingStage == ParsingStage.NeedRecursiveParse)
                 {
-                    ReadFields(parsed);
+                    ReadProperties(reading_state.ParsedObject);
+                    ReadFields(reading_state.ParsedObject);
                 }
-                field.SetValue(configuration, parsed);
+
+                field.SetValue(configuration, reading_state.ParsedObject);
             }
         }
 
@@ -66,20 +69,18 @@ namespace INIWrapper
             foreach (var property in properties)
             {
                 var parser = m_type_contract.GetParser(property, configuration);
-                var parsed = parser.Read(configuration, property);
+                var reading_state = parser.Read(configuration, property);
 
-                if (ShouldBeParsedRecursively(parsed))
+                if (reading_state.ParsingStage == ParsingStage.NeedRecursiveParse)
                 {
-                    ReadProperties(parsed);
+                    ReadProperties(reading_state.ParsedObject);
+                    ReadFields(reading_state.ParsedObject);
                 }
 
-                property.SetValue(configuration, parsed);
+                property.SetValue(configuration, reading_state.ParsedObject);
             }
         }
-        private static bool ShouldBeParsedRecursively(object parsed)
-        {
-            return !parsed.GetType().IsPrimitive && !(parsed is string);
-        }
+        
         public void SaveConfiguration(T configuration)
         {
             SaveProperties(configuration);

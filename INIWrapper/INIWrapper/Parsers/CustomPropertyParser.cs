@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using INIWrapper.Attribute;
+using INIWrapper.Parsers.State;
 using INIWrapper.PrimitivesParsers;
 using INIWrapper.Wrapper;
 using INIWrapper.Writer;
@@ -25,12 +26,13 @@ namespace INIWrapper.Parsers
             m_primitives_parser = primitives_parser;
             m_member_writer = member_writer;
         }
-        public object Read(object configuration, MemberInfo member_info)
+        public INIReadingState Read(object configuration, MemberInfo member_info)
         {
             var ini_structure = GetWriteStructure(configuration, member_info);
             var read_value_from_ini = m_ini_wrapper.Read(ini_structure.Key, ini_structure.Section);
 
-            return m_primitives_parser.Parse(member_info, read_value_from_ini);
+            var parsed = m_primitives_parser.Parse(member_info, read_value_from_ini);
+            return new INIReadingState(ParsingStage.Finished, parsed);
         }
 
         public ParsingStage Write(object configuration, MemberInfo member_info)
@@ -38,7 +40,7 @@ namespace INIWrapper.Parsers
             var ini_structure = GetWriteStructure(configuration, member_info);
             m_member_writer.Write(configuration, member_info, ini_structure);
 
-            return ParsingStage.Ok;
+            return ParsingStage.Finished;
         }
 
         private INIStructure GetWriteStructure(object configuration, MemberInfo member_info)

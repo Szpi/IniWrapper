@@ -1,4 +1,5 @@
-﻿namespace INIWrapper.Parsers
+﻿
+namespace INIWrapper.Parsers.State
 {
     public struct INIStructure
     {

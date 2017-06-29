@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using INIWrapper.Parsers;
+using INIWrapper.Parsers.State;
 using INIWrapper.Wrapper;
 
 namespace INIWrapper.Writer

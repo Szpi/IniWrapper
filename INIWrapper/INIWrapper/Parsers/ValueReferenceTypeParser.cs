@@ -1,24 +1,28 @@
 ﻿using System;
 using System.Reflection;
+using INIWrapper.Parsers.State;
 
 namespace INIWrapper.Parsers
 {
     public class ValueReferenceTypeParser : IParser
     {
-        public object Read(object configuration, MemberInfo member_info)
+        public INIReadingState Read(object configuration, MemberInfo member_info)
         {
-
+            object new_initialized;
             if (member_info is PropertyInfo property_info)
             {
-                return Activator.CreateInstance(property_info.PropertyType);
+                new_initialized = Activator.CreateInstance(property_info.PropertyType);
             }
-
-            if (member_info is FieldInfo field_info)
+            else if (member_info is FieldInfo field_info)
             {
-                return Activator.CreateInstance(field_info.FieldType);
+                new_initialized = Activator.CreateInstance(field_info.FieldType);
+            }
+            else
+            {
+                new_initialized = new object();
             }
 
-            return null;
+            return new INIReadingState(ParsingStage.NeedRecursiveParse, new_initialized);
         }
 
         public ParsingStage Write(object configuration, MemberInfo member_info)

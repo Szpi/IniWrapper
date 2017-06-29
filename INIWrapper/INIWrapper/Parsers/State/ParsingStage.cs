@@ -1,8 +1,8 @@
-﻿namespace INIWrapper.Parsers
+﻿namespace INIWrapper.Parsers.State
 {
     public enum ParsingStage
     {
-        Ok,
+        Finished,
         NeedRecursiveParse,
     }
 }
