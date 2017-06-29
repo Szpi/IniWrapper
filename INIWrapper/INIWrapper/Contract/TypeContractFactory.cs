@@ -1,4 +1,5 @@
 ﻿using INIWrapper.PrimitivesParsers;
+using INIWrapper.Writer;
 
 namespace INIWrapper.Contract
 {
@@ -6,7 +7,11 @@ namespace INIWrapper.Contract
     {
         public ITypeContract Create(string ini_path)
         {
-            return new TypeContract(new Wrapper.INIWrapper(ini_path), new PrimitiveParser(new PrimitivesPropertyParser(), new PrimitivesFieldParser()));
+            return new TypeContract(
+                new Wrapper.INIWrapper(ini_path), 
+                new PrimitiveParser(new PrimitivesPropertyParser(),
+                new PrimitivesFieldParser()),
+                new MemberWriter(new Wrapper.INIWrapper(ini_path)));
         }
     }
 }

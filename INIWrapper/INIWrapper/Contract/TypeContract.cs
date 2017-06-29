@@ -7,6 +7,7 @@ using INIWrapper.Attribute;
 using INIWrapper.Parsers;
 using INIWrapper.PrimitivesParsers;
 using INIWrapper.Wrapper;
+using INIWrapper.Writer;
 
 namespace INIWrapper.Contract
 {
@@ -14,11 +15,13 @@ namespace INIWrapper.Contract
     {
         private readonly IINIWrapper m_ini_wrapper;
         private readonly IPrimitivesParser m_primitives_parser;
+        private readonly IMemberWriter m_member_writer;
 
-        public TypeContract(IINIWrapper ini_wrapper, IPrimitivesParser primitives_parser)
+        public TypeContract(IINIWrapper ini_wrapper, IPrimitivesParser primitives_parser, IMemberWriter member_writer)
         {
             m_ini_wrapper = ini_wrapper;
             m_primitives_parser = primitives_parser;
+            m_member_writer = member_writer;
         }
 
         public IParser GetParser(MemberInfo member_info, object configuration)
@@ -32,20 +35,20 @@ namespace INIWrapper.Contract
             var custom_property = attribute.FirstOrDefault() as INIOptionsAttribute;
             if (custom_property != null)
             {
-                return new CustomPropertyParser(custom_property, m_ini_wrapper, m_primitives_parser);
+                return new CustomPropertyParser(custom_property, m_ini_wrapper, m_primitives_parser, m_member_writer);
             }
 
-            return new DefaultParser(m_ini_wrapper, m_primitives_parser);
+            return new DefaultParser(m_ini_wrapper, m_primitives_parser, m_member_writer);
         }
 
         private static bool GetParserFromMemberInfo(MemberInfo member_info, object configuration, out IParser value_reference_type_parser)
         {
-            if (member_info is PropertyInfo property_info && IsRefereceTypeAndNotString(configuration, property_info))
+            if (member_info is PropertyInfo property_info && IsRefereceTypeAndNotString(property_info))
             {
                 value_reference_type_parser = new ValueReferenceTypeParser();
                 return true;
             }
-            if (member_info is FieldInfo field_info && IsReferenceTypeAndNotString(configuration, field_info))
+            if (member_info is FieldInfo field_info && IsReferenceTypeAndNotString(field_info))
             {
                 value_reference_type_parser = new ValueReferenceTypeParser();
                 return true;
@@ -54,14 +57,14 @@ namespace INIWrapper.Contract
             return false;
         }
 
-        private static bool IsReferenceTypeAndNotString(object configuration, FieldInfo field_info)
+        private static bool IsReferenceTypeAndNotString(FieldInfo field_info)
         {
-            return field_info.GetValue(configuration) == null && field_info.FieldType != typeof(string);
+            return (field_info.FieldType.IsClass || (field_info.FieldType.IsValueType && !field_info.FieldType.IsPrimitive)) && field_info.FieldType != typeof(string) ;
         }
 
-        private static bool IsRefereceTypeAndNotString(object configuration, PropertyInfo property_info)
+        private static bool IsRefereceTypeAndNotString(PropertyInfo property_info)
         {
-            return property_info.GetValue(configuration) == null && property_info.PropertyType != typeof(string);
+            return (property_info.PropertyType.IsClass || (property_info.PropertyType.IsValueType && !property_info.PropertyType.IsPrimitive)) && property_info.PropertyType != typeof(string);
         }
     }
 }

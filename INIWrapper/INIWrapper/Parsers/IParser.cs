@@ -4,6 +4,7 @@ namespace INIWrapper.Parsers
 {
     public interface IParser
     {
-        object Parse(object configuration, MemberInfo member_info);
+        object Read(object configuration, MemberInfo member_info);
+        ParsingStage Write(object configuration, MemberInfo member_info);
     }
 }

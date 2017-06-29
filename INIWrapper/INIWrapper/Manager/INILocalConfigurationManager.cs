@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using INIWrapper.Attribute;
 using INIWrapper.Contract;
+using INIWrapper.Parsers;
 using INIWrapper.Wrapper;
 
 namespace INIWrapper
@@ -49,7 +50,7 @@ namespace INIWrapper
             foreach (var field in fields)
             {
                 var parser = m_type_contract.GetParser(field, configuration);
-                var parsed = parser.Parse(configuration, field);
+                var parsed = parser.Read(configuration, field);
 
                 if (ShouldBeParsedRecursively(parsed))
                 {
@@ -65,7 +66,7 @@ namespace INIWrapper
             foreach (var property in properties)
             {
                 var parser = m_type_contract.GetParser(property, configuration);
-                var parsed = parser.Parse(configuration, property);
+                var parsed = parser.Read(configuration, property);
 
                 if (ShouldBeParsedRecursively(parsed))
                 {
@@ -89,27 +90,16 @@ namespace INIWrapper
             var fields = configuration.GetType().GetFields();
             foreach (var field in fields)
             {
-                var attribute = field.GetCustomAttributes(typeof(INIOptionsAttribute), true);
-                var key = field.Name;
-                var section = configuration.GetType().Name;
+                var parser = m_type_contract.GetParser(field, configuration);
+
                 ChangeNullStringToEmptyOne(field, configuration);
+                var parsing_stage = parser.Write(configuration, field);
 
-                var custom_property = attribute.FirstOrDefault() as INIOptionsAttribute;
-                if (custom_property != null)
-                {
-                    key = string.IsNullOrEmpty(custom_property.Key) ? key : custom_property.Key;
-                    section = string.IsNullOrEmpty(custom_property.Section) ? section : custom_property.Section;
-                    m_ini_wrapper.Write(key, field.GetValue(configuration).ToString(), section);
-                    continue;
-                }
-
-                if (!field.FieldType.IsPrimitive && field.FieldType != typeof(string))
+                if (parsing_stage == ParsingStage.NeedRecursiveParse)
                 {
                     SaveFields(field.GetValue(configuration));
-                    continue;
+                    SaveProperties(field.GetValue(configuration));
                 }
-
-                m_ini_wrapper.Write(key, field.GetValue(configuration).ToString(), section);
             }
         }
 
@@ -118,27 +108,16 @@ namespace INIWrapper
             var properties = configuration.GetType().GetProperties();
             foreach (var property in properties)
             {
-                var attribute = property.GetCustomAttributes(typeof(INIOptionsAttribute), true);
-                var key = property.Name;
-                var section = configuration.GetType().Name;
+                var parser = m_type_contract.GetParser(property, configuration);
 
                 ChangeNullStringToEmptyOne(property, configuration);
-                var custom_property = attribute.FirstOrDefault() as INIOptionsAttribute;
-                if (custom_property != null)
-                {
-                    key = string.IsNullOrEmpty(custom_property.Key) ? key : custom_property.Key;
-                    section = string.IsNullOrEmpty(custom_property.Section) ? section : custom_property.Section;
-                    m_ini_wrapper.Write(key, property.GetValue(configuration).ToString(), section);
-                    continue;
-                }
+                var parsing_stage = parser.Write(configuration, property);
 
-                if (!property.PropertyType.IsPrimitive && property.PropertyType != typeof(string))
+                if (parsing_stage == ParsingStage.NeedRecursiveParse)
                 {
                     SaveFields(property.GetValue(configuration));
-                    continue;
+                    SaveProperties(property.GetValue(configuration));
                 }
-
-                m_ini_wrapper.Write(key, property.GetValue(configuration).ToString(), section);
             }
         }
 
