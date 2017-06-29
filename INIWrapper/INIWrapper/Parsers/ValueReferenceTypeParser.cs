@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Reflection;
 using INIWrapper.Parsers.State;
+using INIWrapper.Wrapper;
 
 namespace INIWrapper.Parsers
 {

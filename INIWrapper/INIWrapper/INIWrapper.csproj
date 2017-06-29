@@ -62,6 +62,7 @@
     <Compile Include="Contract\ITypeContract.cs" />
     <Compile Include="Contract\TypeContract.cs" />
     <Compile Include="PrimitivesParsers\Enumerable\EnumerableParser.cs" />
+    <Compile Include="PrimitivesParsers\Enumerable\IEnumerableParser.cs" />
     <Compile Include="PrimitivesParsers\Field\IPrimitivesFieldParser.cs" />
     <Compile Include="PrimitivesParsers\IPrimitivesParser.cs" />
     <Compile Include="PrimitivesParsers\Property\IPrimitivesPropertyParser.cs" />
