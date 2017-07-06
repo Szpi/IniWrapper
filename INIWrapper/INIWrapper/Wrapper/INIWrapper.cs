@@ -24,7 +24,7 @@ namespace INIWrapper.Wrapper
             return return_value.ToString();
         }
 
-        public void Write(string key, string value, string section)
+        public void Write(string section,string key, string value)
         {
             WritePrivateProfileString(section, key, value, m_file_path);
         }

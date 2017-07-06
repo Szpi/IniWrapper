@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using INIWrapper.Parsers.State;
 using INIWrapper.PrimitivesParsers;
@@ -31,13 +32,13 @@ namespace INIWrapper.Parsers
         {
             var ini_structure = GetWriteStructure(configuration, member_info);
 
-            var read_value_from_ini = m_ini_wrapper.Read(ini_structure.Key, ini_structure.Section);
+            var read_value_from_ini = m_ini_wrapper.Read(ini_structure.Section, ini_structure.Key);
             object parsed;
-            if (member_info is FieldInfo field_info && (typeof(IEnumerable).IsAssignableFrom(field_info.FieldType)))
+            if (member_info is FieldInfo field_info && (typeof(IList).IsAssignableFrom(field_info.FieldType)))
             {
                 parsed = m_enumerable_parser.Read(read_value_from_ini);
             }
-            else if (member_info is PropertyInfo property_info && (typeof(IEnumerable).IsAssignableFrom(property_info.PropertyType)))
+            else if (member_info is PropertyInfo property_info && (typeof(IList).IsAssignableFrom(property_info.PropertyType)))
             {
                 parsed = m_enumerable_parser.Read(read_value_from_ini);
             }
@@ -51,15 +52,15 @@ namespace INIWrapper.Parsers
 
         public ParsingStage Write(object configuration, MemberInfo member_info)
         {
-            var ini_structure = GetWriteStructure(configuration, member_info);
-            m_member_writer.Write(configuration, member_info, ini_structure);
+            var parsing_context = GetWriteStructure(configuration, member_info);
+            m_member_writer.Write(configuration, member_info, parsing_context);
 
             return ParsingStage.Finished;
         }
 
-        private INIStructure GetWriteStructure(object configuration, MemberInfo member_info)
+        private ParsingContext GetWriteStructure(object configuration, MemberInfo member_info)
         {
-            return new INIStructure() { Section = configuration.GetType().Name, Key = member_info.Name };
+            return new ParsingContext() { Section = configuration.GetType().Name, Key = member_info.Name };
         }
     }
 }

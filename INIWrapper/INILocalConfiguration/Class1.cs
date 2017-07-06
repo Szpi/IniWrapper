@@ -3,6 +3,7 @@ using System.IO;
 using System.IO.Abstractions;
 using INILocalConfiguration.TestConfiguration;
 using INIWrapper;
+using INIWrapper.Main;
 
 namespace INILocalConfiguration
 {
@@ -11,7 +12,7 @@ namespace INILocalConfiguration
         public static void Main(string[] args)
         {
             var ini = Path.Combine(Directory.GetCurrentDirectory(), "config.ini");
-            var manager = new INILocalConfigurationManagerFactory<TestConfiguration.TestConfiguration>().Create(ini);
+            var manager = new INIParserFactory<TestConfiguration.TestConfiguration>().Create(ini);
 
             //manager.SaveConfiguration(new TestConfiguration.TestConfiguration() { IpAddress = 1221});
 

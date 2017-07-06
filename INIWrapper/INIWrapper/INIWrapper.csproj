@@ -50,11 +50,11 @@
   <ItemGroup>
     <Compile Include="Attribute\INIOptionsAttribute.cs" />
     <Compile Include="Contract\TypeContractFactory.cs" />
-    <Compile Include="Manager\ILocalConfigurationManager.cs" />
-    <Compile Include="Manager\INILocalConfigurationManagerFactory.cs" />
+    <Compile Include="Main\IINIParser.cs" />
+    <Compile Include="Main\INIParserFactory.cs" />
     <Compile Include="Parsers\DefaultParser.cs" />
     <Compile Include="Parsers\State\INIReadingState.cs" />
-    <Compile Include="Parsers\State\INIStructure.cs" />
+    <Compile Include="Parsers\State\ParsingContext.cs" />
     <Compile Include="Parsers\State\ParsingStage.cs" />
     <Compile Include="Parsers\ValueReferenceTypeParser.cs" />
     <Compile Include="Parsers\CustomPropertyParser.cs" />
@@ -70,7 +70,7 @@
     <Compile Include="PrimitivesParsers\Field\PrimitivesFieldParser.cs" />
     <Compile Include="PrimitivesParsers\Property\PrimitivesPropertyParser.cs" />
     <Compile Include="Wrapper\IINIWrapper.cs" />
-    <Compile Include="Manager\INILocalConfigurationManager.cs" />
+    <Compile Include="Main\INIParser.cs" />
     <Compile Include="Wrapper\INIWrapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PrimitivesParsers\Writer\IMemberWriter.cs" />

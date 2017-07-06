@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using INIWrapper.Parsers.State;
 
@@ -14,7 +15,7 @@ namespace INIWrapper.Parsers
             {
                 new_initialized = Activator.CreateInstance(property_info.PropertyType);
 
-                if (typeof(IEnumerable).IsAssignableFrom(property_info.PropertyType))
+                if (typeof(IList).IsAssignableFrom(property_info.PropertyType))
                 {
                     return new INIReadingState(ParsingStage.NeedReparse, new_initialized);
                 }
@@ -23,7 +24,7 @@ namespace INIWrapper.Parsers
             {
                 new_initialized = Activator.CreateInstance(field_info.FieldType);
 
-                if (typeof(IEnumerable).IsAssignableFrom(field_info.FieldType))
+                if (typeof(IList).IsAssignableFrom(field_info.FieldType))
                 {
                     return new INIReadingState(ParsingStage.NeedReparse, new_initialized);
                 }
@@ -41,12 +42,12 @@ namespace INIWrapper.Parsers
             var new_instance = Read(configuration, member_info);
             if (member_info is PropertyInfo property_info)
             {
-                property_info.SetValue(configuration, new_instance);
+                property_info.SetValue(configuration, new_instance.ParsedObject);
             }
 
             if (member_info is FieldInfo field_info)
             {
-                field_info.SetValue(configuration, new_instance);
+                field_info.SetValue(configuration, new_instance.ParsedObject);
             }
 
             return ParsingStage.NeedRecursiveCall;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using INIWrapper.Parsers.State;
@@ -19,33 +20,33 @@ namespace INIWrapper.PrimitivesParsers.Writer
             m_enumerable_parser = enumerable_parser;
         }
 
-        public void Write(object configuration, MemberInfo member_info, INIStructure ini_structure)
+        public void Write(object configuration, MemberInfo member_info, ParsingContext ini_structure)
         {
             if (member_info is FieldInfo field_info)
             {
-                if (typeof(IEnumerable).IsAssignableFrom(field_info.FieldType))
+                if (typeof(IList).IsAssignableFrom(field_info.FieldType))
                 {
                     var enumerable_value = field_info.GetValue(configuration) as IEnumerable;
                     var formatted_value = m_enumerable_parser.FormatToWrite(enumerable_value);
 
-                    m_ini_wrapper.Write(ini_structure.Key, formatted_value, ini_structure.Section);
+                    m_ini_wrapper.Write(ini_structure.Section, ini_structure.Key, formatted_value);
 
                     return;
                 }
-                m_ini_wrapper.Write(ini_structure.Key, field_info.GetValue(configuration).ToString(), ini_structure.Section);
+                m_ini_wrapper.Write(ini_structure.Section, ini_structure.Key, field_info.GetValue(configuration).ToString());
             }
             if (member_info is PropertyInfo property_info)
             {
-                if (typeof(IEnumerable).IsAssignableFrom(property_info.PropertyType))
+                if (typeof(IList).IsAssignableFrom(property_info.PropertyType))
                 {
                     var enumerable_value = property_info.GetValue(configuration) as IEnumerable;
                     var formatted_value = m_enumerable_parser.FormatToWrite(enumerable_value);
 
-                    m_ini_wrapper.Write(ini_structure.Key, formatted_value, ini_structure.Section);
+                    m_ini_wrapper.Write(ini_structure.Section, ini_structure.Key, formatted_value);
 
                     return;
                 }
-                m_ini_wrapper.Write(ini_structure.Key, property_info.GetValue(configuration).ToString(), ini_structure.Section);
+                m_ini_wrapper.Write(ini_structure.Section, ini_structure.Key, property_info.GetValue(configuration).ToString());
             }
         }
     }

@@ -1,23 +1,19 @@
-﻿using System;
-using System.IO.Abstractions;
-using System.Linq;
+﻿using System.IO.Abstractions;
 using System.Reflection;
-using INIWrapper.Attribute;
 using INIWrapper.Contract;
-using INIWrapper.Parsers;
 using INIWrapper.Parsers.State;
 using INIWrapper.Wrapper;
 
-namespace INIWrapper
+namespace INIWrapper.Main
 {
-    public sealed class INILocalConfigurationManager<T> : ILocalConfigurationManager<T> where T : new()
+    public sealed class INIParser<T> : IINIParser<T> where T : new()
     {
         private readonly string m_file_path;
         private readonly IINIWrapper m_ini_wrapper;
         private readonly IFileSystem m_file_system;
         private readonly ITypeContract m_type_contract;
 
-        public INILocalConfigurationManager(string file_path, IINIWrapper ini_wrapper, IFileSystem file_system, ITypeContract type_contract)
+        public INIParser(string file_path, IINIWrapper ini_wrapper, IFileSystem file_system, ITypeContract type_contract)
         {
             m_file_path = file_path;
             m_ini_wrapper = ini_wrapper;

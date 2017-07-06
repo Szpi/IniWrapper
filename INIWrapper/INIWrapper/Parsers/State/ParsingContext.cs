@@ -1,7 +1,7 @@
 ﻿
 namespace INIWrapper.Parsers.State
 {
-    public struct INIStructure
+    public struct ParsingContext
     {
         public string Section { get; set; }
         public string Key { get; set; }

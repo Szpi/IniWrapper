@@ -2,7 +2,7 @@
 {
     public interface IINIWrapper
     {
-        string Read(string key, string section);
-        void Write(string key, string value, string section);
+        string Read(string section, string key);
+        void Write(string section, string key, string value);
     }
 }
