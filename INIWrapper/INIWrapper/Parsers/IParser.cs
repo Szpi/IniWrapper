@@ -1,11 +1,11 @@
 using System.Reflection;
-using INIWrapper.Parsers.State;
+using IniWrapper.Parsers.State;
 
-namespace INIWrapper.Parsers
+namespace IniWrapper.Parsers
 {
     public interface IParser
     {
-        INIReadingState Read(object configuration, MemberInfo member_info);
-        ParsingStage Write(object configuration, MemberInfo member_info);
+        IniReadingState Read(object configuration, MemberInfo memberInfo);
+        ParsingStage Write(object configuration, MemberInfo memberInfo);
     }
 }

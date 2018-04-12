@@ -1,9 +1,9 @@
 ﻿using System.Reflection;
 
-namespace INIWrapper.PrimitivesParsers
+namespace IniWrapper.PrimitivesParsers.Field
 {
     public interface IPrimitivesFieldParser
     {
-        object Parse(FieldInfo field_info, string read_value);
+        object Parse(FieldInfo fieldInfo, string readValue);
     }
 }

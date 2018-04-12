@@ -3,28 +3,28 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 
-namespace INIWrapper.PrimitivesParsers.Enumerable
+namespace IniWrapper.PrimitivesParsers.Enumerable
 {
     public sealed class EnumerableParser : IEnumerableParser
     {
-        private const char SEPARATOR = ',';
+        private const char Separator = ',';
 
-        public IEnumerable Read(string read_value)
+        public IEnumerable Read(string readValue)
         {
-            return read_value.Split(new[] { SEPARATOR }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            return readValue.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
 
         public string FormatToWrite(IEnumerable enumerable)
         {
-            var string_builder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
 
             foreach (var item in enumerable)
             {
-                string_builder.Append(item.ToString());
-                string_builder.Append(SEPARATOR);
+                stringBuilder.Append(item.ToString());
+                stringBuilder.Append(Separator);
             }
-            string_builder.Remove(string_builder.Length - 1, 1);
-            return string_builder.ToString();
+            stringBuilder.Remove(stringBuilder.Length - 1, 1);
+            return stringBuilder.ToString();
         }
     }
 }

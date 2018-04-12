@@ -1,78 +1,78 @@
 ﻿using System.Linq;
 using System.Reflection;
-using INIWrapper.Attribute;
-using INIWrapper.Parsers;
-using INIWrapper.PrimitivesParsers;
-using INIWrapper.PrimitivesParsers.Enumerable;
-using INIWrapper.PrimitivesParsers.Writer;
-using INIWrapper.Wrapper;
+using IniWrapper.Attribute;
+using IniWrapper.Parsers;
+using IniWrapper.PrimitivesParsers;
+using IniWrapper.PrimitivesParsers.Enumerable;
+using IniWrapper.PrimitivesParsers.Writer;
+using IniWrapper.Wrapper;
 
-namespace INIWrapper.Contract
+namespace IniWrapper.Contract
 {
     public sealed class TypeContract : ITypeContract
     {
-        private readonly IINIWrapper m_ini_wrapper;
-        private readonly IPrimitivesParser m_primitives_parser;
-        private readonly IMemberWriter m_member_writer;
-        private readonly IEnumerableParser m_enumerable_parser;
+        private readonly IIniWrapper _iniWrapper;
+        private readonly IPrimitivesParser _primitivesParser;
+        private readonly IMemberWriter _memberWriter;
+        private readonly IEnumerableParser _enumerableParser;
 
         public TypeContract(
-            IINIWrapper ini_wrapper,
-            IPrimitivesParser primitives_parser,
-            IMemberWriter member_writer,
-            IEnumerableParser enumerable_parser)
+            IIniWrapper iniWrapper,
+            IPrimitivesParser primitivesParser,
+            IMemberWriter memberWriter,
+            IEnumerableParser enumerableParser)
         {
-            m_ini_wrapper = ini_wrapper;
-            m_primitives_parser = primitives_parser;
-            m_member_writer = member_writer;
-            m_enumerable_parser = enumerable_parser;
+            _iniWrapper = iniWrapper;
+            _primitivesParser = primitivesParser;
+            _memberWriter = memberWriter;
+            _enumerableParser = enumerableParser;
         }
 
-        public IParser GetParser(MemberInfo member_info, object configuration)
+        public IParser GetParser(MemberInfo memberInfo, object configuration)
         {
-            if (GetParserFromMemberInfo(member_info, configuration, out var value_reference_type_parser))
+            if (GetParserFromMemberInfo(memberInfo, configuration, out var valueReferenceTypeParser))
             {
-                return value_reference_type_parser;
+                return valueReferenceTypeParser;
             }
 
-            var attribute = member_info.GetCustomAttributes(typeof(INIOptionsAttribute), true);
-            var custom_property = attribute.FirstOrDefault() as INIOptionsAttribute;
-            if (custom_property != null)
+            var attribute = memberInfo.GetCustomAttributes(typeof(IniOptionsAttribute), true);
+            var customProperty = attribute.FirstOrDefault() as IniOptionsAttribute;
+            if (customProperty != null)
             {
-                return new CustomPropertyParser(custom_property, m_ini_wrapper, m_primitives_parser, m_member_writer, m_enumerable_parser);
+                return new CustomPropertyParser(customProperty, _iniWrapper, _primitivesParser, _memberWriter, _enumerableParser);
             }
 
-            return new DefaultParser(m_ini_wrapper, m_primitives_parser, m_member_writer, m_enumerable_parser);
+            return new DefaultParser(_iniWrapper, _primitivesParser, _memberWriter, _enumerableParser);
         }
 
-        private bool GetParserFromMemberInfo(MemberInfo member_info, object configuration, out IParser value_reference_type_parser)
+        private bool GetParserFromMemberInfo(MemberInfo memberInfo, object configuration, out IParser valueReferenceTypeParser)
         {
-            if (member_info is PropertyInfo property_info && IsRefereceTypeAndNotString(property_info, configuration))
+            if (memberInfo is PropertyInfo propertyInfo && IsRefereceTypeAndNotString(propertyInfo, configuration))
             {
-                value_reference_type_parser = new ValueReferenceTypeParser();
+                valueReferenceTypeParser = new ValueReferenceTypeParser();
                 return true;
             }
-            if (member_info is FieldInfo field_info && IsReferenceTypeAndNotString(field_info, configuration))
+            if (memberInfo is FieldInfo fieldInfo && IsReferenceTypeAndNotString(fieldInfo, configuration))
             {
-                value_reference_type_parser = new ValueReferenceTypeParser();
+                valueReferenceTypeParser = new ValueReferenceTypeParser();
                 return true;
             }
-            value_reference_type_parser = null;
+            valueReferenceTypeParser = null;
             return false;
         }
 
-        private static bool IsReferenceTypeAndNotString(FieldInfo field_info, object configuration)
+        private static bool IsReferenceTypeAndNotString(FieldInfo fieldInfo, object configuration)
         {
-            return field_info.GetValue(configuration) == null &&
-                ((field_info.FieldType.IsClass || (field_info.FieldType.IsValueType && !field_info.FieldType.IsPrimitive))
-                && field_info.FieldType != typeof(string));
+            return fieldInfo.GetValue(configuration) == null &&
+                ((fieldInfo.FieldType.IsClass || (fieldInfo.FieldType.IsValueType && !fieldInfo.FieldType.IsPrimitive))
+                && fieldInfo.FieldType != typeof(string));
         }
 
-        private static bool IsRefereceTypeAndNotString(PropertyInfo property_info, object configuration)
+        private static bool IsRefereceTypeAndNotString(PropertyInfo propertyInfo, object configuration)
         {
-            return property_info.GetValue(configuration) == null && ((property_info.PropertyType.IsClass ||
-                (property_info.PropertyType.IsValueType && !property_info.PropertyType.IsPrimitive))
-                && property_info.PropertyType != typeof(string));
+            return propertyInfo.GetValue(configuration) == null && ((propertyInfo.PropertyType.IsClass ||
+                (propertyInfo.PropertyType.IsValueType && !propertyInfo.PropertyType.IsPrimitive))
+                && propertyInfo.PropertyType != typeof(string));
         }
     }
 }

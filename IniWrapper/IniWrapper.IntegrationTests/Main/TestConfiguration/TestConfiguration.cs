@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using NUnit.Framework.Internal.Commands;
 
-namespace INIWrapperTests.Main.TestConfiguration
+namespace IniWrapper.IntegrationTests.Main.TestConfiguration
 {
     public struct TestConfiguration
     {

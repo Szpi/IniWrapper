@@ -1,70 +1,70 @@
 ﻿using System.Linq;
 using System.Reflection;
 
-namespace INIWrapper.PrimitivesParsers
+namespace IniWrapper.PrimitivesParsers.Field
 {
     public sealed class PrimitivesFieldParser : IPrimitivesFieldParser
     {
-        public object Parse(FieldInfo field_info, string read_value)
+        public object Parse(FieldInfo fieldInfo, string readValue)
         {
-            if (field_info == null)
+            if (fieldInfo == null)
             {
                 return null;
             }
 
-            if (field_info.FieldType == typeof(string))
+            if (fieldInfo.FieldType == typeof(string))
             {
-                return read_value;
+                return readValue;
             }
 
-            if (!field_info.FieldType.IsPrimitive)
+            if (!fieldInfo.FieldType.IsPrimitive)
             {
                 return null;
             }
 
-            if (field_info.FieldType == typeof(int))
+            if (fieldInfo.FieldType == typeof(int))
             {
-                int.TryParse(read_value, out var result);
+                int.TryParse(readValue, out var result);
                 return result;
             }
-            if (field_info.FieldType == typeof(uint))
+            if (fieldInfo.FieldType == typeof(uint))
             {
-                uint.TryParse(read_value, out var result);
-                return result;
-            }
-
-            if (field_info.FieldType == typeof(long))
-            {
-                long.TryParse(read_value, out var result);
+                uint.TryParse(readValue, out var result);
                 return result;
             }
 
-            if (field_info.FieldType == typeof(bool))
+            if (fieldInfo.FieldType == typeof(long))
             {
-                bool.TryParse(read_value, out var result);
+                long.TryParse(readValue, out var result);
                 return result;
             }
 
-            if (field_info.FieldType == typeof(double))
+            if (fieldInfo.FieldType == typeof(bool))
             {
-                double.TryParse(read_value, out var result);
+                bool.TryParse(readValue, out var result);
                 return result;
             }
 
-            if (field_info.FieldType == typeof(float))
+            if (fieldInfo.FieldType == typeof(double))
             {
-                float.TryParse(read_value, out var result);
+                double.TryParse(readValue, out var result);
                 return result;
             }
 
-            if (field_info.FieldType == typeof(char))
+            if (fieldInfo.FieldType == typeof(float))
             {
-                return read_value.FirstOrDefault();
+                float.TryParse(readValue, out var result);
+                return result;
             }
 
-            if (field_info.FieldType == typeof(decimal))
+            if (fieldInfo.FieldType == typeof(char))
             {
-                decimal.TryParse(read_value, out var result);
+                return readValue.FirstOrDefault();
+            }
+
+            if (fieldInfo.FieldType == typeof(decimal))
+            {
+                decimal.TryParse(readValue, out var result);
                 return result;
             }
             return null;

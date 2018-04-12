@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using INIWrapper.Parsers;
+using IniWrapper.Parsers;
 
-namespace INIWrapper.Contract
+namespace IniWrapper.Contract
 {
     public interface ITypeContract
     {
-        IParser GetParser(MemberInfo member_info, object configuration);
+        IParser GetParser(MemberInfo memberInfo, object configuration);
     }
 }

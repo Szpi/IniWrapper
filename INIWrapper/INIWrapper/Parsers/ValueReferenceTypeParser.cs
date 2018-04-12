@@ -1,53 +1,52 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
-using INIWrapper.Parsers.State;
+using IniWrapper.Parsers.State;
 
-namespace INIWrapper.Parsers
+namespace IniWrapper.Parsers
 {
     public class ValueReferenceTypeParser : IParser
     {
-        public INIReadingState Read(object configuration, MemberInfo member_info)
+        public IniReadingState Read(object configuration, MemberInfo memberInfo)
         {
-            object new_initialized;
-            if (member_info is PropertyInfo property_info)
+            object newInitialized;
+            if (memberInfo is PropertyInfo propertyInfo)
             {
-                new_initialized = Activator.CreateInstance(property_info.PropertyType);
+                newInitialized = Activator.CreateInstance(propertyInfo.PropertyType);
 
-                if (typeof(IList).IsAssignableFrom(property_info.PropertyType))
+                if (typeof(IList).IsAssignableFrom(propertyInfo.PropertyType))
                 {
-                    return new INIReadingState(ParsingStage.NeedReparse, new_initialized);
+                    return new IniReadingState(ParsingStage.NeedReparse, newInitialized);
                 }
             }
-            else if (member_info is FieldInfo field_info)
+            else if (memberInfo is FieldInfo fieldInfo)
             {
-                new_initialized = Activator.CreateInstance(field_info.FieldType);
+                newInitialized = Activator.CreateInstance(fieldInfo.FieldType);
 
-                if (typeof(IList).IsAssignableFrom(field_info.FieldType))
+                if (typeof(IList).IsAssignableFrom(fieldInfo.FieldType))
                 {
-                    return new INIReadingState(ParsingStage.NeedReparse, new_initialized);
+                    return new IniReadingState(ParsingStage.NeedReparse, newInitialized);
                 }
             }
             else
             {
-                new_initialized = new object();
+                newInitialized = new object();
             }
 
-            return new INIReadingState(ParsingStage.NeedRecursiveCall, new_initialized);
+            return new IniReadingState(ParsingStage.NeedRecursiveCall, newInitialized);
         }
 
-        public ParsingStage Write(object configuration, MemberInfo member_info)
+        public ParsingStage Write(object configuration, MemberInfo memberInfo)
         {
-            var new_instance = Read(configuration, member_info);
-            if (member_info is PropertyInfo property_info)
+            var newInstance = Read(configuration, memberInfo);
+            if (memberInfo is PropertyInfo propertyInfo)
             {
-                property_info.SetValue(configuration, new_instance.ParsedObject);
+                propertyInfo.SetValue(configuration, newInstance.ParsedObject);
             }
 
-            if (member_info is FieldInfo field_info)
+            if (memberInfo is FieldInfo fieldInfo)
             {
-                field_info.SetValue(configuration, new_instance.ParsedObject);
+                fieldInfo.SetValue(configuration, newInstance.ParsedObject);
             }
 
             return ParsingStage.NeedRecursiveCall;

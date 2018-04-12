@@ -1,6 +1,6 @@
-﻿namespace INIWrapper.Main
+﻿namespace IniWrapper.Main
 {
-    public interface IINIParser<T> where T : new()
+    public interface IIniParser<T> where T : new()
     {
         T LoadConfiguration();
         void SaveConfiguration(T configuration);

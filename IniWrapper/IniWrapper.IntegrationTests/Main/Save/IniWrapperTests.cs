@@ -1,36 +1,36 @@
 ﻿using System.Collections.Generic;
-using INIWrapper.Main;
-using INIWrapper.Wrapper;
+using IniWrapper.Main;
+using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace INIWrapperTests.Main.Save
+namespace IniWrapper.IntegrationTests.Main.Save
 {
     [TestFixture]
-    public sealed class INIParserShouldSaveProperties
+    public sealed class IniWrapperTests
     {
-        private IINIParser<TestConfiguration.TestConfiguration> m_sut;
+        private IIniParser<TestConfiguration.TestConfiguration> _iniParser;
 
-        private IINIWrapper m_ini_wrapper;
+        private IIniWrapper _iniWrapper;
 
         [SetUp]
         public void SetUp()
         {
-            m_ini_wrapper = Substitute.For<IINIWrapper>();
-            m_sut = new INIParserFactory<TestConfiguration.TestConfiguration>().Create("", m_ini_wrapper);
+            _iniWrapper = Substitute.For<IIniWrapper>();
+            _iniParser = new IniParserFactory<TestConfiguration.TestConfiguration>().Create("", _iniWrapper);
         }
 
         [Test]
         public void CorrectWriteString()
         {
-            var test_string = "test_string_to_save";
+            var testString = "test_string_to_save";
             var config = new TestConfiguration.TestConfiguration()
             {
-                TestString = test_string,
+                TestString = testString,
             };
-            m_sut.SaveConfiguration(config);
+            _iniParser.SaveConfiguration(config);
 
-            m_ini_wrapper.Received(1).Write("TestConfiguration", "TestString", test_string);
+            _iniWrapper.Received(1).Write("TestConfiguration", "TestString", testString);
         }
         [Test]
         public void CorrectWriteInt([Values(0, 1, 200, 500, 900)] int value)
@@ -39,9 +39,9 @@ namespace INIWrapperTests.Main.Save
             {
                 TestInt = value,
             };
-            m_sut.SaveConfiguration(config);
+            _iniParser.SaveConfiguration(config);
 
-            m_ini_wrapper.Received(1).Write("TestConfiguration", "TestInt", value.ToString());
+            _iniWrapper.Received(1).Write("TestConfiguration", "TestInt", value.ToString());
         }
         [Test]
         public void CorrectWriteUint([Values(0u, 1u, 200u, 500u, 900u)] uint value)
@@ -50,9 +50,9 @@ namespace INIWrapperTests.Main.Save
             {
                 TestUint = value,
             };
-            m_sut.SaveConfiguration(config);
+            _iniParser.SaveConfiguration(config);
 
-            m_ini_wrapper.Received(1).Write("TestConfiguration", "TestUint", value.ToString());
+            _iniWrapper.Received(1).Write("TestConfiguration", "TestUint", value.ToString());
         }
         [Test]
         public void CorrectWriteChar([Values('a', 'z', ' ', 'b')] char value)
@@ -61,9 +61,9 @@ namespace INIWrapperTests.Main.Save
             {
                 TestChar = value,
             };
-            m_sut.SaveConfiguration(config);
+            _iniParser.SaveConfiguration(config);
 
-            m_ini_wrapper.Received(1).Write("TestConfiguration", "TestChar", value.ToString());
+            _iniWrapper.Received(1).Write("TestConfiguration", "TestChar", value.ToString());
         }
         [Test]
         public void CorrectWriteStringList()
@@ -75,9 +75,9 @@ namespace INIWrapperTests.Main.Save
                     "a","b","c","d","f"
                 },
             };
-            m_sut.SaveConfiguration(config);
+            _iniParser.SaveConfiguration(config);
 
-            m_ini_wrapper.Received(1).Write("TestConfiguration", "TestStringList", "a,b,c,d,f");
+            _iniWrapper.Received(1).Write("TestConfiguration", "TestStringList", "a,b,c,d,f");
         }
         [Test]
         public void CorrectWriteIntList()
@@ -89,9 +89,9 @@ namespace INIWrapperTests.Main.Save
                     1,2,3,4,5,6,7,8
                 },
             };
-            m_sut.SaveConfiguration(config);
+            _iniParser.SaveConfiguration(config);
 
-            m_ini_wrapper.Received(1).Write("TestConfiguration", "TestStringList", "1,2,3,4,5,6,7,8");
+            _iniWrapper.Received(1).Write("TestConfiguration", "TestStringList", "1,2,3,4,5,6,7,8");
         }
         [Test]
         public void CorrectWriteUintList()
@@ -103,9 +103,9 @@ namespace INIWrapperTests.Main.Save
                     1u,2u,3u,4u,5u,6u,7u,8u
                 },
             };
-            m_sut.SaveConfiguration(config);
+            _iniParser.SaveConfiguration(config);
 
-            m_ini_wrapper.Received(1).Write("TestConfiguration", "TestStringList", "1,2,3,4,5,6,7,8");
+            _iniWrapper.Received(1).Write("TestConfiguration", "TestStringList", "1,2,3,4,5,6,7,8");
         }
     }
 }

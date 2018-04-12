@@ -1,66 +1,65 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using System.Reflection;
-using INIWrapper.Parsers.State;
-using INIWrapper.PrimitivesParsers;
-using INIWrapper.PrimitivesParsers.Enumerable;
-using INIWrapper.PrimitivesParsers.Writer;
-using INIWrapper.Wrapper;
+using IniWrapper.Parsers.State;
+using IniWrapper.PrimitivesParsers;
+using IniWrapper.PrimitivesParsers.Enumerable;
+using IniWrapper.PrimitivesParsers.Writer;
+using IniWrapper.Wrapper;
 
-namespace INIWrapper.Parsers
+namespace IniWrapper.Parsers
 {
     public class DefaultParser : IParser
     {
-        private readonly IINIWrapper m_ini_wrapper;
-        private readonly IPrimitivesParser m_primitives_parser;
-        private readonly IMemberWriter m_member_writer;
-        private readonly IEnumerableParser m_enumerable_parser;
+        private readonly IIniWrapper _iniWrapper;
+        private readonly IPrimitivesParser _primitivesParser;
+        private readonly IMemberWriter _memberWriter;
+        private readonly IEnumerableParser _enumerableParser;
 
         public DefaultParser(
-            IINIWrapper ini_wrapper,
-            IPrimitivesParser primitives_parser,
-            IMemberWriter member_writer,
-            IEnumerableParser enumerable_parser)
+            IIniWrapper iniWrapper,
+            IPrimitivesParser primitivesParser,
+            IMemberWriter memberWriter,
+            IEnumerableParser enumerableParser)
         {
-            m_ini_wrapper = ini_wrapper;
-            m_primitives_parser = primitives_parser;
-            m_member_writer = member_writer;
-            m_enumerable_parser = enumerable_parser;
+            _iniWrapper = iniWrapper;
+            _primitivesParser = primitivesParser;
+            _memberWriter = memberWriter;
+            _enumerableParser = enumerableParser;
         }
 
-        public INIReadingState Read(object configuration, MemberInfo member_info)
+        public IniReadingState Read(object configuration, MemberInfo memberInfo)
         {
-            var ini_structure = GetWriteStructure(configuration, member_info);
+            var iniStructure = GetWriteStructure(configuration, memberInfo);
 
-            var read_value_from_ini = m_ini_wrapper.Read(ini_structure.Section, ini_structure.Key);
+            var readValueFromIni = _iniWrapper.Read(iniStructure.Section, iniStructure.Key);
             object parsed;
-            if (member_info is FieldInfo field_info && (typeof(IList).IsAssignableFrom(field_info.FieldType)))
+            if (memberInfo is FieldInfo fieldInfo && (typeof(IList).IsAssignableFrom(fieldInfo.FieldType)))
             {
-                parsed = m_enumerable_parser.Read(read_value_from_ini);
+                parsed = _enumerableParser.Read(readValueFromIni);
             }
-            else if (member_info is PropertyInfo property_info && (typeof(IList).IsAssignableFrom(property_info.PropertyType)))
+            else if (memberInfo is PropertyInfo propertyInfo && (typeof(IList).IsAssignableFrom(propertyInfo.PropertyType)))
             {
-                parsed = m_enumerable_parser.Read(read_value_from_ini);
+                parsed = _enumerableParser.Read(readValueFromIni);
             }
             else
             {
-                parsed = m_primitives_parser.Parse(member_info, read_value_from_ini);
+                parsed = _primitivesParser.Parse(memberInfo, readValueFromIni);
             }
 
-            return new INIReadingState(ParsingStage.Finished, parsed);
+            return new IniReadingState(ParsingStage.Finished, parsed);
         }
 
-        public ParsingStage Write(object configuration, MemberInfo member_info)
+        public ParsingStage Write(object configuration, MemberInfo memberInfo)
         {
-            var parsing_context = GetWriteStructure(configuration, member_info);
-            m_member_writer.Write(configuration, member_info, parsing_context);
+            var parsingContext = GetWriteStructure(configuration, memberInfo);
+            _memberWriter.Write(configuration, memberInfo, parsingContext);
 
             return ParsingStage.Finished;
         }
 
-        private ParsingContext GetWriteStructure(object configuration, MemberInfo member_info)
+        private ParsingContext GetWriteStructure(object configuration, MemberInfo memberInfo)
         {
-            return new ParsingContext() { Section = configuration.GetType().Name, Key = member_info.Name };
+            return new ParsingContext() { Section = configuration.GetType().Name, Key = memberInfo.Name };
         }
     }
 }

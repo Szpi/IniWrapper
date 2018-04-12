@@ -1,32 +1,32 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 
-namespace INIWrapper.Wrapper
+namespace IniWrapper.Wrapper
 {
-    public sealed class INIWrapper : IINIWrapper
+    public sealed class IniWrapper : IIniWrapper
     {
-        string m_file_path;
+        string _filePath;
         [DllImport("kernel32", CharSet = CharSet.Unicode)]
-        static extern long WritePrivateProfileString(string Section, string Key, string Value, string FilePath);
+        private static extern long WritePrivateProfileString(string section, string key, string value, string filePath);
 
         [DllImport("kernel32", CharSet = CharSet.Unicode)]
-        static extern int GetPrivateProfileString(string Section, string Key, string Default, StringBuilder RetVal, int Size, string FilePath);
+        private static extern int GetPrivateProfileString(string section, string key, string Default, StringBuilder retVal, int size, string filePath);
 
-        public INIWrapper(string ini_path)
+        public IniWrapper(string iniPath)
         {
-            m_file_path = ini_path;
+            _filePath = iniPath;
         }
 
         public string Read(string key, string section)
         {
-            var return_value = new StringBuilder(255);
-            GetPrivateProfileString(section, key, "", return_value, 255, m_file_path);
-            return return_value.ToString();
+            var returnValue = new StringBuilder(255);
+            GetPrivateProfileString(section, key, "", returnValue, 255, _filePath);
+            return returnValue.ToString();
         }
 
         public void Write(string section,string key, string value)
         {
-            WritePrivateProfileString(section, key, value, m_file_path);
+            WritePrivateProfileString(section, key, value, _filePath);
         }
     }
 }

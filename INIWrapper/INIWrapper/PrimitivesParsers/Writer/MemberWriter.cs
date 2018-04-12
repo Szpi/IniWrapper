@@ -1,52 +1,49 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Reflection;
-using System.Text;
-using INIWrapper.Parsers.State;
-using INIWrapper.PrimitivesParsers.Enumerable;
-using INIWrapper.Wrapper;
+using IniWrapper.Parsers.State;
+using IniWrapper.PrimitivesParsers.Enumerable;
+using IniWrapper.Wrapper;
 
-namespace INIWrapper.PrimitivesParsers.Writer
+namespace IniWrapper.PrimitivesParsers.Writer
 {
     public sealed class MemberWriter : IMemberWriter
     {
-        private readonly IINIWrapper m_ini_wrapper;
-        private readonly IEnumerableParser m_enumerable_parser;
+        private readonly IIniWrapper _iniWrapper;
+        private readonly IEnumerableParser _enumerableParser;
 
-        public MemberWriter(IINIWrapper ini_wrapper, IEnumerableParser enumerable_parser)
+        public MemberWriter(IIniWrapper iniWrapper, IEnumerableParser enumerableParser)
         {
-            m_ini_wrapper = ini_wrapper;
-            m_enumerable_parser = enumerable_parser;
+            _iniWrapper = iniWrapper;
+            _enumerableParser = enumerableParser;
         }
 
-        public void Write(object configuration, MemberInfo member_info, ParsingContext ini_structure)
+        public void Write(object configuration, MemberInfo memberInfo, ParsingContext iniStructure)
         {
-            if (member_info is FieldInfo field_info)
+            if (memberInfo is FieldInfo fieldInfo)
             {
-                if (typeof(IList).IsAssignableFrom(field_info.FieldType))
+                if (typeof(IList).IsAssignableFrom(fieldInfo.FieldType))
                 {
-                    var enumerable_value = field_info.GetValue(configuration) as IEnumerable;
-                    var formatted_value = m_enumerable_parser.FormatToWrite(enumerable_value);
+                    var enumerableValue = fieldInfo.GetValue(configuration) as IEnumerable;
+                    var formattedValue = _enumerableParser.FormatToWrite(enumerableValue);
 
-                    m_ini_wrapper.Write(ini_structure.Section, ini_structure.Key, formatted_value);
+                    _iniWrapper.Write(iniStructure.Section, iniStructure.Key, formattedValue);
 
                     return;
                 }
-                m_ini_wrapper.Write(ini_structure.Section, ini_structure.Key, field_info.GetValue(configuration).ToString());
+                _iniWrapper.Write(iniStructure.Section, iniStructure.Key, fieldInfo.GetValue(configuration).ToString());
             }
-            if (member_info is PropertyInfo property_info)
+            if (memberInfo is PropertyInfo propertyInfo)
             {
-                if (typeof(IList).IsAssignableFrom(property_info.PropertyType))
+                if (typeof(IList).IsAssignableFrom(propertyInfo.PropertyType))
                 {
-                    var enumerable_value = property_info.GetValue(configuration) as IEnumerable;
-                    var formatted_value = m_enumerable_parser.FormatToWrite(enumerable_value);
+                    var enumerableValue = propertyInfo.GetValue(configuration) as IEnumerable;
+                    var formattedValue = _enumerableParser.FormatToWrite(enumerableValue);
 
-                    m_ini_wrapper.Write(ini_structure.Section, ini_structure.Key, formatted_value);
+                    _iniWrapper.Write(iniStructure.Section, iniStructure.Key, formattedValue);
 
                     return;
                 }
-                m_ini_wrapper.Write(ini_structure.Section, ini_structure.Key, property_info.GetValue(configuration).ToString());
+                _iniWrapper.Write(iniStructure.Section, iniStructure.Key, propertyInfo.GetValue(configuration).ToString());
             }
         }
     }

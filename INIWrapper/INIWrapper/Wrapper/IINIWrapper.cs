@@ -1,6 +1,6 @@
-﻿namespace INIWrapper.Wrapper
+﻿namespace IniWrapper.Wrapper
 {
-    public interface IINIWrapper
+    public interface IIniWrapper
     {
         string Read(string section, string key);
         void Write(string section, string key, string value);

@@ -1,33 +1,32 @@
 ﻿using System;
-using System.Collections;
 using System.Reflection;
-using INIWrapper.Parsers;
-using INIWrapper.PrimitivesParsers.Enumerable;
+using IniWrapper.PrimitivesParsers.Field;
+using IniWrapper.PrimitivesParsers.Property;
 
-namespace INIWrapper.PrimitivesParsers
+namespace IniWrapper.PrimitivesParsers
 {
     public sealed class PrimitiveParser : IPrimitivesParser
     {
-        private readonly IPrimitivesFieldParser m_field_parser;
-        private readonly IPrimitivesPropertyParser m_property_parser;
+        private readonly IPrimitivesFieldParser _fieldParser;
+        private readonly IPrimitivesPropertyParser _propertyParser;
 
         public PrimitiveParser(
-            IPrimitivesPropertyParser property_parser, 
-            IPrimitivesFieldParser field_parser)
+            IPrimitivesPropertyParser propertyParser, 
+            IPrimitivesFieldParser fieldParser)
         {
-            m_property_parser = property_parser;
-            m_field_parser = field_parser;
+            _propertyParser = propertyParser;
+            _fieldParser = fieldParser;
         }
 
-        public object Parse(MemberInfo member_info, string read_value)
+        public object Parse(MemberInfo memberInfo, string readValue)
         {
-            if (member_info is FieldInfo field_info)
+            if (memberInfo is FieldInfo fieldInfo)
             {
-                return m_field_parser.Parse(field_info, read_value);
+                return _fieldParser.Parse(fieldInfo, readValue);
             }
-            if (member_info is PropertyInfo property_info)
+            if (memberInfo is PropertyInfo propertyInfo)
             {
-                return  m_property_parser.Parse(property_info, read_value);
+                return  _propertyParser.Parse(propertyInfo, readValue);
             }
 
             throw new NotImplementedException("Only supports field and properties info");

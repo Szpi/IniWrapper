@@ -1,70 +1,70 @@
 ﻿using System.Linq;
 using System.Reflection;
 
-namespace INIWrapper.PrimitivesParsers
+namespace IniWrapper.PrimitivesParsers.Property
 {
     public sealed class PrimitivesPropertyParser : IPrimitivesPropertyParser
     {
-        public object Parse(PropertyInfo property_info, string read_value)
+        public object Parse(PropertyInfo propertyInfo, string readValue)
         {
-            if (property_info == null)
+            if (propertyInfo == null)
             {
                 return null;
             }
 
-            if (property_info.PropertyType == typeof(string))
+            if (propertyInfo.PropertyType == typeof(string))
             {
-                return read_value;
+                return readValue;
             }
 
-            if (!property_info.PropertyType.IsPrimitive)
+            if (!propertyInfo.PropertyType.IsPrimitive)
             {
                 return null;
             }
 
-            if (property_info.PropertyType == typeof(int))
+            if (propertyInfo.PropertyType == typeof(int))
             {
-                int.TryParse(read_value, out var result);
+                int.TryParse(readValue, out var result);
                 return result;
             }
-            if (property_info.PropertyType == typeof(uint))
+            if (propertyInfo.PropertyType == typeof(uint))
             {
-                uint.TryParse(read_value, out var result);
-                return result;
-            }
-
-            if (property_info.PropertyType == typeof(long))
-            {
-                long.TryParse(read_value, out var result);
+                uint.TryParse(readValue, out var result);
                 return result;
             }
 
-            if (property_info.PropertyType == typeof(bool))
+            if (propertyInfo.PropertyType == typeof(long))
             {
-                bool.TryParse(read_value, out var result);
+                long.TryParse(readValue, out var result);
                 return result;
             }
 
-            if (property_info.PropertyType == typeof(double))
+            if (propertyInfo.PropertyType == typeof(bool))
             {
-                double.TryParse(read_value, out var result);
+                bool.TryParse(readValue, out var result);
                 return result;
             }
 
-            if (property_info.PropertyType == typeof(float))
+            if (propertyInfo.PropertyType == typeof(double))
             {
-                float.TryParse(read_value, out var result);
+                double.TryParse(readValue, out var result);
                 return result;
             }
 
-            if (property_info.PropertyType == typeof(char))
+            if (propertyInfo.PropertyType == typeof(float))
             {
-                return read_value.FirstOrDefault();
+                float.TryParse(readValue, out var result);
+                return result;
             }
 
-            if (property_info.PropertyType == typeof(decimal))
+            if (propertyInfo.PropertyType == typeof(char))
             {
-                decimal.TryParse(read_value, out var result);
+                return readValue.FirstOrDefault();
+            }
+
+            if (propertyInfo.PropertyType == typeof(decimal))
+            {
+                decimal.TryParse(readValue, out var result);
                 return result;
             }
             return null;

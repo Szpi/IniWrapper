@@ -1,26 +1,26 @@
 ﻿using System.IO.Abstractions;
-using INIWrapper.Contract;
-using INIWrapper.Wrapper;
+using IniWrapper.Contract;
+using IniWrapper.Wrapper;
 
-namespace INIWrapper.Main
+namespace IniWrapper.Main
 {
-    public sealed class INIParserFactory<T> where T : new()
+    public sealed class IniParserFactory<T> where T : new()
     {
-        public IINIParser<T> Create(string ini_path)
+        public IIniParser<T> Create(string iniPath)
         {
-            var type_contract = new TypeContractFactory().Create(ini_path);
+            var typeContract = new TypeContractFactory().Create(iniPath);
 
-            return new INIParser<T>(
-                ini_path,
-                new Wrapper.INIWrapper(ini_path),
+            return new IniParser<T>(
+                iniPath,
+                new Wrapper.IniWrapper(iniPath),
                 new FileSystem(),
-                type_contract);
+                typeContract);
         }
-        public IINIParser<T> Create(string ini_path, IINIWrapper ini_wrapper)
+        public IIniParser<T> Create(string iniPath, IIniWrapper iniWrapper)
         {
-            var type_contract = new TypeContractFactory().Create(ini_path, ini_wrapper);
+            var typeContract = new TypeContractFactory().Create(iniPath, iniWrapper);
 
-            return new INIParser<T>(ini_path, ini_wrapper, new FileSystem(), type_contract);
+            return new IniParser<T>(iniPath, iniWrapper, new FileSystem(), typeContract);
         }
     }
 }

@@ -1,11 +1,11 @@
-﻿namespace INIWrapper.Parsers.State
+﻿namespace IniWrapper.Parsers.State
 {
-    public struct INIReadingState
+    public struct IniReadingState
     {
-        public INIReadingState(ParsingStage parsing_stage, object parsed_object)
+        public IniReadingState(ParsingStage parsingStage, object parsedObject)
         {
-            ParsingStage = parsing_stage;
-            ParsedObject = parsed_object;
+            ParsingStage = parsingStage;
+            ParsedObject = parsedObject;
         }
 
         public ParsingStage ParsingStage { get; }

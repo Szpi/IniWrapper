@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using INIWrapper.Parsers.State;
+using IniWrapper.Parsers.State;
 
-namespace INIWrapper.PrimitivesParsers.Writer
+namespace IniWrapper.PrimitivesParsers.Writer
 {
     public interface IMemberWriter
     {
-        void Write(object configuration, MemberInfo member_info, ParsingContext ini_structure);
+        void Write(object configuration, MemberInfo memberInfo, ParsingContext iniStructure);
     }
 }
