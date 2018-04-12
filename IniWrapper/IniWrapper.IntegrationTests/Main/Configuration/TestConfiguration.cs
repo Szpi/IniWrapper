@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IniWrapper.IntegrationTests.Main.TestConfiguration
+namespace IniWrapper.IntegrationTests.Main.Configuration
 {
     public struct TestConfiguration
     {

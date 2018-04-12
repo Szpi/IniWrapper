@@ -5,7 +5,7 @@ namespace IniWrapper.Wrapper
 {
     public sealed class IniWrapper : IIniWrapper
     {
-        string _filePath;
+        private readonly string _filePath;
         [DllImport("kernel32", CharSet = CharSet.Unicode)]
         private static extern long WritePrivateProfileString(string section, string key, string value, string filePath);
 
@@ -19,8 +19,9 @@ namespace IniWrapper.Wrapper
 
         public string Read(string key, string section)
         {
-            var returnValue = new StringBuilder(255);
-            GetPrivateProfileString(section, key, "", returnValue, 255, _filePath);
+            var maxStringLength = 255;
+            var returnValue = new StringBuilder(maxStringLength);
+            GetPrivateProfileString(section, key, "", returnValue, maxStringLength, _filePath);
             return returnValue.ToString();
         }
 
