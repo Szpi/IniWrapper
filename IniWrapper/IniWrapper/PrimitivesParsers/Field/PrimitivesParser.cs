@@ -8,16 +8,6 @@ namespace IniWrapper.PrimitivesParsers.Field
     {
         public object ParseReadValue(Type destinationType, string readValue)
         {
-            if (destinationType == typeof(string))
-            {
-                return readValue;
-            }
-
-            if (!destinationType.IsPrimitive)
-            {
-                return null;
-            }
-
             return Convert.ChangeType(readValue, destinationType);
         }
 

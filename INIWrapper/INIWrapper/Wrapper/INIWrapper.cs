@@ -21,7 +21,7 @@ namespace IniWrapper.Wrapper
         {
             var maxStringLength = 255;
             var returnValue = new StringBuilder(maxStringLength);
-            GetPrivateProfileString(section, key, "", returnValue, maxStringLength, _filePath);
+            GetPrivateProfileString(section, key, string.Empty, returnValue, maxStringLength, _filePath);
             return returnValue.ToString();
         }
 

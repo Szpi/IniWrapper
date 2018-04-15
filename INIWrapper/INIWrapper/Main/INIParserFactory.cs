@@ -1,22 +1,20 @@
 ﻿using System.IO.Abstractions;
+using IniWrapper.Factory;
+using IniWrapper.Manager;
+using IniWrapper.Member;
 using IniWrapper.Wrapper;
 
 namespace IniWrapper.Main
 {
-    public sealed class IniParserFactory<T> where T : new()
+    public class IniParserFactory<T> where T : new()
     {
-        public IIniParser<T> Create(string iniPath)
+        public IniParser<T> Create(string filePath, IIniWrapper iniWrapper)
         {
-
-            return new IniParser<T>(
-                iniPath,
-                //new Wrapper.IniWrapper(iniPath),
-                new FileSystem());
-        }
-        public IIniParser<T> Create(string iniPath, IIniWrapper iniWrapper)
-        {
-
-            return new IniParser<T>(iniPath/*, iniWrapper*/, new FileSystem());
+            return new IniParser<T>(filePath,
+                                    new FileSystem(),
+                                    new ParsersManager(new MemberInfoWrapper(),
+                                                       new ParserFactory()),
+                                    iniWrapper ?? new Wrapper.IniWrapper(filePath));
         }
     }
 }

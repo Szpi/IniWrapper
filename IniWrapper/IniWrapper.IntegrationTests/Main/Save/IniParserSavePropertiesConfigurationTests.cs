@@ -8,7 +8,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Save
 {
     [TestFixture]
-    public sealed class IniParserSaveConfigurationTests
+    public sealed class IniParserSavePropertiesConfigurationTests
     {
         private IIniParser<TestConfiguration> _iniParser;
 
@@ -91,7 +91,7 @@ namespace IniWrapper.IntegrationTests.Main.Save
             };
             _iniParser.SaveConfiguration(config);
 
-            _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestStringList), "1,2,3,4,5,6,7,8");
+            _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestIntList), "1,2,3,4,5,6,7,8");
         }
         [Test]
         public void SaveConfiguration_CorrectWriteUintList()
@@ -105,7 +105,7 @@ namespace IniWrapper.IntegrationTests.Main.Save
             };
             _iniParser.SaveConfiguration(config);
 
-            _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestStringList), "1,2,3,4,5,6,7,8");
+            _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestUintList), "1,2,3,4,5,6,7,8");
         }
     }
 }
