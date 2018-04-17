@@ -1,25 +1,24 @@
 ﻿using System.Reflection;
 using IniWrapper.Factory;
 using IniWrapper.Member;
-using IniWrapper.PrimitivesParsers;
 
 namespace IniWrapper.Manager
 {
     public class ParsersManager : IParsersManager
     {
         private readonly IMemberInfoWrapper _memberInfoWrapper;
-        private readonly IParserFactory _parserFactory;
+        private readonly IHandlerFactory _handlerFactory;
 
-        public ParsersManager(IMemberInfoWrapper memberInfoWrapper, IParserFactory parserFactory)
+        public ParsersManager(IMemberInfoWrapper memberInfoWrapper, IHandlerFactory handlerFactory)
         {
             _memberInfoWrapper = memberInfoWrapper;
-            _parserFactory = parserFactory;
+            _handlerFactory = handlerFactory;
         }
 
         public IniValue GetSaveValue(PropertyInfo propertyInfo, object configuration)
         {
             var value = _memberInfoWrapper.GetValue(propertyInfo, configuration);
-            var parser = _parserFactory.GetParser(_memberInfoWrapper.GetType(propertyInfo), value);
+            var parser = _handlerFactory.GetParser(_memberInfoWrapper.GetType(propertyInfo), value);
 
             var valueToSave = parser.FormatToWrite(value);
 
@@ -34,7 +33,7 @@ namespace IniWrapper.Manager
         public IniValue GetSaveValue(FieldInfo propertyInfo, object configuration)
         {
             var value = _memberInfoWrapper.GetValue(propertyInfo, configuration);
-            var parser = _parserFactory.GetParser(_memberInfoWrapper.GetType(propertyInfo), value);
+            var parser = _handlerFactory.GetParser(_memberInfoWrapper.GetType(propertyInfo), value);
 
             var valueToSave = parser.FormatToWrite(configuration);
 

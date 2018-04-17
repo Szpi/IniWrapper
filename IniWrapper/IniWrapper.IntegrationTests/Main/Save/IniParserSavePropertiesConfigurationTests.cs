@@ -32,6 +32,7 @@ namespace IniWrapper.IntegrationTests.Main.Save
             _iniParser.SaveConfiguration(config);
             _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestString), testString);
         }
+
         [Test]
         public void SaveConfiguration_CorrectWriteInt([Values(0, 1, 200, 500, 900)] int value)
         {
@@ -43,6 +44,7 @@ namespace IniWrapper.IntegrationTests.Main.Save
 
             _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestInt), value.ToString());
         }
+
         [Test]
         public void SaveConfiguration_CorrectWriteUint([Values(0u, 1u, 200u, 500u, 900u)] uint value)
         {
@@ -106,6 +108,22 @@ namespace IniWrapper.IntegrationTests.Main.Save
             _iniParser.SaveConfiguration(config);
 
             _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestUintList), "1,2,3,4,5,6,7,8");
+        }
+
+        [Test]
+        public void SaveConfiguration_ReplaceNullValuesWithEmptyString()
+        {
+            var config = new TestConfiguration();
+
+            _iniParser.SaveConfiguration(config);
+
+            _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestUintList), string.Empty);
+            _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestString), string.Empty);
+            _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestInt), "0");
+            _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestChar), ((char)0).ToString());
+            _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestStringList), string.Empty);
+            _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestUint), "0");
+            _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestIntList), string.Empty);
         }
     }
 }

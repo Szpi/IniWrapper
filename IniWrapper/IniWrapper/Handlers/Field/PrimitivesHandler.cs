@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
-using System.Reflection;
 
-namespace IniWrapper.PrimitivesParsers.Field
+namespace IniWrapper.Handlers.Field
 {
-    public sealed class PrimitivesParser : IParser
+    public sealed class PrimitivesHandler : IHandler
     {
         public object ParseReadValue(Type destinationType, string readValue)
         {

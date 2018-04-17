@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace IniWrapper.PrimitivesParsers
+namespace IniWrapper.Handlers
 {
-    public interface IParser
+    public interface IHandler
     {
         object ParseReadValue(Type destinationType, string readValue);
         string FormatToWrite(object objectToFormat);

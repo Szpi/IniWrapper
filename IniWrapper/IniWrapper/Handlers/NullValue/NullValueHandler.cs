@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace IniWrapper.PrimitivesParsers.NullValue
+namespace IniWrapper.Handlers.NullValue
 {
-    public class NullValueParser : IParser
+    public class NullValueHandler : IHandler
     {
         public object ParseReadValue(Type destinationType, string readValue)
         {

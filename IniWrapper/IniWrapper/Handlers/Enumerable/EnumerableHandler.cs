@@ -3,9 +3,9 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 
-namespace IniWrapper.PrimitivesParsers.Enumerable
+namespace IniWrapper.Handlers.Enumerable
 {
-    public sealed class EnumerableParser : IParser
+    public sealed class EnumerableHandler : IHandler
     {
         private const char Separator = ',';
 

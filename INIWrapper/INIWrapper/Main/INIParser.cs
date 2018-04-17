@@ -1,4 +1,7 @@
-﻿using System.IO.Abstractions;
+﻿using System.Collections;
+using System.IO.Abstractions;
+using System.Linq;
+using System.Reflection;
 using IniWrapper.Manager;
 using IniWrapper.Wrapper;
 
