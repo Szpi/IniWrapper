@@ -1,5 +1,9 @@
-﻿using System.IO.Abstractions;
+﻿using System.Collections;
+using System.IO.Abstractions;
+using System.Linq;
 using System.Reflection;
+using IniWrapper.Manager;
+using IniWrapper.Wrapper;
 
 namespace IniWrapper.Main
 {
@@ -7,11 +11,18 @@ namespace IniWrapper.Main
     {
         private readonly string _filePath;
         private readonly IFileSystem _fileSystem;
+        private readonly IParsersManager _parsersManager;
+        private readonly IIniWrapper _iniWrapper;
 
-        public IniParser(string filePath, IFileSystem fileSystem)
+        public IniParser(string filePath,
+                         IFileSystem fileSystem, 
+                         IParsersManager parsersManager,
+                         IIniWrapper iniWrapper)
         {
             _filePath = filePath;
             _fileSystem = fileSystem;
+            _parsersManager = parsersManager;
+            _iniWrapper = iniWrapper;
         }
 
         public T LoadConfiguration()
@@ -94,51 +105,20 @@ namespace IniWrapper.Main
         private void SaveFields(object configuration)
         {
             var fields = configuration.GetType().GetFields();
-            //foreach (var field in fields)
-            //{
-            //    var parser = _typeContract.GetParser(field, configuration);
-
-            //    ChangeNullStringToEmptyOne(field, configuration);
-            //    var parsingStage = parser.Write(configuration, field);
-
-            //    if (parsingStage == ParsingStage.NeedRecursiveCall)
-            //    {
-            //        SaveFields(field.GetValue(configuration));
-            //        SaveProperties(field.GetValue(configuration));
-            //    }
-            //}
+            foreach (var field in fields)
+            {
+                var iniValue = _parsersManager.GetSaveValue(field, configuration);
+                _iniWrapper.Write(iniValue.Section,iniValue.Key, iniValue.Value);
+            }
         }
 
         private void SaveProperties(object configuration)
         {
             var properties = configuration.GetType().GetProperties();
-            //foreach (var property in properties)
-            //{
-            //    var parser = _typeContract.GetParser(property, configuration);
-
-            //    ChangeNullStringToEmptyOne(property, configuration);
-            //    var parsingStage = parser.Write(configuration, property);
-
-            //    if (parsingStage == ParsingStage.NeedRecursiveCall)
-            //    {
-            //        SaveFields(property.GetValue(configuration));
-            //        SaveProperties(property.GetValue(configuration));
-            //    }
-            //}
-        }
-
-        private void ChangeNullStringToEmptyOne(PropertyInfo propertyInfo, object configuration)
-        {
-            if (propertyInfo.PropertyType == typeof(string) && propertyInfo.GetValue(configuration) == null)
+            foreach (var property in properties)
             {
-                propertyInfo.SetValue(configuration, string.Empty);
-            }
-        }
-        private void ChangeNullStringToEmptyOne(FieldInfo fieldInfo, object configuration)
-        {
-            if (fieldInfo.FieldType == typeof(string) && fieldInfo.GetValue(configuration) == null)
-            {
-                fieldInfo.SetValue(configuration, string.Empty);
+                var iniValue = _parsersManager.GetSaveValue(property, configuration);
+                _iniWrapper.Write(iniValue.Section, iniValue.Key, iniValue.Value);
             }
         }
     }

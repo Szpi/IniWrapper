@@ -11,5 +11,7 @@ namespace IniWrapper.IntegrationTests.Main.Configuration
         public List<string> TestStringList { get; set; }
         public List<int> TestIntList { get; set; }
         public List<uint> TestUintList { get; set; }
+
+        public TestEnum TestEnum { get; set; }
     }
 }

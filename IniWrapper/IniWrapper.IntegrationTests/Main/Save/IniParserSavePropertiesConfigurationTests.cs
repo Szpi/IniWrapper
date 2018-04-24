@@ -111,6 +111,18 @@ namespace IniWrapper.IntegrationTests.Main.Save
         }
 
         [Test]
+        public void SaveConfiguration_CorrectWriteEnum()
+        {
+            var config = new TestConfiguration()
+            {
+                TestEnum = TestEnum.Five
+            };
+            _iniParser.SaveConfiguration(config);
+
+            _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestEnum), ((int)TestEnum.Five).ToString());
+        }
+
+        [Test]
         public void SaveConfiguration_ReplaceNullValuesWithEmptyString()
         {
             var config = new TestConfiguration();
