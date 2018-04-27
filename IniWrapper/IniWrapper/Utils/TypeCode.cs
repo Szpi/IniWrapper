@@ -1,6 +1,6 @@
 ﻿namespace IniWrapper.Utils
 {
-    public enum PrimitiveType
+    public enum TypeCode
     {
         Empty = 0,
         Object = 1,
@@ -43,6 +43,7 @@
         Uri = 38,
         String = 39,
         Bytes = 40,
-        Enumerable = 41
+        Enumerable = 41,
+        Enum = 42
     }
 }

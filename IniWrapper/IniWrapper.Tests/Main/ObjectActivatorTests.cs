@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using FluentAssertions;
 using IniWrapper.Main;
 using IniWrapper.Tests.Configuration;

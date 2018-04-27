@@ -13,5 +13,6 @@ namespace IniWrapper.IntegrationTests.Main.Configuration
         public List<uint> TestUintList { get; set; }
 
         public TestEnum TestEnum { get; set; }
+        public List<TestEnum> TestEnumList { get; set; }
     }
 }

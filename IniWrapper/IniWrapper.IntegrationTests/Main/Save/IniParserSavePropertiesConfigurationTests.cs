@@ -123,6 +123,18 @@ namespace IniWrapper.IntegrationTests.Main.Save
         }
 
         [Test]
+        public void SaveConfiguration_CorrectWriteListOfEnum()
+        {
+            var config = new TestConfiguration()
+            {
+                TestEnumList = new List<TestEnum>() { TestEnum.One, TestEnum.Two, TestEnum.Three, TestEnum.Zero }
+            };
+            _iniParser.SaveConfiguration(config);
+
+            _iniWrapper.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestEnumList), "1,2,3,0");
+        }
+
+        [Test]
         public void SaveConfiguration_ReplaceNullValuesWithEmptyString()
         {
             var config = new TestConfiguration();

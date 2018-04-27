@@ -2,32 +2,46 @@
 using System.Collections;
 using IniWrapper.Handlers;
 using IniWrapper.Handlers.Enumerable;
+using IniWrapper.Handlers.Enums;
 using IniWrapper.Handlers.Field;
 using IniWrapper.Handlers.NullValue;
 using IniWrapper.Handlers.Object;
 using IniWrapper.Utils;
+using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Factory
 {
     public class HandlerFactory : IHandlerFactory
     {
-        private readonly IPrimitiveTypeManager _primitiveTypeManager;
+        private readonly ITypeManager _typeManager;
 
-        public HandlerFactory(IPrimitiveTypeManager primitiveTypeManager)
+        public HandlerFactory(ITypeManager typeManager)
         {
-            _primitiveTypeManager = primitiveTypeManager;
+            _typeManager = typeManager;
         }
 
-        public IHandler GetParser(Type type, object value)
+        public IHandler GetHandler(Type type, object value)
         {
-            var typeCode = _primitiveTypeManager.GetType(type);
+            var typeInformation = _typeManager.GetTypeInformation(type);
 
-            if (typeCode == PrimitiveType.Enumerable)
+            if (typeInformation.TypeCode == TypeCode.Enumerable)
             {
-                return new EnumerableHandler();
+                var underlyingTypeHandler = GetHandler(typeInformation.UnderlyingTypeCode, typeInformation.IsEnum, value);
+
+                return new EnumerableHandler(underlyingTypeHandler, typeInformation.UnderlyingTypeCode);
             }
 
-            if (typeCode == PrimitiveType.Object)
+            return GetHandler(typeInformation.TypeCode, typeInformation.IsEnum, value);
+        }
+
+        private IHandler GetHandler(TypeCode typeCode, bool isEnum, object value)
+        {
+            if (isEnum)
+            {
+                return new EnumHandler(typeCode);
+            }
+
+            if (typeCode == TypeCode.Object)
             {
                 return new ObjectHandler();
             }

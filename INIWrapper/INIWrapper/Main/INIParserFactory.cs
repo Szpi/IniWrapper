@@ -14,7 +14,7 @@ namespace IniWrapper.Main
             return new IniParser<T>(filePath,
                                     new FileSystem(),
                                     new ParsersManager(new MemberInfoWrapper(),
-                                                       new HandlerFactory(new PrimitiveTypeManager())),
+                                                       new HandlerFactory(new TypeManager())),
                                     iniWrapper ?? new Wrapper.IniWrapper(filePath));
         }
     }

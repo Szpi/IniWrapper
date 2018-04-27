@@ -56,7 +56,7 @@ namespace IniWrapper.Main
             var fields = configuration.GetType().GetFields();
             //foreach (var field in fields)
             //{
-            //    var parser = _typeContract.GetParser(field, configuration);
+            //    var parser = _typeContract.GetHandler(field, configuration);
             //    var readingState = parser.Read(configuration, field);
 
             //    if (readingState.ParsingStage == ParsingStage.NeedRecursiveCall)
@@ -69,7 +69,7 @@ namespace IniWrapper.Main
             //    {
             //        field.SetValue(configuration, readingState.ParsedObject);
 
-            //        parser = _typeContract.GetParser(field, configuration);
+            //        parser = _typeContract.GetHandler(field, configuration);
             //        readingState = parser.Read(configuration, field);
             //    }
 
@@ -82,7 +82,7 @@ namespace IniWrapper.Main
             var properties = configuration.GetType().GetProperties();
             //foreach (var property in properties)
             //{
-            //    var parser = _typeContract.GetParser(property, configuration);
+            //    var parser = _typeContract.GetHandler(property, configuration);
             //    var readingState = parser.Read(configuration, property);
 
             //    if (readingState.ParsingStage == ParsingStage.NeedRecursiveCall)
@@ -94,7 +94,7 @@ namespace IniWrapper.Main
             //    {
             //        property.SetValue(configuration, readingState.ParsedObject);
 
-            //        parser = _typeContract.GetParser(property, configuration);
+            //        parser = _typeContract.GetHandler(property, configuration);
             //        readingState = parser.Read(configuration, property);
             //    }
 
