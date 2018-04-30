@@ -12,7 +12,7 @@ namespace IniWrapper.IntegrationTests.Main.Save
     [TestFixture]
     public class IniParserIEnumerableOfComplexDataTests
     {
-        private IIniParser<ListOfComplesDataConfiguration> _iniParser;
+        private IIniParser _iniParser;
 
         private IIniWrapper _iniWrapper;
 
@@ -20,7 +20,7 @@ namespace IniWrapper.IntegrationTests.Main.Save
         public void SetUp()
         {
             _iniWrapper = Substitute.For<IIniWrapper>();
-            _iniParser = new IniParserFactory<ListOfComplesDataConfiguration>().Create("", _iniWrapper);
+            _iniParser = new IniParserFactory().Create("", _iniWrapper);
         }
 
         [Test]

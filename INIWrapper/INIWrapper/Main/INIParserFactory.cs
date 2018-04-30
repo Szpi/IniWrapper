@@ -7,15 +7,25 @@ using IniWrapper.Wrapper;
 
 namespace IniWrapper.Main
 {
-    public class IniParserFactory<T> where T : new()
+    public class IniParserFactory : IIniParserFactory
     {
-        public IniParser<T> Create(string filePath, IIniWrapper iniWrapper)
+        public IIniParser Create(string filePath, IIniWrapper iniWrapper)
         {
-            return new IniParser<T>(filePath,
-                                    new FileSystem(),
-                                    new ParsersManager(new MemberInfoWrapper(),
-                                                       new HandlerFactory(new TypeManager())),
-                                    iniWrapper ?? new Wrapper.IniWrapper(filePath));
+            var handlerFactory = new HandlerFactory(new TypeManager());
+
+            var iniParser = new IniParser(filePath,
+                                          new FileSystem(),
+                                          new ParsersManager(new MemberInfoWrapper(), handlerFactory),
+                                          iniWrapper);
+
+            handlerFactory.IniParser = iniParser;
+
+            return iniParser;
+        }
+
+        public IIniParser CreateWithDefaultIniWrapper(string filePath)
+        {
+            return Create(filePath, new Wrapper.IniWrapper(filePath));
         }
     }
 }

@@ -10,7 +10,7 @@ namespace IniWrapper.IntegrationTests.Main.Save
     [TestFixture]
     public sealed class IniParserSavePropertiesConfigurationTests
     {
-        private IIniParser<TestConfiguration> _iniParser;
+        private IIniParser _iniParser;
 
         private IIniWrapper _iniWrapper;
 
@@ -18,7 +18,7 @@ namespace IniWrapper.IntegrationTests.Main.Save
         public void SetUp()
         {
             _iniWrapper = Substitute.For<IIniWrapper>();
-            _iniParser = new IniParserFactory<TestConfiguration>().Create("", _iniWrapper);
+            _iniParser = new IniParserFactory().Create("", _iniWrapper);
         }
 
         [Test]

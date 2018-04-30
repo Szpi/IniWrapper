@@ -10,7 +10,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
 {
     public class IniParserReadPropertiesConfigurationTests
     {
-        private IIniParser<TestConfiguration> _iniParser;
+        private IIniParser _iniParser;
 
         private IIniWrapper _iniWrapper;
 
@@ -18,7 +18,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
         public void SetUp()
         {
             _iniWrapper = Substitute.For<IIniWrapper>();
-            _iniParser = new IniParserFactory<TestConfiguration>().Create("", _iniWrapper);
+            _iniParser = new IniParserFactory().Create("", _iniWrapper);
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
             var testString = "test_string_to_save";
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestString)).Returns(testString);
 
-            var result = _iniParser.LoadConfiguration();
+            var result = _iniParser.LoadConfiguration<TestConfiguration>();
 
             result.TestString.Should().Be(testString);
         }
@@ -36,7 +36,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
         {
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestInt)).Returns(value.ToString());
 
-            var result = _iniParser.LoadConfiguration();
+            var result = _iniParser.LoadConfiguration<TestConfiguration>();
 
             result.TestInt.Should().Be(value);
         }
@@ -45,9 +45,8 @@ namespace IniWrapper.IntegrationTests.Main.Read
         public void LoadConfiguration_CorrectWriteUint([Values(0u, 1u, 200u, 500u, 900u)] uint value)
         {
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestUint)).Returns(value.ToString());
-            _iniParser.LoadConfiguration();
 
-            var result = _iniParser.LoadConfiguration();
+            var result = _iniParser.LoadConfiguration<TestConfiguration>();
 
             result.TestUint.Should().Be(value);
         }
@@ -56,9 +55,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
         {
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestChar)).Returns(value.ToString());
 
-            _iniParser.LoadConfiguration();
-
-            var result = _iniParser.LoadConfiguration();
+            var result = _iniParser.LoadConfiguration<TestConfiguration>();
 
             result.TestChar.Should().Be(value);
         }
@@ -69,7 +66,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
 
             var expected = new List<string>() { "a", "b", "c", "d", "f" };
 
-            var result = _iniParser.LoadConfiguration();
+            var result = _iniParser.LoadConfiguration<TestConfiguration>();
 
             result.TestStringList.Should().BeEquivalentTo(expected);
         }
@@ -79,7 +76,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestIntList)).Returns("1,2,3,4,5,6,7,8");
             var expected = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8 };
 
-            var result = _iniParser.LoadConfiguration();
+            var result = _iniParser.LoadConfiguration<TestConfiguration>();
 
             result.TestIntList.Should().BeEquivalentTo(expected);
         }
@@ -89,7 +86,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestUintList)).Returns("1,2,3,4,5,6,7,8");
             var expected = new List<uint>() { 1u, 2u, 3u, 4u, 5u, 6u, 7u, 8u };
 
-            var result = _iniParser.LoadConfiguration();
+            var result = _iniParser.LoadConfiguration<TestConfiguration>();
 
             result.TestUintList.Should().BeEquivalentTo(expected);
         }
@@ -100,7 +97,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestEnum)).Returns("Five");
             var expected = TestEnum.Five;
 
-            var result = _iniParser.LoadConfiguration();
+            var result = _iniParser.LoadConfiguration<TestConfiguration>();
 
             result.TestEnum.Should().Be(expected);
         }

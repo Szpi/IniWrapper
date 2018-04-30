@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Reflection;
@@ -7,7 +8,7 @@ using IniWrapper.Wrapper;
 
 namespace IniWrapper.Main
 {
-    public sealed class IniParser<T> : IIniParser<T> where T : new()
+    public sealed class IniParser : IIniParser
     {
         private readonly string _filePath;
         private readonly IFileSystem _fileSystem;
@@ -25,7 +26,7 @@ namespace IniWrapper.Main
             _iniWrapper = iniWrapper;
         }
 
-        public T LoadConfiguration()
+        public T LoadConfiguration<T>() where T: new()
         {
             if (!_fileSystem.File.Exists(_filePath))
             {
@@ -38,7 +39,7 @@ namespace IniWrapper.Main
             return (T)ReadFromFile(result);
         }
 
-        public void SaveConfiguration(T configuration)
+        public void SaveConfiguration(object configuration)
         {
             SaveProperties(configuration);
             SaveFields(configuration);

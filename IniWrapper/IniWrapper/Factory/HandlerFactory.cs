@@ -6,6 +6,7 @@ using IniWrapper.Handlers.Enums;
 using IniWrapper.Handlers.Field;
 using IniWrapper.Handlers.NullValue;
 using IniWrapper.Handlers.Object;
+using IniWrapper.Main;
 using IniWrapper.Utils;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
@@ -14,6 +15,8 @@ namespace IniWrapper.Factory
     public class HandlerFactory : IHandlerFactory
     {
         private readonly ITypeManager _typeManager;
+
+        public IIniParser IniParser { get; set; }
 
         public HandlerFactory(ITypeManager typeManager)
         {
@@ -43,7 +46,7 @@ namespace IniWrapper.Factory
 
             if (typeCode == TypeCode.Object)
             {
-                return new ObjectHandler();
+                return new ObjectHandler(IniParser);
             }
 
             if (value == null)
