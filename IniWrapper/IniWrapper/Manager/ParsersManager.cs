@@ -8,11 +8,13 @@ namespace IniWrapper.Manager
     {
         private readonly IMemberInfoWrapper _memberInfoWrapper;
         private readonly IHandlerFactory _handlerFactory;
+        private readonly IIniValueManager _iniValueManager;
 
-        public ParsersManager(IMemberInfoWrapper memberInfoWrapper, IHandlerFactory handlerFactory)
+        public ParsersManager(IMemberInfoWrapper memberInfoWrapper, IHandlerFactory handlerFactory, IIniValueManager iniValueManager)
         {
             _memberInfoWrapper = memberInfoWrapper;
             _handlerFactory = handlerFactory;
+            _iniValueManager = iniValueManager;
         }
 
         public IniValue GetSaveValue(PropertyInfo propertyInfo, object configuration)
@@ -24,8 +26,8 @@ namespace IniWrapper.Manager
 
             return new IniValue()
             {
-                Section = configuration.GetType().Name,
-                Key = propertyInfo.Name,
+                Section = _iniValueManager.GetSection(configuration),
+                Key = _iniValueManager.GetKey(propertyInfo),
                 Value = valueToSave
             };
         }
@@ -39,8 +41,8 @@ namespace IniWrapper.Manager
 
             return new IniValue()
             {
-                Section = configuration.GetType().Name,
-                Key = propertyInfo.Name,
+                Section = _iniValueManager.GetSection(configuration),
+                Key = _iniValueManager.GetKey(propertyInfo),
                 Value = valueToSave
             };
         }

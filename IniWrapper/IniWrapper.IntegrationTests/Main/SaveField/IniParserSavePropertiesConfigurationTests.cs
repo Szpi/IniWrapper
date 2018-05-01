@@ -47,7 +47,7 @@ namespace IniWrapper.IntegrationTests.Main.SaveField
         }
 
         [Test]
-        public void SaveConfiguration_CorrectWriteUint([Values(0u, 1u, 200u, 500u, 900u)] uint value)
+        public void SaveConfiguration_CorrectWriteUint([Values(1u, 200u, 500u, 900u)] uint value)
         {
             var config = new TestConfigurationField()
             {
