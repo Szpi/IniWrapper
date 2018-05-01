@@ -35,7 +35,7 @@ namespace IniWrapper.Manager
             var value = _memberInfoWrapper.GetValue(propertyInfo, configuration);
             var parser = _handlerFactory.GetHandler(_memberInfoWrapper.GetType(propertyInfo), value);
 
-            var valueToSave = parser.FormatToWrite(configuration);
+            var valueToSave = parser.FormatToWrite(value);
 
             return new IniValue()
             {

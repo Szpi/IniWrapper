@@ -44,8 +44,13 @@ namespace IniWrapper.Handlers.Enumerable
                 stringBuilder.Append(_underlyingTypeHandler.FormatToWrite(item));
                 stringBuilder.Append(Separator);
             }
-            stringBuilder.Remove(stringBuilder.Length - 1, 1);
+            RemoveLastSeparator(stringBuilder);
             return stringBuilder.ToString();
+        }
+
+        private static void RemoveLastSeparator(StringBuilder stringBuilder)
+        {
+            stringBuilder.Remove(stringBuilder.Length - 1, 1);
         }
     }
 }
