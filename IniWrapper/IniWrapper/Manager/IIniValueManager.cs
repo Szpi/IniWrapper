@@ -6,6 +6,7 @@ namespace IniWrapper.Manager
     {
         string GetKey(FieldInfo propertyInfo);
         string GetKey(PropertyInfo propertyInfo);
-        string GetSection(object configuration);
+        string GetSection(object configuration, PropertyInfo propertyInfo);
+        string GetSection(object configuration, FieldInfo propertyInfo);
     }
 }

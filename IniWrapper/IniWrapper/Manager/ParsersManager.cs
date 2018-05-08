@@ -26,7 +26,7 @@ namespace IniWrapper.Manager
 
             return new IniValue()
             {
-                Section = _iniValueManager.GetSection(configuration),
+                Section = _iniValueManager.GetSection(configuration, propertyInfo),
                 Key = _iniValueManager.GetKey(propertyInfo),
                 Value = valueToSave
             };
@@ -41,7 +41,7 @@ namespace IniWrapper.Manager
 
             return new IniValue()
             {
-                Section = _iniValueManager.GetSection(configuration),
+                Section = _iniValueManager.GetSection(configuration, propertyInfo),
                 Key = _iniValueManager.GetKey(propertyInfo),
                 Value = valueToSave
             };
