@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
-using IniWrapper.IntegrationTests.Main.Configuration;
 using IniWrapper.IntegrationTests.Main.Configuration.Fields;
 using IniWrapper.Main;
 using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace IniWrapper.IntegrationTests.Main.SaveField
+namespace IniWrapper.IntegrationTests.Main.Save.SaveField
 {
     [TestFixture]
     public class IniParserComplexDataSavePropertiesTests

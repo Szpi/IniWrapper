@@ -6,7 +6,7 @@ using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace IniWrapper.IntegrationTests.Main.Attribute
+namespace IniWrapper.IntegrationTests.Main.Save.Attribute
 {
     [TestFixture]
     public class IniOptionsOnlySectionAttributeTests

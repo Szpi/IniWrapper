@@ -5,7 +5,7 @@ using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace IniWrapper.IntegrationTests.Main.SaveProperty
+namespace IniWrapper.IntegrationTests.Main.Save.SaveProperty
 {
     [TestFixture]
     public class IniParserComplexDataSavePropertiesTests

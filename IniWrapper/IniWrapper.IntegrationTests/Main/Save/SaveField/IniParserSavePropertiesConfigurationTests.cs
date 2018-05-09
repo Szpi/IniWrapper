@@ -6,7 +6,7 @@ using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace IniWrapper.IntegrationTests.Main.SaveField
+namespace IniWrapper.IntegrationTests.Main.Save.SaveField
 {
     [TestFixture]
     public sealed class IniParserSavePropertiesConfigurationTests
