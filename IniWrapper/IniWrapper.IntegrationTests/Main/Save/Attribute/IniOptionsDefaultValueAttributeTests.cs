@@ -35,7 +35,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute
         }
 
         [Test]
-        public void SaveConfiguration_CorrectWriteInt([Values(0, 1, 200, 500, 900)] int value)
+        public void SaveConfiguration_CorrectWriteInt([Values(1, 200, 500, 900)] int value)
         {
             var config = new AttributeWithDefaultValueTestConfiguration()
             {
@@ -134,19 +134,6 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute
 
             _iniWrapper.Received(1).Write(nameof(AttributeWithDefaultValueTestConfiguration), nameof(AttributeWithDefaultValueTestConfiguration.TestEnumList), "1,2,3,0");
         }
-
-        [Test]
-        public void SaveConfiguration_ReplaceNullEnumerableWithEmptyString()
-        {
-            var config = new AttributeWithDefaultValueTestConfiguration()
-            {
-                TestUintList = null
-            };
-            _iniParser.SaveConfiguration(config);
-
-            _iniWrapper.Received(1).Write(nameof(AttributeWithDefaultValueTestConfiguration), nameof(AttributeWithDefaultValueTestConfiguration.TestUintList), string.Empty);
-        }
-
 
         [Test]
         public void SaveConfiguration_ReplaceDefaultValuesWithGivenFromAttribute()

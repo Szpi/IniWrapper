@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections;
+using System.Reflection;
 using IniWrapper.Handlers;
+using IniWrapper.Handlers.DefaultValue;
 using IniWrapper.Handlers.Enumerable;
 using IniWrapper.Handlers.Enums;
 using IniWrapper.Handlers.Field;
@@ -10,7 +11,7 @@ using IniWrapper.Main;
 using IniWrapper.Utils;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
-namespace IniWrapper.Factory
+namespace IniWrapper.HandlersFactory
 {
     public class HandlerFactory : IHandlerFactory
     {
@@ -23,21 +24,32 @@ namespace IniWrapper.Factory
             _typeManager = typeManager;
         }
 
-        public IHandler GetHandler(Type type, object value)
+        public IHandler GetHandler(Type type, object value, MemberInfo propertyInfo)
         {
-            var typeInformation = _typeManager.GetTypeInformation(type);
+            var typeInformation = _typeManager.GetTypeInformation(type, value);
 
+            if (typeInformation.IsDefaultValue)
+            {
+                var defaultValueHandler = GetHandler(value, typeInformation);
+                return new DefaultValueAttirbuteHandler(defaultValueHandler, propertyInfo);
+            }
+
+            return GetHandler(value, typeInformation);
+        }
+
+        private IHandler GetHandler(object value, TypeDetailsInformation typeInformation)
+        {
             if (typeInformation.TypeCode == TypeCode.Enumerable)
             {
-                var underlyingTypeHandler = GetHandler(typeInformation.UnderlyingTypeCode, typeInformation.IsEnum, value);
+                var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeCode, typeInformation.IsEnum, value);
 
                 return new EnumerableHandler(underlyingTypeHandler, typeInformation.UnderlyingTypeCode);
             }
 
-            return GetHandler(typeInformation.TypeCode, typeInformation.IsEnum, value);
+            return GetBaseHandler(typeInformation.TypeCode, typeInformation.IsEnum, value);
         }
 
-        private IHandler GetHandler(TypeCode typeCode, bool isEnum, object value)
+        private IHandler GetBaseHandler(TypeCode typeCode, bool isEnum, object value)
         {
             if (isEnum)
             {
@@ -47,6 +59,11 @@ namespace IniWrapper.Factory
             if (typeCode == TypeCode.Object)
             {
                 return new ObjectHandler(IniParser);
+            }
+
+            if (value == default(object))
+            {
+
             }
 
             if (value == null)

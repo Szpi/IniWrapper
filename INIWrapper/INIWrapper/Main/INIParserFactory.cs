@@ -1,5 +1,5 @@
 ﻿using System.IO.Abstractions;
-using IniWrapper.Factory;
+using IniWrapper.HandlersFactory;
 using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
 using IniWrapper.Member;
@@ -16,7 +16,7 @@ namespace IniWrapper.Main
 
             var iniParser = new IniParser(filePath,
                                           new FileSystem(),
-                                          new ParsersManager(new MemberInfoWrapper(), handlerFactory, new IniValueManager(new IniValueAttributeManager())),
+                                          new ParserManager(new MemberInfoWrapper(), handlerFactory, new IniValueManager(new IniValueAttributeManager())),
                                           iniWrapper);
 
             handlerFactory.IniParser = iniParser;
