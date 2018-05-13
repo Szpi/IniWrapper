@@ -5,6 +5,7 @@ using IniWrapper.Handlers.DefaultValue;
 using IniWrapper.Handlers.Enumerable;
 using IniWrapper.Handlers.Enums;
 using IniWrapper.Handlers.Field;
+using IniWrapper.Handlers.Ignore;
 using IniWrapper.Handlers.NullValue;
 using IniWrapper.Handlers.Object;
 using IniWrapper.Main;
@@ -30,11 +31,18 @@ namespace IniWrapper.HandlersFactory
 
             if (typeInformation.IsDefaultValue)
             {
-                var defaultValueHandler = GetHandler(value, typeInformation);
+                var defaultValueHandler = GetHandlerWithIgnoreAttributeHandlerDecorator(value, typeInformation, propertyInfo);
                 return new DefaultValueAttirbuteHandler(defaultValueHandler, propertyInfo);
             }
 
-            return GetHandler(value, typeInformation);
+            return GetHandlerWithIgnoreAttributeHandlerDecorator(value, typeInformation, propertyInfo);
+        }
+
+        private IHandler GetHandlerWithIgnoreAttributeHandlerDecorator(object value,
+                                                                       TypeDetailsInformation typeInformation,
+                                                                       MemberInfo propertyInfo)
+        {
+            return new IgnoreAttributeHandler(GetHandler(value,typeInformation), propertyInfo);
         }
 
         private IHandler GetHandler(object value, TypeDetailsInformation typeInformation)
@@ -59,11 +67,6 @@ namespace IniWrapper.HandlersFactory
             if (typeCode == TypeCode.Object)
             {
                 return new ObjectHandler(IniParser);
-            }
-
-            if (value == default(object))
-            {
-
             }
 
             if (value == null)
