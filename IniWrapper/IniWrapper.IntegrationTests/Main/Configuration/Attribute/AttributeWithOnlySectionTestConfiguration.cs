@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using IniWrapper.Attribute;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 
 namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute
 {
     public class AttributeWithOnlySectionTestConfiguration
     {
         public const string Section = "AttributeSection";
-
         [IniOptions(Section = Section)]
 
         public string TestString { get; set; }
