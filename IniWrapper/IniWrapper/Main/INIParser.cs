@@ -109,6 +109,11 @@ namespace IniWrapper.Main
             foreach (var field in fields)
             {
                 var iniValue = _parsersManager.GetSaveValue(field, configuration);
+                if (iniValue.Value == null)
+                {
+                    continue;
+                }
+
                 _iniWrapper.Write(iniValue.Section,iniValue.Key, iniValue.Value);
             }
         }
@@ -119,6 +124,11 @@ namespace IniWrapper.Main
             foreach (var property in properties)
             {
                 var iniValue = _parsersManager.GetSaveValue(property, configuration);
+                if (iniValue.Value == null)
+                {
+                    continue;
+                }
+
                 _iniWrapper.Write(iniValue.Section, iniValue.Key, iniValue.Value);
             }
         }
