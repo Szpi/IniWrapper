@@ -51,7 +51,7 @@ namespace IniWrapper.HandlersFactory
             {
                 var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeCode, typeInformation.IsEnum, value);
 
-                return new EnumerableHandler(underlyingTypeHandler, typeInformation.UnderlyingTypeCode);
+                return new EnumerableHandler(underlyingTypeHandler, typeInformation.UnderlyingTypeCode, typeInformation.UnderlyingType);
             }
 
             return GetBaseHandler(typeInformation.TypeCode, typeInformation.IsEnum, value);

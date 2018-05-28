@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace IniWrapper.Utils
 {
-    public partial class TypeManager : ITypeManager
+    public class TypeManager : ITypeManager
     {
         private static readonly Dictionary<Type, TypeCode> TypeCodeMap = new Dictionary<Type, TypeCode>
             {
@@ -93,8 +93,6 @@ namespace IniWrapper.Utils
                 { typeof(byte[]), default(byte[])},
             };
 
-        private ITypeManager _typeManagerImplementation;
-
         public TypeDetailsInformation GetTypeInformation(Type type, object value)
         {
             if (TypeCodeMap.TryGetValue(type, out var typeCode))
@@ -103,28 +101,29 @@ namespace IniWrapper.Utils
                 bool isDefaultValue = false;
                 isDefaultValue = IsDefaultValue(type, value, defaultValue);
 
-                return new TypeDetailsInformation(typeCode, TypeCode.Empty, false, isDefaultValue);
+                return new TypeDetailsInformation(typeCode, TypeCode.Empty, false, isDefaultValue, null);
             }
 
             if (typeof(IEnumerable).IsAssignableFrom(type))
             {
-                var genericType = type.GenericTypeArguments[0];
-                var genericTypeCode = GetTypeInformation(genericType, value);
+                var underlyingGenericType = type.GenericTypeArguments[0];
+                var genericTypeCode = GetTypeInformation(underlyingGenericType, value);
 
-                return new TypeDetailsInformation(TypeCode.Enumerable, genericTypeCode.TypeCode, genericTypeCode.IsEnum, value == null);
+                return new TypeDetailsInformation(TypeCode.Enumerable, genericTypeCode.TypeCode, genericTypeCode.IsEnum, value == null, underlyingGenericType);
             }
 
             if (type.IsEnum)
             {
-                var underlyingType = GetTypeInformation(Enum.GetUnderlyingType(type), value);
+                var underlyingType = Enum.GetUnderlyingType(type);
+                var typeDetailsInformation = GetTypeInformation(underlyingType, value);
                 var isDefaultValue = IsDefaultValue(type, value, 0);
 
-                return new TypeDetailsInformation(underlyingType.TypeCode, TypeCode.Empty, true, isDefaultValue);
+                return new TypeDetailsInformation(typeDetailsInformation.TypeCode, TypeCode.Empty, true, isDefaultValue, underlyingType);
             }
 
             if (!IsNullableType(type))
             {
-                return new TypeDetailsInformation(TypeCode.Object, TypeCode.Empty, false, value == null);
+                return new TypeDetailsInformation(TypeCode.Object, TypeCode.Empty, false, value == null, null);
             }
 
             var nonNullable = Nullable.GetUnderlyingType(type);
@@ -135,10 +134,10 @@ namespace IniWrapper.Utils
                 var underlyingType = GetTypeInformation(nullableUnderlyingType, value);
                 var isDefaultValue = Nullable.Equals(value, (object)0);
 
-                return new TypeDetailsInformation(underlyingType.TypeCode, TypeCode.Empty, true, isDefaultValue);
+                return new TypeDetailsInformation(underlyingType.TypeCode, TypeCode.Empty, true, isDefaultValue, nullableUnderlyingType);
             }
 
-            return new TypeDetailsInformation(TypeCode.Object, TypeCode.Empty, false, value == null);
+            return new TypeDetailsInformation(TypeCode.Object, TypeCode.Empty, false, value == null, null);
         }
 
         private static bool IsDefaultValue(Type type, object value, object defaultValue)
@@ -155,7 +154,7 @@ namespace IniWrapper.Utils
             }
             else
             {
-                
+
                 isDefaultValue = value.Equals(defaultValue);
             }
 

@@ -1,4 +1,5 @@
-﻿using System.Security.AccessControl;
+﻿using System;
+using System.Security.AccessControl;
 
 namespace IniWrapper.Utils
 {
@@ -12,12 +13,19 @@ namespace IniWrapper.Utils
         
         public bool IsDefaultValue { get; }
 
-        public TypeDetailsInformation(TypeCode typeCode, TypeCode underlyingTypeCode, bool isEnum, bool isDefaultValue)
+        public Type UnderlyingType { get; }
+
+        public TypeDetailsInformation(TypeCode typeCode,
+                                      TypeCode underlyingTypeCode,
+                                      bool isEnum,
+                                      bool isDefaultValue,
+                                      Type underlyingType)
         {
             UnderlyingTypeCode = underlyingTypeCode;
             TypeCode = typeCode;
             IsEnum = isEnum;
             IsDefaultValue = isDefaultValue;
+            UnderlyingType = underlyingType;
         }
     }
 }

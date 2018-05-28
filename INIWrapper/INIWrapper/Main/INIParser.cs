@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.IO.Abstractions;
-using System.Linq;
-using System.Reflection;
+﻿using System.IO.Abstractions;
 using IniWrapper.Manager;
+using IniWrapper.Manager.Read;
+using IniWrapper.Manager.Save;
 using IniWrapper.Wrapper;
 
 namespace IniWrapper.Main
@@ -12,21 +10,24 @@ namespace IniWrapper.Main
     {
         private readonly string _filePath;
         private readonly IFileSystem _fileSystem;
-        private readonly IParsersManager _parsersManager;
+        private readonly ISavingManager _savingManager;
+        private readonly IReadingManager _readingManager;
         private readonly IIniWrapper _iniWrapper;
 
         public IniParser(string filePath,
-                         IFileSystem fileSystem, 
-                         IParsersManager parsersManager,
-                         IIniWrapper iniWrapper)
+                         IFileSystem fileSystem,
+                         ISavingManager savingManager,
+                         IIniWrapper iniWrapper, 
+                         IReadingManager readingManager)
         {
             _filePath = filePath;
             _fileSystem = fileSystem;
-            _parsersManager = parsersManager;
+            _savingManager = savingManager;
             _iniWrapper = iniWrapper;
+            _readingManager = readingManager;
         }
 
-        public T LoadConfiguration<T>() where T: new()
+        public T LoadConfiguration<T>() where T : new()
         {
             if (!_fileSystem.File.Exists(_filePath))
             {
@@ -81,26 +82,12 @@ namespace IniWrapper.Main
         private void ReadProperties(object configuration)
         {
             var properties = configuration.GetType().GetProperties();
-            //foreach (var property in properties)
-            //{
-            //    var parser = _typeContract.GetHandler(property, configuration);
-            //    var readingState = parser.Read(configuration, property);
-
-            //    if (readingState.ParsingStage == ParsingStage.NeedRecursiveCall)
-            //    {
-            //        ReadProperties(readingState.ParsedObject);
-            //        ReadFields(readingState.ParsedObject);
-            //    }
-            //    if (readingState.ParsingStage == ParsingStage.NeedReparse)
-            //    {
-            //        property.SetValue(configuration, readingState.ParsedObject);
-
-            //        parser = _typeContract.GetHandler(property, configuration);
-            //        readingState = parser.Read(configuration, property);
-            //    }
-
-            //    property.SetValue(configuration, readingState.ParsedObject);
-            //}
+            foreach (var property in properties)
+            {
+                var iniValue = _readingManager.GetReadValue(property, configuration);
+                var readValue = _iniWrapper.Read(iniValue.Section, iniValue.Key);
+                _readingManager.BindReadValue(property, readValue, configuration);
+            }
         }
 
         private void SaveFields(object configuration)
@@ -108,13 +95,13 @@ namespace IniWrapper.Main
             var fields = configuration.GetType().GetFields();
             foreach (var field in fields)
             {
-                var iniValue = _parsersManager.GetSaveValue(field, configuration);
+                var iniValue = _savingManager.GetSaveValue(field, configuration);
                 if (iniValue.Value == null)
                 {
                     continue;
                 }
 
-                _iniWrapper.Write(iniValue.Section,iniValue.Key, iniValue.Value);
+                _iniWrapper.Write(iniValue.Section, iniValue.Key, iniValue.Value);
             }
         }
 
@@ -123,7 +110,7 @@ namespace IniWrapper.Main
             var properties = configuration.GetType().GetProperties();
             foreach (var property in properties)
             {
-                var iniValue = _parsersManager.GetSaveValue(property, configuration);
+                var iniValue = _savingManager.GetSaveValue(property, configuration);
                 if (iniValue.Value == null)
                 {
                     continue;

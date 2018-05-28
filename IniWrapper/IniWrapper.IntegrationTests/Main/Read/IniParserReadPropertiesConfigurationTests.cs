@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.IO.Abstractions;
 using FluentAssertions;
 using IniWrapper.IntegrationTests.Main.Configuration;
+using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.Main;
 using IniWrapper.Wrapper;
 using NSubstitute;
@@ -8,7 +10,6 @@ using NUnit.Framework;
 
 namespace IniWrapper.IntegrationTests.Main.Read
 {
-    [Ignore("reading is not implemented yet")]
     [TestFixture]
     public class IniParserReadPropertiesConfigurationTests
     {
@@ -20,7 +21,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
         public void SetUp()
         {
             _iniWrapper = Substitute.For<IIniWrapper>();
-            _iniParser = new IniParserFactory().Create("", _iniWrapper);
+            _iniParser = MockParserFactory.CreateWithFileSystem(_iniWrapper);
         }
 
         [Test]
@@ -34,7 +35,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
             result.TestString.Should().Be(testString);
         }
         [Test]
-        public void LoadConfiguration_CorrectWriteInt([Values(0, 1, 200, 500, 900)] int value)
+        public void LoadConfiguration_CorrectReadInt([Values(0, 1, 200, 500, 900)] int value)
         {
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestInt)).Returns(value.ToString());
 
@@ -44,7 +45,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
         }
 
         [Test]
-        public void LoadConfiguration_CorrectWriteUint([Values(0u, 1u, 200u, 500u, 900u)] uint value)
+        public void LoadConfiguration_CorrectReadUint([Values(0u, 1u, 200u, 500u, 900u)] uint value)
         {
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestUint)).Returns(value.ToString());
 
@@ -53,7 +54,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
             result.TestUint.Should().Be(value);
         }
         [Test]
-        public void LoadConfiguration_CorrectWriteChar([Values('a', 'z', ' ', 'b')] char value)
+        public void LoadConfiguration_CorrectReadChar([Values('a', 'z', ' ', 'b')] char value)
         {
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestChar)).Returns(value.ToString());
 
@@ -62,7 +63,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
             result.TestChar.Should().Be(value);
         }
         [Test]
-        public void LoadConfiguration_CorrectWriteStringList()
+        public void LoadConfiguration_CorrectReadStringList()
         {
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestStringList)).Returns("a,b,c,d,f");
 
@@ -73,7 +74,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
             result.TestStringList.Should().BeEquivalentTo(expected);
         }
         [Test]
-        public void LoadConfiguration_CorrectWriteIntList()
+        public void LoadConfiguration_CorrectReadIntList()
         {
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestIntList)).Returns("1,2,3,4,5,6,7,8");
             var expected = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8 };
@@ -83,7 +84,7 @@ namespace IniWrapper.IntegrationTests.Main.Read
             result.TestIntList.Should().BeEquivalentTo(expected);
         }
         [Test]
-        public void LoadConfiguration_CorrectWriteUintList()
+        public void LoadConfiguration_CorrectReadUintList()
         {
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestUintList)).Returns("1,2,3,4,5,6,7,8");
             var expected = new List<uint>() { 1u, 2u, 3u, 4u, 5u, 6u, 7u, 8u };
@@ -94,10 +95,21 @@ namespace IniWrapper.IntegrationTests.Main.Read
         }
 
         [Test]
-        public void LoadConfiguration_CorrectWriteEnum()
+        public void LoadConfiguration_CorrectReadEnum()
         {
             _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestEnum)).Returns("Five");
             var expected = TestEnum.Five;
+
+            var result = _iniParser.LoadConfiguration<TestConfiguration>();
+
+            result.TestEnum.Should().Be(expected);
+        }
+
+        [Test]
+        public void LoadConfiguration_CorrectReadOneEnum()
+        {
+            _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestEnum)).Returns("1");
+            var expected = TestEnum.One;
 
             var result = _iniParser.LoadConfiguration<TestConfiguration>();
 

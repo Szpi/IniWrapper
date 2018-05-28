@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IniWrapper.Exceptions;
@@ -13,16 +14,25 @@ namespace IniWrapper.Handlers.Enumerable
 
         private readonly IHandler _underlyingTypeHandler;
         private readonly TypeCode _underlyingTypeCode;
+        private readonly Type _underlyingType;
 
-        public EnumerableHandler(IHandler underlyingTypeHandler, TypeCode underlyingTypeCode)
+        public EnumerableHandler(IHandler underlyingTypeHandler, TypeCode underlyingTypeCode, Type underlyingType)
         {
             _underlyingTypeHandler = underlyingTypeHandler;
             _underlyingTypeCode = underlyingTypeCode;
+            _underlyingType = underlyingType;
         }
 
         public object ParseReadValue(Type destinationType, string readValue)
         {
-            return readValue.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var listType = typeof(List<>).MakeGenericType(_underlyingType);
+            var returnedList = (IList)Activator.CreateInstance(listType);
+
+            foreach (var value in readValue.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                returnedList.Add(_underlyingTypeHandler.ParseReadValue(_underlyingType, value));
+            }
+            return returnedList;
         }
 
         public string FormatToWrite(object objectToFormat)

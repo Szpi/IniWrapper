@@ -17,7 +17,8 @@ namespace IniWrapper.Handlers.Ignore
 
         public object ParseReadValue(Type destinationType, string readValue)
         {
-            throw new NotImplementedException();
+            var ignoreAttribute = _memberInfo.GetCustomAttribute<IniIgnoreAttribute>();
+            return ignoreAttribute == null ? _handler.ParseReadValue(destinationType, readValue) : null;
         }
 
         public string FormatToWrite(object objectToFormat)

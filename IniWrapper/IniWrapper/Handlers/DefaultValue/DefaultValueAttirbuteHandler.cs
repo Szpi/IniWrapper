@@ -17,7 +17,7 @@ namespace IniWrapper.Handlers.DefaultValue
 
         public object ParseReadValue(Type destinationType, string readValue)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public string FormatToWrite(object objectToFormat)

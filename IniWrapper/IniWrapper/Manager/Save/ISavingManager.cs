@@ -1,8 +1,8 @@
 ﻿using System.Reflection;
 
-namespace IniWrapper.Manager
+namespace IniWrapper.Manager.Save
 {
-    public interface IParsersManager
+    public interface ISavingManager
     {
         IniValue GetSaveValue(FieldInfo propertyInfo, object configuration);
         IniValue GetSaveValue(PropertyInfo propertyInfo, object configuration);

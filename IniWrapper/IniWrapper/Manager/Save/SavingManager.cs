@@ -2,15 +2,15 @@
 using IniWrapper.HandlersFactory;
 using IniWrapper.Member;
 
-namespace IniWrapper.Manager
+namespace IniWrapper.Manager.Save
 {
-    public class ParserManager : IParsersManager
+    public class SavingManager : ISavingManager
     {
         private readonly IMemberInfoWrapper _memberInfoWrapper;
         private readonly IHandlerFactory _handlerFactory;
         private readonly IIniValueManager _iniValueManager;
 
-        public ParserManager(IMemberInfoWrapper memberInfoWrapper, IHandlerFactory handlerFactory, IIniValueManager iniValueManager)
+        public SavingManager(IMemberInfoWrapper memberInfoWrapper, IHandlerFactory handlerFactory, IIniValueManager iniValueManager)
         {
             _memberInfoWrapper = memberInfoWrapper;
             _handlerFactory = handlerFactory;
@@ -20,9 +20,9 @@ namespace IniWrapper.Manager
         public IniValue GetSaveValue(PropertyInfo propertyInfo, object configuration)
         {
             var value = _memberInfoWrapper.GetValue(propertyInfo, configuration);
-            var parser = _handlerFactory.GetHandler(_memberInfoWrapper.GetType(propertyInfo), value, propertyInfo);
+            var handler = _handlerFactory.GetHandler(_memberInfoWrapper.GetType(propertyInfo), value, propertyInfo);
 
-            var valueToSave = parser.FormatToWrite(value);
+            var valueToSave = handler.FormatToWrite(value);
 
             return new IniValue()
             {
@@ -35,9 +35,9 @@ namespace IniWrapper.Manager
         public IniValue GetSaveValue(FieldInfo propertyInfo, object configuration)
         {
             var value = _memberInfoWrapper.GetValue(propertyInfo, configuration);
-            var parser = _handlerFactory.GetHandler(_memberInfoWrapper.GetType(propertyInfo), value, propertyInfo);
+            var handler = _handlerFactory.GetHandler(_memberInfoWrapper.GetType(propertyInfo), value, propertyInfo);
 
-            var valueToSave = parser.FormatToWrite(value);
+            var valueToSave = handler.FormatToWrite(value);
 
             return new IniValue()
             {
