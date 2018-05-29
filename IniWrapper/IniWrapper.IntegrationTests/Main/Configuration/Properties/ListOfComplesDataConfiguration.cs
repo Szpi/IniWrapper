@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IniWrapper.IntegrationTests.Main.Configuration
+namespace IniWrapper.IntegrationTests.Main.Configuration.Properties
 {
     public class ListOfComplesDataConfiguration
     {

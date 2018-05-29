@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using IniWrapper.Attribute;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
+using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 
-namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute
+namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute.Save
 {
     public class AttributeWithOnlySectionTestConfiguration
     {

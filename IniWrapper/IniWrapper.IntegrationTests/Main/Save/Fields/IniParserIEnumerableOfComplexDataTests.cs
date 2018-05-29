@@ -1,13 +1,13 @@
 ﻿using System;
 using FluentAssertions;
 using IniWrapper.Exceptions;
-using IniWrapper.IntegrationTests.Main.Configuration;
+using IniWrapper.IntegrationTests.Main.Configuration.Fields;
 using IniWrapper.Main;
 using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace IniWrapper.IntegrationTests.Main.Save.SaveProperty
+namespace IniWrapper.IntegrationTests.Main.Save.Fields
 {
     [TestFixture]
     public class IniParserIEnumerableOfComplexDataTests
@@ -26,7 +26,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.SaveProperty
         [Test]
         public void SaveConfiguration_ShouldThrowException_WhenConfigurationHasCollectionOfComplexType()
         {
-            var config = new ListOfComplesDataConfiguration();
+            var config = new ListOfComplesDataConfigurationField();
 
             Action saveConfiguration = () => _iniParser.SaveConfiguration(config);
 

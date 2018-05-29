@@ -3,6 +3,7 @@ using FluentAssertions;
 using IniWrapper.IntegrationTests.Main.Configuration;
 using IniWrapper.IntegrationTests.Main.Configuration.Attribute;
 using IniWrapper.IntegrationTests.Main.Configuration.Attribute.Read;
+using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.Main;
 using IniWrapper.Wrapper;

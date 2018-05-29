@@ -1,4 +1,4 @@
-﻿namespace IniWrapper.IntegrationTests.Main.Configuration
+﻿namespace IniWrapper.IntegrationTests.Main.Configuration.Properties
 {
     public enum TestEnum
     {

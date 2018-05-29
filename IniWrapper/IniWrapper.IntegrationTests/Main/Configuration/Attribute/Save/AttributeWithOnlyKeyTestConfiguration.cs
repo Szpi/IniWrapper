@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using IniWrapper.Attribute;
 
-namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute
+namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute.Save
 {
     public class AttributeWithOnlyKeyTestConfiguration
     {

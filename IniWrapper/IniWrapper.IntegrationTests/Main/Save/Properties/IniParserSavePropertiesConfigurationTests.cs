@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
-using IniWrapper.IntegrationTests.Main.Configuration;
+using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.Main;
 using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace IniWrapper.IntegrationTests.Main.Save.SaveProperty
+namespace IniWrapper.IntegrationTests.Main.Save.Properties
 {
     [TestFixture]
     public sealed class IniParserSavePropertiesConfigurationTests

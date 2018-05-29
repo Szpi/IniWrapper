@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 
 namespace IniWrapper.IntegrationTests.Main.Configuration.Fields
 {
