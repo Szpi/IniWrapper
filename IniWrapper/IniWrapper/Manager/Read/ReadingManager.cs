@@ -39,6 +39,19 @@ namespace IniWrapper.Manager.Read
             propertyInfo.SetValue(configuration, parsedValue);
         }
 
+        public void BindReadValue(FieldInfo fieldInfo, string readValue, object configuration)
+        {
+            if (string.IsNullOrEmpty(readValue))
+            {
+                return;
+            }
+
+            var handler = _handlerFactory.GetHandler(_memberInfoWrapper.GetType(fieldInfo), readValue, fieldInfo);
+            var parsedValue = handler.ParseReadValue(fieldInfo.FieldType, readValue);
+
+            fieldInfo.SetValue(configuration, parsedValue);
+        }
+
         public IniValue GetReadValue(FieldInfo fieldInfo, object configuration)
         {
             return new IniValue()

@@ -56,27 +56,12 @@ namespace IniWrapper.Main
         private void ReadFields(object configuration)
         {
             var fields = configuration.GetType().GetFields();
-            //foreach (var field in fields)
-            //{
-            //    var parser = _typeContract.GetHandler(field, configuration);
-            //    var readingState = parser.Read(configuration, field);
-
-            //    if (readingState.ParsingStage == ParsingStage.NeedRecursiveCall)
-            //    {
-            //        ReadProperties(readingState.ParsedObject);
-            //        ReadFields(readingState.ParsedObject);
-            //    }
-
-            //    if (readingState.ParsingStage == ParsingStage.NeedReparse)
-            //    {
-            //        field.SetValue(configuration, readingState.ParsedObject);
-
-            //        parser = _typeContract.GetHandler(field, configuration);
-            //        readingState = parser.Read(configuration, field);
-            //    }
-
-            //    field.SetValue(configuration, readingState.ParsedObject);
-            //}
+            foreach (var field in fields)
+            {
+                var iniValue = _readingManager.GetReadValue(field, configuration);
+                var readValue = _iniWrapper.Read(iniValue.Section, iniValue.Key);
+                _readingManager.BindReadValue(field, readValue, configuration);
+            }
         }
 
         private void ReadProperties(object configuration)
