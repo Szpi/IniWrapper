@@ -1,6 +1,6 @@
 ﻿using System;
 using FluentAssertions;
-using IniWrapper.Handlers.Field;
+using IniWrapper.Handlers.Primitive;
 using NUnit.Framework;
 
 namespace IniWrapper.Tests.PrimitivesParsers

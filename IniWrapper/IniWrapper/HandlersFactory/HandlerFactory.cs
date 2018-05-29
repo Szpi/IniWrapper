@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Reflection;
 using IniWrapper.Handlers;
-using IniWrapper.Handlers.DefaultValue;
 using IniWrapper.Handlers.Enumerable;
 using IniWrapper.Handlers.Enums;
-using IniWrapper.Handlers.Field;
 using IniWrapper.Handlers.Ignore;
 using IniWrapper.Handlers.NullValue;
 using IniWrapper.Handlers.Object;
+using IniWrapper.Handlers.Primitive;
 using IniWrapper.Main;
 using IniWrapper.Utils;
 using TypeCode = IniWrapper.Utils.TypeCode;
@@ -28,12 +27,6 @@ namespace IniWrapper.HandlersFactory
         public IHandler GetHandler(Type type, object value, MemberInfo propertyInfo)
         {
             var typeInformation = _typeManager.GetTypeInformation(type, value);
-
-            if (typeInformation.IsDefaultValue)
-            {
-                var defaultValueHandler = GetHandlerWithIgnoreAttributeHandlerDecorator(value, typeInformation, propertyInfo);
-                return new DefaultValueAttirbuteHandler(defaultValueHandler, propertyInfo);
-            }
 
             return GetHandlerWithIgnoreAttributeHandlerDecorator(value, typeInformation, propertyInfo);
         }

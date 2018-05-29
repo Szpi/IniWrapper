@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace IniWrapper.Handlers.Field
+namespace IniWrapper.Handlers.Primitive
 {
     public sealed class PrimitivesHandler : IHandler
     {
