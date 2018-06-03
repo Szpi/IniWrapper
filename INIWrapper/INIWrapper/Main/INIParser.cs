@@ -13,18 +13,15 @@ namespace IniWrapper.Main
         private readonly IFileSystem _fileSystem;
         private readonly ISavingManager _savingManager;
         private readonly IReadingManager _readingManager;
-        private readonly IIniWrapper _iniWrapper;
 
         public IniParser(string filePath,
                          IFileSystem fileSystem,
                          ISavingManager savingManager,
-                         IIniWrapper iniWrapper, 
                          IReadingManager readingManager)
         {
             _filePath = filePath;
             _fileSystem = fileSystem;
             _savingManager = savingManager;
-            _iniWrapper = iniWrapper;
             _readingManager = readingManager;
         }
 
