@@ -23,14 +23,14 @@ namespace IniWrapper.IntegrationTests.MockParser
         }
         public static IIniParser Create(IIniWrapper iniWrapper, IFileSystem fileSystem)
         {
-            
+
             var handlerFactory = new HandlerFactory(new TypeManager());
 
             var iniParser = new IniParser("dummy",
                                           fileSystem,
-                                          new SavingManager(new MemberInfoWrapper(), handlerFactory, new IniValueManager(new IniValueAttributeManager())),
+                                          new SavingManager(handlerFactory, new IniValueManager(new IniValueAttributeManager())),
                                           iniWrapper,
-                                          new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, new MemberInfoWrapper(), iniWrapper));
+                                          new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, iniWrapper));
 
             handlerFactory.IniParser = iniParser;
 

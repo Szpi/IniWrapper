@@ -8,6 +8,7 @@ using IniWrapper.Handlers.NullValue;
 using IniWrapper.Handlers.Object;
 using IniWrapper.Handlers.Primitive;
 using IniWrapper.Main;
+using IniWrapper.Member;
 using IniWrapper.Utils;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
@@ -24,18 +25,18 @@ namespace IniWrapper.HandlersFactory
             _typeManager = typeManager;
         }
 
-        public (IHandler handler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, MemberInfo propertyInfo)
+        public (IHandler handler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
         {
             var typeInformation = _typeManager.GetTypeInformation(type);
 
-            return (GetHandlerWithIgnoreAttributeHandlerDecorator(value, typeInformation, propertyInfo), typeInformation);
+            return (GetHandlerWithIgnoreAttributeHandlerDecorator(value, typeInformation, memberInfoWrapper), typeInformation);
         }
 
         private IHandler GetHandlerWithIgnoreAttributeHandlerDecorator(object value,
                                                                        TypeDetailsInformation typeInformation,
-                                                                       MemberInfo propertyInfo)
+                                                                       IMemberInfoWrapper memberInfoWrapper)
         {
-            return new IgnoreAttributeHandler(GetHandler(value,typeInformation), propertyInfo);
+            return new IgnoreAttributeHandler(GetHandler(value,typeInformation), memberInfoWrapper);
         }
 
         private IHandler GetHandler(object value, TypeDetailsInformation typeInformation)

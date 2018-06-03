@@ -1,34 +1,20 @@
-﻿using System.Reflection;
-using IniWrapper.Attribute;
+﻿using IniWrapper.Attribute;
+using IniWrapper.Member;
 
 namespace IniWrapper.Manager.Attribute
 {
     public class IniValueAttributeManager : IIniValueManager
     {
-        public string GetKey(FieldInfo propertyInfo)
+        public string GetKey(IMemberInfoWrapper memberInfoWrapper)
         {
-            var iniOptionsAttribute = propertyInfo.GetCustomAttribute<IniOptionsAttribute>();
+            var iniOptionsAttribute = memberInfoWrapper.GetAttribute<IniOptionsAttribute>();
 
             return iniOptionsAttribute?.Key;
         }
 
-        public string GetKey(PropertyInfo propertyInfo)
+        public string GetSection(object configuration, IMemberInfoWrapper memberInfoWrapper)
         {
-            var iniOptionsAttribute = propertyInfo.GetCustomAttribute<IniOptionsAttribute>();
-
-            return iniOptionsAttribute?.Key;
-        }
-
-        public string GetSection(object configuration, PropertyInfo propertyInfo)
-        {
-            var iniOptionsAttribute = propertyInfo.GetCustomAttribute<IniOptionsAttribute>();
-
-            return iniOptionsAttribute?.Section;
-        }
-
-        public string GetSection(object configuration, FieldInfo propertyInfo)
-        {
-            var iniOptionsAttribute = propertyInfo.GetCustomAttribute<IniOptionsAttribute>();
+            var iniOptionsAttribute = memberInfoWrapper.GetAttribute<IniOptionsAttribute>();
 
             return iniOptionsAttribute?.Section;
         }

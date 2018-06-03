@@ -1,13 +1,17 @@
 ﻿using System;
-using System.Reflection;
 
 namespace IniWrapper.Member
 {
     public interface IMemberInfoWrapper
     {
-        Type GetType(PropertyInfo propertyInfo);
-        Type GetType(FieldInfo fieldInfo);
-        object GetValue(PropertyInfo propertyInfo, object configuration);
-        object GetValue(FieldInfo fieldInfo, object configuration);
+        Type GetMemberType();
+
+        object GetValue(object configuration);
+
+        void SetValue(object obj, object value);
+
+        T GetAttribute<T>() where T : System.Attribute;
+
+        string Name { get; }
     }
 }

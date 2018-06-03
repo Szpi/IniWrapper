@@ -10,30 +10,27 @@ namespace IniWrapper.Manager.Read
 {
     public class ReadingManager : IReadingManager
     {
-        private readonly IMemberInfoWrapper _memberInfoWrapper;
         private readonly IHandlerFactory _handlerFactory;
         private readonly IIniValueManager _iniValueManager;
         private readonly IIniWrapper _iniWrapper;
 
         public ReadingManager(IIniValueManager iniValueManager,
                               IHandlerFactory handlerFactory,
-                              IMemberInfoWrapper memberInfoWrapper,
                               IIniWrapper iniWrapper)
         {
             _iniValueManager = iniValueManager;
             _handlerFactory = handlerFactory;
-            _memberInfoWrapper = memberInfoWrapper;
             _iniWrapper = iniWrapper;
         }
 
-        public void ReadValue(PropertyInfo propertyInfo, object configuration)
+        public void ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration)
         {
-            var (handler, typeDetailsInformation) = _handlerFactory.GetHandler(_memberInfoWrapper.GetType(propertyInfo), 0, propertyInfo);
+            var (handler, typeDetailsInformation) = _handlerFactory.GetHandler(memberInfoWrapper.GetMemberType(), 0, memberInfoWrapper);
 
             if (typeDetailsInformation.TypeCode == TypeCode.Object)
             {
-                var parsedObjectValue = handler.ParseReadValue(propertyInfo.PropertyType, null);
-                propertyInfo.SetValue(configuration, parsedObjectValue);
+                var parsedObjectValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), null);
+                memberInfoWrapper.SetValue(configuration, parsedObjectValue);
                 return;
             }
 
@@ -44,8 +41,8 @@ namespace IniWrapper.Manager.Read
 
             var iniValue = new IniValue()
             {
-                Section = _iniValueManager.GetSection(configuration, propertyInfo),
-                Key = _iniValueManager.GetKey(propertyInfo)
+                Section = _iniValueManager.GetSection(configuration, memberInfoWrapper),
+                Key = _iniValueManager.GetKey(memberInfoWrapper)
             };
 
             var readValue = _iniWrapper.Read(iniValue.Section, iniValue.Key);
@@ -55,30 +52,9 @@ namespace IniWrapper.Manager.Read
                 return;
             }
 
-            var parsedValue = handler.ParseReadValue(propertyInfo.PropertyType, readValue);
+            var parsedValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), readValue);
 
-            propertyInfo.SetValue(configuration, parsedValue);
-        }
-
-        public void ReadValue(FieldInfo fieldInfo, object configuration)
-        {
-            var iniValue = new IniValue()
-            {
-                Section = _iniValueManager.GetSection(configuration, fieldInfo),
-                Key = _iniValueManager.GetKey(fieldInfo)
-            };
-
-            var readValue = _iniWrapper.Read(iniValue.Section, iniValue.Key);
-
-            if (string.IsNullOrEmpty(readValue))
-            {
-                return;
-            }
-
-            var (handler, _) = _handlerFactory.GetHandler(_memberInfoWrapper.GetType(fieldInfo), readValue, fieldInfo);
-            var parsedValue = handler.ParseReadValue(fieldInfo.FieldType, readValue);
-
-            fieldInfo.SetValue(configuration, parsedValue);
+            memberInfoWrapper.SetValue(configuration, parsedValue);
         }
     }
 }

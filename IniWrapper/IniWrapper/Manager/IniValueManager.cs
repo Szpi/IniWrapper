@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using IniWrapper.Member;
 
 namespace IniWrapper.Manager
 {
@@ -11,23 +12,14 @@ namespace IniWrapper.Manager
             _attributeManager = attributeManager;
         }
 
-        public string GetSection(object configuration, PropertyInfo propertyInfo)
+        public string GetKey(IMemberInfoWrapper memberInfoWrapper)
         {
-            return _attributeManager.GetSection(configuration, propertyInfo) ?? configuration.GetType().Name;
-        }
-        public string GetSection(object configuration, FieldInfo propertyInfo)
-        {
-            return _attributeManager.GetSection(configuration, propertyInfo) ?? configuration.GetType().Name;
+            return _attributeManager.GetKey(memberInfoWrapper) ?? memberInfoWrapper.Name;
         }
 
-        public string GetKey(FieldInfo propertyInfo)
+        public string GetSection(object configuration, IMemberInfoWrapper memberInfoWrapper)
         {
-            return _attributeManager.GetKey(propertyInfo) ?? propertyInfo.Name;
-        }
-
-        public string GetKey(PropertyInfo propertyInfo)
-        {
-            return _attributeManager.GetKey(propertyInfo)  ??propertyInfo.Name;
+            return _attributeManager.GetSection(configuration, memberInfoWrapper) ?? configuration.GetType().Name;
         }
     }
 }

@@ -3,6 +3,7 @@ using System.IO.Abstractions;
 using IniWrapper.Manager;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
+using IniWrapper.Member;
 using IniWrapper.Wrapper;
 
 namespace IniWrapper.Main
@@ -30,15 +31,7 @@ namespace IniWrapper.Main
 
         public T LoadConfiguration<T>() where T : new()
         {
-            if (!_fileSystem.File.Exists(_filePath))
-            {
-                var defaultConfiguration = new T();
-                SaveConfiguration(defaultConfiguration);
-                return defaultConfiguration;
-            }
-
-            var result = new T();
-            return (T)ReadFromFile(result);
+            return (T)LoadConfiguration(typeof(T));
         }
 
         public object LoadConfiguration(Type destinationType)
@@ -72,7 +65,8 @@ namespace IniWrapper.Main
             var fields = configuration.GetType().GetFields();
             foreach (var field in fields)
             {
-               _readingManager.ReadValue(field, configuration);
+                var fieldInfoWrapper = new FieldInfoWrapper(field);
+               _readingManager.ReadValue(fieldInfoWrapper, configuration);
             }
         }
 
@@ -81,7 +75,8 @@ namespace IniWrapper.Main
             var properties = configuration.GetType().GetProperties();
             foreach (var property in properties)
             {
-                _readingManager.ReadValue(property, configuration);
+                var propertyInfoWrapper = new PropertyInfoWrapper(property);
+                _readingManager.ReadValue(propertyInfoWrapper, configuration);
             }
         }
 
@@ -90,7 +85,8 @@ namespace IniWrapper.Main
             var fields = configuration.GetType().GetFields();
             foreach (var field in fields)
             {
-                var iniValue = _savingManager.GetSaveValue(field, configuration);
+                var fieldInfoWrapper = new FieldInfoWrapper(field);
+                var iniValue = _savingManager.GetSaveValue(fieldInfoWrapper, configuration);
                 if (iniValue.Value == null)
                 {
                     continue;
@@ -105,7 +101,8 @@ namespace IniWrapper.Main
             var properties = configuration.GetType().GetProperties();
             foreach (var property in properties)
             {
-                var iniValue = _savingManager.GetSaveValue(property, configuration);
+                var propertyInfoWrapper = new PropertyInfoWrapper(property);
+                var iniValue = _savingManager.GetSaveValue(propertyInfoWrapper, configuration);
                 if (iniValue.Value == null)
                 {
                     continue;

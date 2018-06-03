@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
+using IniWrapper.Member;
 
 namespace IniWrapper.Manager.Read
 {
     public interface IReadingManager
     {
-        void ReadValue(FieldInfo fieldInfo, object configuration);
-        void ReadValue(PropertyInfo propertyInfo, object configuration);
+        void ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration);
     }
 }

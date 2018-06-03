@@ -1,29 +1,30 @@
 ﻿using System;
 using System.Reflection;
 using IniWrapper.Attribute;
+using IniWrapper.Member;
 
 namespace IniWrapper.Handlers.Ignore
 {
     public class IgnoreAttributeHandler : IHandler
     {
         private readonly IHandler _handler;
-        private readonly MemberInfo _memberInfo;
+        private readonly IMemberInfoWrapper _memberInfoWrapper;
 
-        public IgnoreAttributeHandler(IHandler handler, MemberInfo memberInfo)
+        public IgnoreAttributeHandler(IHandler handler, IMemberInfoWrapper memberInfoWrapperWrapper)
         {
             _handler = handler;
-            _memberInfo = memberInfo;
+            _memberInfoWrapper = memberInfoWrapperWrapper;
         }
 
         public object ParseReadValue(Type destinationType, string readValue)
         {
-            var ignoreAttribute = _memberInfo.GetCustomAttribute<IniIgnoreAttribute>();
+            var ignoreAttribute = _memberInfoWrapper.GetAttribute<IniIgnoreAttribute>();
             return ignoreAttribute == null ? _handler.ParseReadValue(destinationType, readValue) : null;
         }
 
         public string FormatToWrite(object objectToFormat)
         {
-            var ignoreAttribute = _memberInfo.GetCustomAttribute<IniIgnoreAttribute>();
+            var ignoreAttribute = _memberInfoWrapper.GetAttribute<IniIgnoreAttribute>();
 
             return ignoreAttribute == null ? _handler.FormatToWrite(objectToFormat) : null;
         }

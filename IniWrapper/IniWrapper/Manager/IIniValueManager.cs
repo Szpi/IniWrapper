@@ -1,12 +1,10 @@
-﻿using System.Reflection;
+﻿using IniWrapper.Member;
 
 namespace IniWrapper.Manager
 {
     public interface IIniValueManager
     {
-        string GetKey(FieldInfo propertyInfo);
-        string GetKey(PropertyInfo propertyInfo);
-        string GetSection(object configuration, PropertyInfo propertyInfo);
-        string GetSection(object configuration, FieldInfo propertyInfo);
+        string GetKey(IMemberInfoWrapper memberInfoWrapper);
+        string GetSection(object configuration, IMemberInfoWrapper memberInfoWrapper);
     }
 }
