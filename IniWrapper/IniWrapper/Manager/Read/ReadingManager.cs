@@ -29,7 +29,7 @@ namespace IniWrapper.Manager.Read
 
             if (typeDetailsInformation.TypeCode == TypeCode.Object)
             {
-                var parsedObjectValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), null);
+                var parsedObjectValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), null, null);
                 memberInfoWrapper.SetValue(configuration, parsedObjectValue);
                 return;
             }
@@ -52,7 +52,7 @@ namespace IniWrapper.Manager.Read
                 return;
             }
 
-            var parsedValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), readValue);
+            var parsedValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), readValue, iniValue);
 
             memberInfoWrapper.SetValue(configuration, parsedValue);
         }

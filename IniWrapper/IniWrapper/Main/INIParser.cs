@@ -1,7 +1,8 @@
-﻿using System.IO.Abstractions;
-using IniWrapper.Manager;
+﻿using System;
+using System.IO.Abstractions;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
+using IniWrapper.Member;
 using IniWrapper.Wrapper;
 
 namespace IniWrapper.Main
@@ -12,32 +13,34 @@ namespace IniWrapper.Main
         private readonly IFileSystem _fileSystem;
         private readonly ISavingManager _savingManager;
         private readonly IReadingManager _readingManager;
-        private readonly IIniWrapper _iniWrapper;
 
         public IniParser(string filePath,
                          IFileSystem fileSystem,
                          ISavingManager savingManager,
-                         IIniWrapper iniWrapper, 
                          IReadingManager readingManager)
         {
             _filePath = filePath;
             _fileSystem = fileSystem;
             _savingManager = savingManager;
-            _iniWrapper = iniWrapper;
             _readingManager = readingManager;
         }
 
         public T LoadConfiguration<T>() where T : new()
         {
+            return (T)LoadConfiguration(typeof(T));
+        }
+
+        public object LoadConfiguration(Type destinationType)
+        {
             if (!_fileSystem.File.Exists(_filePath))
             {
-                var defaultConfiguration = new T();
+                var defaultConfiguration = Activator.CreateInstance(destinationType);
                 SaveConfiguration(defaultConfiguration);
                 return defaultConfiguration;
             }
 
-            var result = new T();
-            return (T)ReadFromFile(result);
+            var result = Activator.CreateInstance(destinationType);
+            return ReadFromFile(result);
         }
 
         public void SaveConfiguration(object configuration)
@@ -58,9 +61,8 @@ namespace IniWrapper.Main
             var fields = configuration.GetType().GetFields();
             foreach (var field in fields)
             {
-                var iniValue = _readingManager.GetReadValue(field, configuration);
-                var readValue = _iniWrapper.Read(iniValue.Section, iniValue.Key);
-                _readingManager.BindReadValue(field, readValue, configuration);
+                var fieldInfoWrapper = new FieldInfoWrapper(field);
+               _readingManager.ReadValue(fieldInfoWrapper, configuration);
             }
         }
 
@@ -69,9 +71,8 @@ namespace IniWrapper.Main
             var properties = configuration.GetType().GetProperties();
             foreach (var property in properties)
             {
-                var iniValue = _readingManager.GetReadValue(property, configuration);
-                var readValue = _iniWrapper.Read(iniValue.Section, iniValue.Key);
-                _readingManager.BindReadValue(property, readValue, configuration);
+                var propertyInfoWrapper = new PropertyInfoWrapper(property);
+                _readingManager.ReadValue(propertyInfoWrapper, configuration);
             }
         }
 
@@ -80,13 +81,8 @@ namespace IniWrapper.Main
             var fields = configuration.GetType().GetFields();
             foreach (var field in fields)
             {
-                var iniValue = _savingManager.GetSaveValue(field, configuration);
-                if (iniValue.Value == null)
-                {
-                    continue;
-                }
-
-                _iniWrapper.Write(iniValue.Section, iniValue.Key, iniValue.Value);
+                var fieldInfoWrapper = new FieldInfoWrapper(field);
+                _savingManager.SaveValue(fieldInfoWrapper, configuration);
             }
         }
 
@@ -95,13 +91,8 @@ namespace IniWrapper.Main
             var properties = configuration.GetType().GetProperties();
             foreach (var property in properties)
             {
-                var iniValue = _savingManager.GetSaveValue(property, configuration);
-                if (iniValue.Value == null)
-                {
-                    continue;
-                }
-
-                _iniWrapper.Write(iniValue.Section, iniValue.Key, iniValue.Value);
+                var propertyInfoWrapper = new PropertyInfoWrapper(property);
+                _savingManager.SaveValue(propertyInfoWrapper, configuration);
             }
         }
     }

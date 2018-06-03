@@ -1,10 +1,11 @@
 ﻿using System;
+using IniWrapper.Manager;
 
 namespace IniWrapper.Handlers.NullValue
 {
     public class NullValueHandler : IHandler
     {
-        public object ParseReadValue(Type destinationType, string readValue)
+        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
         {
             return readValue;
         }

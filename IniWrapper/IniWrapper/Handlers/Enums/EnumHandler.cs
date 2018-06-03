@@ -1,4 +1,5 @@
 ﻿using System;
+using IniWrapper.Manager;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Handlers.Enums
@@ -12,7 +13,7 @@ namespace IniWrapper.Handlers.Enums
             _typeCode = typeCode;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue)
+        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
         {
             return Enum.Parse(destinationType, readValue);
         }

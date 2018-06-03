@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using IniWrapper.Exceptions;
+using IniWrapper.Manager;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Handlers.Enumerable
@@ -23,7 +24,7 @@ namespace IniWrapper.Handlers.Enumerable
             _underlyingType = underlyingType;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue)
+        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
         {
             if (_underlyingTypeCode == TypeCode.Object)
             {
@@ -35,7 +36,7 @@ namespace IniWrapper.Handlers.Enumerable
 
             foreach (var value in readValue.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries))
             {
-                returnedList.Add(_underlyingTypeHandler.ParseReadValue(_underlyingType, value));
+                returnedList.Add(_underlyingTypeHandler.ParseReadValue(_underlyingType, value, iniValue));
             }
             return returnedList;
         }

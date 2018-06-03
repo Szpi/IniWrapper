@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using IniWrapper.Attribute;
+using IniWrapper.Manager;
 using IniWrapper.Member;
 
 namespace IniWrapper.Handlers.Ignore
@@ -16,10 +17,10 @@ namespace IniWrapper.Handlers.Ignore
             _memberInfoWrapper = memberInfoWrapperWrapper;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue)
+        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
         {
             var ignoreAttribute = _memberInfoWrapper.GetAttribute<IniIgnoreAttribute>();
-            return ignoreAttribute == null ? _handler.ParseReadValue(destinationType, readValue) : null;
+            return ignoreAttribute == null ? _handler.ParseReadValue(destinationType, readValue, iniValue) : null;
         }
 
         public string FormatToWrite(object objectToFormat)

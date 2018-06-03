@@ -1,5 +1,6 @@
 ﻿using System;
 using IniWrapper.Main;
+using IniWrapper.Manager;
 
 namespace IniWrapper.Handlers.Object
 {
@@ -12,7 +13,7 @@ namespace IniWrapper.Handlers.Object
             _iniParser = iniParser;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue)
+        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
         {
             return _iniParser.LoadConfiguration(destinationType);
         }
