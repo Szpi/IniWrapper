@@ -1,4 +1,5 @@
-﻿using System.IO.Abstractions;
+﻿using System;
+using System.IO.Abstractions;
 using IniWrapper.Manager;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
@@ -40,6 +41,19 @@ namespace IniWrapper.Main
             return (T)ReadFromFile(result);
         }
 
+        public object LoadConfiguration(Type destinationType)
+        {
+            if (!_fileSystem.File.Exists(_filePath))
+            {
+                var defaultConfiguration = Activator.CreateInstance(destinationType);
+                SaveConfiguration(defaultConfiguration);
+                return defaultConfiguration;
+            }
+
+            var result = Activator.CreateInstance(destinationType);
+            return ReadFromFile(result);
+        }
+
         public void SaveConfiguration(object configuration)
         {
             SaveProperties(configuration);
@@ -58,9 +72,7 @@ namespace IniWrapper.Main
             var fields = configuration.GetType().GetFields();
             foreach (var field in fields)
             {
-                var iniValue = _readingManager.GetReadValue(field, configuration);
-                var readValue = _iniWrapper.Read(iniValue.Section, iniValue.Key);
-                _readingManager.BindReadValue(field, readValue, configuration);
+               _readingManager.ReadValue(field, configuration);
             }
         }
 
@@ -69,9 +81,7 @@ namespace IniWrapper.Main
             var properties = configuration.GetType().GetProperties();
             foreach (var property in properties)
             {
-                var iniValue = _readingManager.GetReadValue(property, configuration);
-                var readValue = _iniWrapper.Read(iniValue.Section, iniValue.Key);
-                _readingManager.BindReadValue(property, readValue, configuration);
+                _readingManager.ReadValue(property, configuration);
             }
         }
 

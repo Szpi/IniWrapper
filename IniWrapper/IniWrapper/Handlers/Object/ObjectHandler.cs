@@ -14,7 +14,7 @@ namespace IniWrapper.Handlers.Object
 
         public object ParseReadValue(Type destinationType, string readValue)
         {
-            return null;
+            return _iniParser.LoadConfiguration(destinationType);
         }
 
         public string FormatToWrite(object objectToFormat)

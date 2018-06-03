@@ -26,7 +26,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
         [Test]
         public void SaveConfiguration_ShouldThrowException_WhenConfigurationHasCollectionOfComplexType()
         {
-            var config = new ListOfComplesDataConfiguration();
+            var config = new ListOfComplexDataConfiguration();
 
             Action saveConfiguration = () => _iniParser.SaveConfiguration(config);
 

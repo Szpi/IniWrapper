@@ -25,6 +25,11 @@ namespace IniWrapper.Handlers.Enumerable
 
         public object ParseReadValue(Type destinationType, string readValue)
         {
+            if (_underlyingTypeCode == TypeCode.Object)
+            {
+                throw new CollectionOfCopmexTypeException();
+            }
+
             var listType = typeof(List<>).MakeGenericType(_underlyingType);
             var returnedList = (IList)Activator.CreateInstance(listType);
 

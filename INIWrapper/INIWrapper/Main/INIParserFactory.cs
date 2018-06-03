@@ -20,7 +20,7 @@ namespace IniWrapper.Main
                                           new FileSystem(),
                                           new SavingManager(new MemberInfoWrapper(), handlerFactory, new IniValueManager(new IniValueAttributeManager())),
                                           iniWrapper,
-                                          new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, new MemberInfoWrapper()));
+                                          new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, new MemberInfoWrapper(), iniWrapper));
 
             handlerFactory.IniParser = iniParser;
 

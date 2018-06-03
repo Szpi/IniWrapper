@@ -2,7 +2,7 @@
 
 namespace IniWrapper.IntegrationTests.Main.Configuration.Properties
 {
-    public class ListOfComplesDataConfiguration
+    public class ListOfComplexDataConfiguration
     {
         public IEnumerable<TestConfiguration> TestConfigurations { get; set; } = new List<TestConfiguration>();
     }

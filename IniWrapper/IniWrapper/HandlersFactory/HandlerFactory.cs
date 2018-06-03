@@ -24,11 +24,11 @@ namespace IniWrapper.HandlersFactory
             _typeManager = typeManager;
         }
 
-        public IHandler GetHandler(Type type, object value, MemberInfo propertyInfo)
+        public (IHandler handler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, MemberInfo propertyInfo)
         {
-            var typeInformation = _typeManager.GetTypeInformation(type, value);
+            var typeInformation = _typeManager.GetTypeInformation(type);
 
-            return GetHandlerWithIgnoreAttributeHandlerDecorator(value, typeInformation, propertyInfo);
+            return (GetHandlerWithIgnoreAttributeHandlerDecorator(value, typeInformation, propertyInfo), typeInformation);
         }
 
         private IHandler GetHandlerWithIgnoreAttributeHandlerDecorator(object value,

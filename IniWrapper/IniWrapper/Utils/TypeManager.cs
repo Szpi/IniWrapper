@@ -50,7 +50,7 @@ namespace IniWrapper.Utils
                 { typeof(byte[]), TypeCode.Bytes },
             };
 
-        public TypeDetailsInformation GetTypeInformation(Type type, object value)
+        public TypeDetailsInformation GetTypeInformation(Type type)
         {
             if (TypeCodeMap.TryGetValue(type, out var typeCode))
             {
@@ -60,7 +60,7 @@ namespace IniWrapper.Utils
             if (typeof(IEnumerable).IsAssignableFrom(type))
             {
                 var underlyingGenericType = type.GenericTypeArguments[0];
-                var genericTypeCode = GetTypeInformation(underlyingGenericType, value);
+                var genericTypeCode = GetTypeInformation(underlyingGenericType);
 
                 return new TypeDetailsInformation(TypeCode.Enumerable, genericTypeCode.TypeCode, genericTypeCode.IsEnum, underlyingGenericType);
             }
@@ -68,7 +68,7 @@ namespace IniWrapper.Utils
             if (type.IsEnum)
             {
                 var underlyingType = Enum.GetUnderlyingType(type);
-                var typeDetailsInformation = GetTypeInformation(underlyingType, value);
+                var typeDetailsInformation = GetTypeInformation(underlyingType);
 
                 return new TypeDetailsInformation(typeDetailsInformation.TypeCode, TypeCode.Empty, true, underlyingType);
             }
@@ -83,7 +83,7 @@ namespace IniWrapper.Utils
             {
                 var nullableUnderlyingType = typeof(Nullable<>).MakeGenericType(Enum.GetUnderlyingType(nonNullable));
 
-                var underlyingType = GetTypeInformation(nullableUnderlyingType, value);
+                var underlyingType = GetTypeInformation(nullableUnderlyingType);
                 return new TypeDetailsInformation(underlyingType.TypeCode, TypeCode.Empty, true, nullableUnderlyingType);
             }
 
