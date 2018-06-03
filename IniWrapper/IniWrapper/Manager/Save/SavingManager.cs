@@ -1,6 +1,6 @@
-﻿using System.Reflection;
-using IniWrapper.HandlersFactory;
+﻿using IniWrapper.HandlersFactory;
 using IniWrapper.Member;
+using IniWrapper.Wrapper;
 
 namespace IniWrapper.Manager.Save
 {
@@ -8,26 +8,35 @@ namespace IniWrapper.Manager.Save
     {
         private readonly IHandlerFactory _handlerFactory;
         private readonly IIniValueManager _iniValueManager;
+        private readonly IIniWrapper _iniWrapper;
 
-        public SavingManager( IHandlerFactory handlerFactory, IIniValueManager iniValueManager)
+        public SavingManager(IHandlerFactory handlerFactory, IIniValueManager iniValueManager, IIniWrapper iniWrapper)
         {
             _handlerFactory = handlerFactory;
             _iniValueManager = iniValueManager;
+            _iniWrapper = iniWrapper;
         }
 
-        public IniValue GetSaveValue(IMemberInfoWrapper memberInfoWrapper, object configuration)
+        public void SaveValue(IMemberInfoWrapper memberInfoWrapper, object configuration)
         {
             var value = memberInfoWrapper.GetValue(configuration);
-            var (handler,_) = _handlerFactory.GetHandler(memberInfoWrapper.GetMemberType(), value, memberInfoWrapper);
+            var (handler, _) = _handlerFactory.GetHandler(memberInfoWrapper.GetMemberType(), value, memberInfoWrapper);
 
             var valueToSave = handler.FormatToWrite(value);
 
-            return new IniValue()
+            var iniValue = new IniValue()
             {
                 Section = _iniValueManager.GetSection(configuration, memberInfoWrapper),
                 Key = _iniValueManager.GetKey(memberInfoWrapper),
                 Value = valueToSave
             };
+
+            if (iniValue.Value == null)
+            {
+                return;
+            }
+
+            _iniWrapper.Write(iniValue.Section, iniValue.Key, iniValue.Value);
         }
     }
 }

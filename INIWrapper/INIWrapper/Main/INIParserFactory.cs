@@ -18,7 +18,7 @@ namespace IniWrapper.Main
 
             var iniParser = new IniParser(filePath,
                                           new FileSystem(),
-                                          new SavingManager(handlerFactory, new IniValueManager(new IniValueAttributeManager())),
+                                          new SavingManager(handlerFactory, new IniValueManager(new IniValueAttributeManager()), iniWrapper),
                                           iniWrapper,
                                           new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, iniWrapper));
 

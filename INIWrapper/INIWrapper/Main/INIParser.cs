@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO.Abstractions;
-using IniWrapper.Manager;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
 using IniWrapper.Member;
@@ -86,13 +85,7 @@ namespace IniWrapper.Main
             foreach (var field in fields)
             {
                 var fieldInfoWrapper = new FieldInfoWrapper(field);
-                var iniValue = _savingManager.GetSaveValue(fieldInfoWrapper, configuration);
-                if (iniValue.Value == null)
-                {
-                    continue;
-                }
-
-                _iniWrapper.Write(iniValue.Section, iniValue.Key, iniValue.Value);
+                _savingManager.SaveValue(fieldInfoWrapper, configuration);
             }
         }
 
@@ -102,13 +95,7 @@ namespace IniWrapper.Main
             foreach (var property in properties)
             {
                 var propertyInfoWrapper = new PropertyInfoWrapper(property);
-                var iniValue = _savingManager.GetSaveValue(propertyInfoWrapper, configuration);
-                if (iniValue.Value == null)
-                {
-                    continue;
-                }
-
-                _iniWrapper.Write(iniValue.Section, iniValue.Key, iniValue.Value);
+                _savingManager.SaveValue(propertyInfoWrapper, configuration);
             }
         }
     }
