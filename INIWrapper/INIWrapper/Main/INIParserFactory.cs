@@ -4,7 +4,6 @@ using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
-using IniWrapper.Member;
 using IniWrapper.Utils;
 using IniWrapper.Wrapper;
 

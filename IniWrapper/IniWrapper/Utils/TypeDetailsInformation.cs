@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.AccessControl;
 
 namespace IniWrapper.Utils
 {

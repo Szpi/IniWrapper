@@ -1,10 +1,8 @@
-﻿using IniWrapper.IntegrationTests.Main.Configuration.Attribute;
-using IniWrapper.IntegrationTests.Main.Configuration.Attribute.Ignore;
+﻿using IniWrapper.IntegrationTests.Main.Configuration.Attribute.Ignore;
 using IniWrapper.Main;
 using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace IniWrapper.IntegrationTests.Main.Save.Attribute.Ignore
 {

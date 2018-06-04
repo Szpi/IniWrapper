@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace IniWrapper.IntegrationTests.Main.Configuration.Properties
+﻿namespace IniWrapper.IntegrationTests.Main.Configuration.Properties
 {
     public class ComplexTestConfiguration
     {

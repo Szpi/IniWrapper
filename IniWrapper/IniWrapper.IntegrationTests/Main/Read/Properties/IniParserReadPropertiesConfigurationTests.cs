@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.IO.Abstractions;
 using FluentAssertions;
-using IniWrapper.IntegrationTests.Main.Configuration;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.Main;

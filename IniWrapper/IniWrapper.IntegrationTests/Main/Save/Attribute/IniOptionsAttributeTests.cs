@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using IniWrapper.IntegrationTests.Main.Configuration;
-using IniWrapper.IntegrationTests.Main.Configuration.Attribute;
 using IniWrapper.IntegrationTests.Main.Configuration.Attribute.Save;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.Main;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Reflection;
 using IniWrapper.Handlers;
 using IniWrapper.Handlers.Enumerable;
 using IniWrapper.Handlers.Enums;

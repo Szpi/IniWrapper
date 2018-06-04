@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using IniWrapper.IntegrationTests.Main.Configuration;
 using IniWrapper.IntegrationTests.Main.Configuration.Attribute.Ignore;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.IntegrationTests.MockParser;

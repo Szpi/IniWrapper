@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using IniWrapper.Member;
+﻿using IniWrapper.Member;
 
 namespace IniWrapper.Manager
 {
