@@ -3,7 +3,6 @@ using System.IO.Abstractions;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
 using IniWrapper.Member;
-using IniWrapper.Wrapper;
 
 namespace IniWrapper.Main
 {
