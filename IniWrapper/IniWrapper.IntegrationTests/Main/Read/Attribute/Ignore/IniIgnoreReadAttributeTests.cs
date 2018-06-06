@@ -108,5 +108,15 @@ namespace IniWrapper.IntegrationTests.Main.Read.Attribute.Ignore
 
             result.TestEnum.Should().Be((TestEnum)0);
         }
+
+        [Test]
+        public void LoadConfiguration_CorrectIgnoreListEnum()
+        {
+            _iniWrapper.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestEnumList)).Returns("1,2,3");
+
+            var result = _iniParser.LoadConfiguration<IgnoreAttributeTestConfiguration>();
+
+            result.TestEnumList.Should().BeNull();
+        }
     }
 }

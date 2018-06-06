@@ -4,6 +4,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <DebugType>Full</DebugType>
     <IsPackable>false</IsPackable>
+	
+    <ProjectGuid>{0feac12e-672b-4819-957b-5260804c7bda}</ProjectGuid>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
