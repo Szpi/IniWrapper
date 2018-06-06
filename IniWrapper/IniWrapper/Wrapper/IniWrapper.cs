@@ -4,7 +4,7 @@ using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
 using IniWrapper.Member;
 
-namespace IniWrapper.Main
+namespace IniWrapper.Wrapper
 {
     public sealed class IniWrapper : IIniWrapper
     {

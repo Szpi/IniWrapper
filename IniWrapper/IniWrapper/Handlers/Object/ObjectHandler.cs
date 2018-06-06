@@ -1,6 +1,6 @@
 ﻿using System;
-using IniWrapper.Main;
 using IniWrapper.Manager;
+using IniWrapper.Wrapper;
 
 namespace IniWrapper.Handlers.Object
 {

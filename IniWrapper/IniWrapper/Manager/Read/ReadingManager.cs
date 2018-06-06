@@ -1,8 +1,8 @@
 ﻿using IniWrapper.Exceptions;
 using IniWrapper.HandlersFactory;
 using IniWrapper.Member;
+using IniWrapper.ParserWrapper;
 using IniWrapper.Utils;
-using IniWrapper.Wrapper;
 
 namespace IniWrapper.Manager.Read
 {

@@ -1,8 +1,12 @@
-﻿namespace IniWrapper.Wrapper
+﻿using System;
+
+namespace IniWrapper.Wrapper
 {
     public interface IIniWrapper
     {
-        string Read(string section, string key);
-        void Write(string section, string key, string value);
+        T LoadConfiguration<T>() where T : new();
+        object LoadConfiguration(Type destinationType);
+
+        void SaveConfiguration(object configuration);
     }
 }

@@ -1,17 +1,17 @@
 ﻿using System.IO.Abstractions;
 using IniWrapper.HandlersFactory;
-using IniWrapper.Main;
 using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
+using IniWrapper.ParserWrapper;
 using IniWrapper.Utils;
 using IniWrapper.Wrapper;
 using NSubstitute;
 
 namespace IniWrapper.IntegrationTests.MockParser
 {
-    public class MockParserFactory
+    public static class MockParserFactory
     {
         public static IIniWrapper CreateWithFileSystem(IIniParserWrapper iniParserWrapper)
         {
@@ -25,7 +25,7 @@ namespace IniWrapper.IntegrationTests.MockParser
 
             var handlerFactory = new HandlerFactory(new TypeManager());
 
-            var iniParser = new IniWrapper.Main.IniWrapper("dummy",
+            var iniParser = new Wrapper.IniWrapper("dummy",
                                           fileSystem,
                                           new SavingManager(handlerFactory, new IniValueManager(new IniValueAttributeManager()), iniParserWrapper),
                                           new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, iniParserWrapper));

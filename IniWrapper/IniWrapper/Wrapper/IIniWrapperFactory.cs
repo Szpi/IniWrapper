@@ -1,11 +1,11 @@
-﻿using IniWrapper.Wrapper;
+﻿using IniWrapper.ParserWrapper;
 
-namespace IniWrapper.Main
+namespace IniWrapper.Wrapper
 {
-    public interface IIniParserFactory
+    public interface IIniWrapperFactory
     {
-        IIniParser Create(string filePath, IIniParserWrapper iniParserWrapper);
+        IIniWrapper Create(string filePath, IIniParserWrapper iniParserWrapper);
 
-        IIniParser CreateWithDefaultIniWrapper(string filePath);
+        IIniWrapper CreateWithDefaultIniWrapper(string filePath);
     }
 }

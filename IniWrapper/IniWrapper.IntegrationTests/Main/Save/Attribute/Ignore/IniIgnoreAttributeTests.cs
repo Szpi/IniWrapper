@@ -1,5 +1,5 @@
 ﻿using IniWrapper.IntegrationTests.Main.Configuration.Attribute.Ignore;
-using IniWrapper.Main;
+using IniWrapper.ParserWrapper;
 using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;

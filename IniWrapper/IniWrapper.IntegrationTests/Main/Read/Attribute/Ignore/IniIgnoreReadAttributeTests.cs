@@ -2,7 +2,7 @@
 using IniWrapper.IntegrationTests.Main.Configuration.Attribute.Ignore;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.IntegrationTests.MockParser;
-using IniWrapper.Main;
+using IniWrapper.ParserWrapper;
 using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;

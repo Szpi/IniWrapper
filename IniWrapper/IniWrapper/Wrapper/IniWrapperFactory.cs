@@ -4,10 +4,10 @@ using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
+using IniWrapper.ParserWrapper;
 using IniWrapper.Utils;
-using IniWrapper.Wrapper;
 
-namespace IniWrapper.Main
+namespace IniWrapper.Wrapper
 {
     public class IniWrapperFactory : IIniWrapperFactory
     {
@@ -27,7 +27,7 @@ namespace IniWrapper.Main
 
         public IIniWrapper CreateWithDefaultIniWrapper(string filePath)
         {
-            return Create(filePath, new Wrapper.IniParserWrapper(filePath));
+            return Create(filePath, new IniParserWrapper(filePath));
         }
     }
 }

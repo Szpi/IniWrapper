@@ -1,6 +1,6 @@
 ﻿using IniWrapper.HandlersFactory;
 using IniWrapper.Member;
-using IniWrapper.Wrapper;
+using IniWrapper.ParserWrapper;
 
 namespace IniWrapper.Manager.Save
 {

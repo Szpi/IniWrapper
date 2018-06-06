@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
 
-namespace IniWrapper.Wrapper
+namespace IniWrapper.ParserWrapper
 {
     public sealed class IniParserWrapper : IIniParserWrapper
     {
@@ -17,12 +17,12 @@ namespace IniWrapper.Wrapper
             _filePath = iniPath;
         }
 
-        public string Read(string key, string section)
+        public string Read(string section, string key)
         {
-            var maxStringLength = 255;
-            var returnValue = new StringBuilder(maxStringLength);
-            GetPrivateProfileString(section, key, string.Empty, returnValue, maxStringLength, _filePath);
-            return returnValue.ToString();
+            var returnValueBuffer = new StringBuilder(1024);
+            GetPrivateProfileString(section, key, string.Empty, returnValueBuffer, returnValueBuffer.Capacity, _filePath);
+
+            return returnValueBuffer.ToString();
         }
 
         public void Write(string section,string key, string value)

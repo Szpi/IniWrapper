@@ -6,9 +6,9 @@ using IniWrapper.Handlers.Ignore;
 using IniWrapper.Handlers.NullValue;
 using IniWrapper.Handlers.Object;
 using IniWrapper.Handlers.Primitive;
-using IniWrapper.Main;
 using IniWrapper.Member;
 using IniWrapper.Utils;
+using IniWrapper.Wrapper;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.HandlersFactory

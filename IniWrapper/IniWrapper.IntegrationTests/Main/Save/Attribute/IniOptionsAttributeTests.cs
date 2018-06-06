@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using IniWrapper.IntegrationTests.Main.Configuration.Attribute.Save;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
-using IniWrapper.Main;
+using IniWrapper.ParserWrapper;
 using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
