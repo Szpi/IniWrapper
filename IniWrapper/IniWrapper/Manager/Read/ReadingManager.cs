@@ -10,15 +10,15 @@ namespace IniWrapper.Manager.Read
     {
         private readonly IHandlerFactory _handlerFactory;
         private readonly IIniValueManager _iniValueManager;
-        private readonly IIniWrapper _iniWrapper;
+        private readonly IIniParserWrapper _iniParserWrapper;
 
         public ReadingManager(IIniValueManager iniValueManager,
                               IHandlerFactory handlerFactory,
-                              IIniWrapper iniWrapper)
+                              IIniParserWrapper iniParserWrapper)
         {
             _iniValueManager = iniValueManager;
             _handlerFactory = handlerFactory;
-            _iniWrapper = iniWrapper;
+            _iniParserWrapper = iniParserWrapper;
         }
 
         public void ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration)
@@ -43,7 +43,7 @@ namespace IniWrapper.Manager.Read
                 Key = _iniValueManager.GetKey(memberInfoWrapper)
             };
 
-            var readValue = _iniWrapper.Read(iniValue.Section, iniValue.Key);
+            var readValue = _iniParserWrapper.Read(iniValue.Section, iniValue.Key);
 
             if (string.IsNullOrEmpty(readValue))
             {

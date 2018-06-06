@@ -13,21 +13,21 @@ namespace IniWrapper.IntegrationTests.Main.Read.Fields
     [TestFixture]
     public class IniParserIEnumerableOfComplexDataTests
     {
-        private IIniParser _iniParser;
-
         private IIniWrapper _iniWrapper;
+
+        private IIniParserWrapper _iniParserWrapper;
 
         [SetUp]
         public void SetUp()
         {
-            _iniWrapper = Substitute.For<IIniWrapper>();
-            _iniParser = MockParserFactory.CreateWithFileSystem(_iniWrapper);
+            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
+            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParserWrapper);
         }
 
         [Test]
         public void SaveConfiguration_ShouldThrowException_WhenConfigurationHasCollectionOfComplexType()
         {
-            Action loadConfiguration = () => _iniParser.LoadConfiguration<ListOfComplesDataConfigurationField>();
+            Action loadConfiguration = () => _iniWrapper.LoadConfiguration<ListOfComplesDataConfigurationField>();
 
             loadConfiguration.Should().Throw<CollectionOfCopmexTypeException>();
         }

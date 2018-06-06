@@ -2,7 +2,7 @@
 
 namespace IniWrapper.Main
 {
-    public interface IIniParser 
+    public interface IIniWrapper 
     {
         T LoadConfiguration<T>() where T : new();
         object LoadConfiguration(Type destinationType);
