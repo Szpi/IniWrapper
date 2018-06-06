@@ -11,15 +11,15 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute
     [TestFixture]
     public class IniOptionsAttributeTests
     {
-        private IIniParser _iniParser;
-
         private IIniWrapper _iniWrapper;
+
+        private IIniParserWrapper _iniParserWrapper;
 
         [SetUp]
         public void SetUp()
         {
-            _iniWrapper = Substitute.For<IIniWrapper>();
-            _iniParser = new IniParserFactory().Create("", _iniWrapper);
+            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
+            _iniWrapper = new IniWrapperFactory().Create("", _iniParserWrapper);
         }
 
         [Test]
@@ -30,8 +30,8 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute
             {
                 TestString = testString,
             };
-            _iniParser.SaveConfiguration(config);
-            _iniWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, testString);
+            _iniWrapper.SaveConfiguration(config);
+            _iniParserWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, testString);
         }
 
         [Test]
@@ -41,9 +41,9 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute
             {
                 TestInt = value,
             };
-            _iniParser.SaveConfiguration(config);
+            _iniWrapper.SaveConfiguration(config);
 
-            _iniWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, value.ToString());
+            _iniParserWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, value.ToString());
         }
 
         [Test]
@@ -53,9 +53,9 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute
             {
                 TestUint = value,
             };
-            _iniParser.SaveConfiguration(config);
+            _iniWrapper.SaveConfiguration(config);
 
-            _iniWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, value.ToString());
+            _iniParserWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, value.ToString());
         }
         [Test]
         public void SaveConfiguration_CorrectWriteChar([Values('a', 'z', ' ', 'b')] char value)
@@ -64,9 +64,9 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute
             {
                 TestChar = value,
             };
-            _iniParser.SaveConfiguration(config);
+            _iniWrapper.SaveConfiguration(config);
 
-            _iniWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, value.ToString());
+            _iniParserWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, value.ToString());
         }
         [Test]
         public void SaveConfiguration_CorrectWriteStringList()
@@ -78,9 +78,9 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute
                     "a","b","c","d","f"
                 },
             };
-            _iniParser.SaveConfiguration(config);
+            _iniWrapper.SaveConfiguration(config);
 
-            _iniWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, "a,b,c,d,f");
+            _iniParserWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, "a,b,c,d,f");
         }
         [Test]
         public void SaveConfiguration_CorrectWriteIntList()
@@ -92,9 +92,9 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute
                     1,2,3,4,5,6,7,8
                 },
             };
-            _iniParser.SaveConfiguration(config);
+            _iniWrapper.SaveConfiguration(config);
 
-            _iniWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, "1,2,3,4,5,6,7,8");
+            _iniParserWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, "1,2,3,4,5,6,7,8");
         }
         [Test]
         public void SaveConfiguration_CorrectWriteUintList()
@@ -106,9 +106,9 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute
                     1u,2u,3u,4u,5u,6u,7u,8u
                 },
             };
-            _iniParser.SaveConfiguration(config);
+            _iniWrapper.SaveConfiguration(config);
 
-            _iniWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, "1,2,3,4,5,6,7,8");
+            _iniParserWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, "1,2,3,4,5,6,7,8");
         }
 
         [Test]
@@ -118,9 +118,9 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute
             {
                 TestEnum = TestEnum.Five
             };
-            _iniParser.SaveConfiguration(config);
+            _iniWrapper.SaveConfiguration(config);
 
-            _iniWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, ((int)TestEnum.Five).ToString());
+            _iniParserWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, ((int)TestEnum.Five).ToString());
         }
 
         [Test]
@@ -130,9 +130,9 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute
             {
                 TestEnumList = new List<TestEnum>() { TestEnum.One, TestEnum.Two, TestEnum.Three, TestEnum.Zero }
             };
-            _iniParser.SaveConfiguration(config);
+            _iniWrapper.SaveConfiguration(config);
 
-            _iniWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, "1,2,3,0");
+            _iniParserWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, "1,2,3,0");
         }
 
         [Test]
@@ -140,11 +140,11 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute
         {
             var config = new AttributeTestConfiguration();
 
-            _iniParser.SaveConfiguration(config);
+            _iniWrapper.SaveConfiguration(config);
 
-            _iniWrapper.Received(5).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, string.Empty);
-            _iniWrapper.Received(3).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, "0");
-            _iniWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, "\u0000");
+            _iniParserWrapper.Received(5).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, string.Empty);
+            _iniParserWrapper.Received(3).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, "0");
+            _iniParserWrapper.Received(1).Write(AttributeTestConfigurationConstants.Section, AttributeTestConfigurationConstants.Key, "\u0000");
         }
     }
 }

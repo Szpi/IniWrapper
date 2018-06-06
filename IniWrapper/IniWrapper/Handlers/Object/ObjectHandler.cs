@@ -6,21 +6,21 @@ namespace IniWrapper.Handlers.Object
 {
     public class ObjectHandler : IHandler
     {
-        private readonly IIniParser _iniParser;
+        private readonly IIniWrapper _iniWrapper;
 
-        public ObjectHandler(IIniParser iniParser)
+        public ObjectHandler(IIniWrapper iniWrapper)
         {
-            _iniParser = iniParser;
+            _iniWrapper = iniWrapper;
         }
 
         public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
         {
-            return _iniParser.LoadConfiguration(destinationType);
+            return _iniWrapper.LoadConfiguration(destinationType);
         }
 
         public string FormatToWrite(object objectToFormat)
         {
-            _iniParser.SaveConfiguration(objectToFormat);
+            _iniWrapper.SaveConfiguration(objectToFormat);
             return null;
         }
     }

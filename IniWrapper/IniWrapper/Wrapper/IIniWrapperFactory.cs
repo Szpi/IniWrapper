@@ -4,7 +4,7 @@ namespace IniWrapper.Main
 {
     public interface IIniParserFactory
     {
-        IIniParser Create(string filePath, IIniWrapper iniWrapper);
+        IIniParser Create(string filePath, IIniParserWrapper iniParserWrapper);
 
         IIniParser CreateWithDefaultIniWrapper(string filePath);
     }
