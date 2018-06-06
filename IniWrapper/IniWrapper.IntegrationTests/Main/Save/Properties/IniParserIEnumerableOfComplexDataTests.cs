@@ -12,15 +12,15 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
     [TestFixture]
     public class IniParserIEnumerableOfComplexDataTests
     {
-        private IIniWrapper _iniWrapper;
+        private IIniParser _iniParser;
 
-        private IIniParserWrapper _iniParserWrapper;
+        private IIniWrapper _iniWrapper;
 
         [SetUp]
         public void SetUp()
         {
-            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
-            _iniWrapper = new IniWrapperFactory().Create("", _iniParserWrapper);
+            _iniWrapper = Substitute.For<IIniWrapper>();
+            _iniParser = new IniParserFactory().Create("", _iniWrapper);
         }
 
         [Test]
@@ -28,7 +28,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
         {
             var config = new ListOfComplexDataConfiguration();
 
-            Action saveConfiguration = () => _iniWrapper.SaveConfiguration(config);
+            Action saveConfiguration = () => _iniParser.SaveConfiguration(config);
 
             saveConfiguration.Should().Throw<CollectionOfCopmexTypeException>();
         }

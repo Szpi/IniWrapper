@@ -3,7 +3,7 @@ using System.Text;
 
 namespace IniWrapper.Wrapper
 {
-    public sealed class IniParserParserWrapper : IIniParserWrapper
+    public sealed class IniWrapper : IIniWrapper
     {
         private readonly string _filePath;
         [DllImport("kernel32", CharSet = CharSet.Unicode)]
@@ -12,17 +12,17 @@ namespace IniWrapper.Wrapper
         [DllImport("kernel32", CharSet = CharSet.Unicode)]
         private static extern int GetPrivateProfileString(string section, string key, string Default, StringBuilder retVal, int size, string filePath);
 
-        public IniParserParserWrapper(string iniPath)
+        public IniWrapper(string iniPath)
         {
             _filePath = iniPath;
         }
 
-        public string Read(string section, string key)
+        public string Read(string key, string section)
         {
-            var returnValueBuffer = new StringBuilder(1024);
-            GetPrivateProfileString(section, key, string.Empty, returnValueBuffer, returnValueBuffer.Capacity, _filePath);
-
-            return returnValueBuffer.ToString();
+            var maxStringLength = 255;
+            var returnValue = new StringBuilder(maxStringLength);
+            GetPrivateProfileString(section, key, string.Empty, returnValue, maxStringLength, _filePath);
+            return returnValue.ToString();
         }
 
         public void Write(string section,string key, string value)

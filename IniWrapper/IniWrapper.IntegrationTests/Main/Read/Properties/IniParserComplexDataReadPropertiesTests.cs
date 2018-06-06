@@ -12,15 +12,15 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
     [TestFixture]
     public class IniParserComplexDataReadPropertiesTests
     {
-        private IIniWrapper _iniWrapper;
+        private IIniParser _iniParser;
 
-        private IIniParserWrapper _iniParserWrapper;
+        private IIniWrapper _iniWrapper;
 
         [SetUp]
         public void SetUp()
         {
-            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
-            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParserWrapper);
+            _iniWrapper = Substitute.For<IIniWrapper>();
+            _iniParser = MockParserFactory.CreateWithFileSystem(_iniWrapper);
         }
 
         [Test]
@@ -38,13 +38,13 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
                     TestUintList = new List<uint>() { 1, 2, 3, 4 }
                 }
             };
-            _iniParserWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestString)).Returns(testString);
-            _iniParserWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestChar)).Returns(config.TestConfiguration.TestChar.ToString());
-            _iniParserWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestInt)).Returns(config.TestConfiguration.TestInt.ToString());
-            _iniParserWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestUint)).Returns(config.TestConfiguration.TestUint.ToString());
-            _iniParserWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestUintList)).Returns("1,2,3,4");
+            _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestString)).Returns(testString);
+            _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestChar)).Returns(config.TestConfiguration.TestChar.ToString());
+            _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestInt)).Returns(config.TestConfiguration.TestInt.ToString());
+            _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestUint)).Returns(config.TestConfiguration.TestUint.ToString());
+            _iniWrapper.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestUintList)).Returns("1,2,3,4");
 
-            var result = _iniWrapper.LoadConfiguration<ComplexTestConfiguration>();
+            var result = _iniParser.LoadConfiguration<ComplexTestConfiguration>();
 
 
             result.TestConfiguration.TestChar.Should().Be(config.TestConfiguration.TestChar);

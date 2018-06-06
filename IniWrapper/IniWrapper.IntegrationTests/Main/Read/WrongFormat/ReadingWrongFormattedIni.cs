@@ -12,23 +12,23 @@ namespace IniWrapper.IntegrationTests.Main.Read.WrongFormat
 {
     public class ReadingWrongFormattedIni
     {
-        private IIniWrapper _iniWrapper;
+        private IIniParser _iniParser;
 
-        private IIniParserWrapper _iniParserWrapper;
+        private IIniWrapper _iniWrapper;
 
         [SetUp]
         public void SetUp()
         {
-            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
-            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParserWrapper);
+            _iniWrapper = Substitute.For<IIniWrapper>();
+            _iniParser = MockParserFactory.CreateWithFileSystem(_iniWrapper);
         }
 
         [Test]
         public void LoadConfiguration_ShouldThrow_WhenWrongFormattedIntIsInFile()
         {
-            _iniParserWrapper.Read(nameof(TestConfigurationField), nameof(TestConfigurationField.TestInt)).Returns("wrong_formatted_int");
+            _iniWrapper.Read(nameof(TestConfigurationField), nameof(TestConfigurationField.TestInt)).Returns("wrong_formatted_int");
 
-            Action result = () => _iniWrapper.LoadConfiguration<TestConfigurationField>();
+            Action result = () => _iniParser.LoadConfiguration<TestConfigurationField>();
 
             result.Should().Throw<IniWrongFormatException>();
         }

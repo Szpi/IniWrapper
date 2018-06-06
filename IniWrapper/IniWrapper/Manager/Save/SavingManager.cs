@@ -8,13 +8,13 @@ namespace IniWrapper.Manager.Save
     {
         private readonly IHandlerFactory _handlerFactory;
         private readonly IIniValueManager _iniValueManager;
-        private readonly IIniParserWrapper _iniParserWrapper;
+        private readonly IIniWrapper _iniWrapper;
 
-        public SavingManager(IHandlerFactory handlerFactory, IIniValueManager iniValueManager, IIniParserWrapper iniParserWrapper)
+        public SavingManager(IHandlerFactory handlerFactory, IIniValueManager iniValueManager, IIniWrapper iniWrapper)
         {
             _handlerFactory = handlerFactory;
             _iniValueManager = iniValueManager;
-            _iniParserWrapper = iniParserWrapper;
+            _iniWrapper = iniWrapper;
         }
 
         public void SaveValue(IMemberInfoWrapper memberInfoWrapper, object configuration)
@@ -36,7 +36,7 @@ namespace IniWrapper.Manager.Save
                 return;
             }
 
-            _iniParserWrapper.Write(iniValue.Section, iniValue.Key, iniValue.Value);
+            _iniWrapper.Write(iniValue.Section, iniValue.Key, iniValue.Value);
         }
     }
 }

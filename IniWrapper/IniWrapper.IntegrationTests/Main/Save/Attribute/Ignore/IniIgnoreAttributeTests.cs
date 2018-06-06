@@ -9,15 +9,15 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute.Ignore
     [TestFixture]
     public class IniIgnoreAttributeTests
     {
-        private IIniWrapper _iniWrapper;
+        private IIniParser _iniParser;
 
-        private IIniParserWrapper _iniParserWrapper;
+        private IIniWrapper _iniWrapper;
 
         [SetUp]
         public void SetUp()
         {
-            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
-            _iniWrapper = new IniWrapperFactory().Create("", _iniParserWrapper);
+            _iniWrapper = Substitute.For<IIniWrapper>();
+            _iniParser = new IniParserFactory().Create("", _iniWrapper);
         }
 
         [Test]
@@ -25,9 +25,9 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute.Ignore
         {
             var config = new IgnoreAttributeTestConfiguration();
 
-            _iniWrapper.SaveConfiguration(config);
+            _iniParser.SaveConfiguration(config);
 
-            _iniParserWrapper.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            _iniWrapper.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
     }
 }

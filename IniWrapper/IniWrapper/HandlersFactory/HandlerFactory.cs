@@ -17,7 +17,7 @@ namespace IniWrapper.HandlersFactory
     {
         private readonly ITypeManager _typeManager;
 
-        public IIniWrapper IniWrapper { get; set; }
+        public IIniParser IniParser { get; set; }
 
         public HandlerFactory(ITypeManager typeManager)
         {
@@ -59,7 +59,7 @@ namespace IniWrapper.HandlersFactory
 
             if (typeCode == TypeCode.Object)
             {
-                return new ObjectHandler(IniWrapper);
+                return new ObjectHandler(IniParser);
             }
 
             if (value == null)

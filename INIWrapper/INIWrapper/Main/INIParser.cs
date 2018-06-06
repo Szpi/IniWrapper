@@ -6,14 +6,14 @@ using IniWrapper.Member;
 
 namespace IniWrapper.Main
 {
-    public sealed class IniWrapper : IIniWrapper
+    public sealed class IniParser : IIniParser
     {
         private readonly string _filePath;
         private readonly IFileSystem _fileSystem;
         private readonly ISavingManager _savingManager;
         private readonly IReadingManager _readingManager;
 
-        public IniWrapper(string filePath,
+        public IniParser(string filePath,
                          IFileSystem fileSystem,
                          ISavingManager savingManager,
                          IReadingManager readingManager)
