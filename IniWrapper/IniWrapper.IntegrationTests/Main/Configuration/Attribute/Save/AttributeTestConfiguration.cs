@@ -4,7 +4,7 @@ using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 
 namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute.Save
 {
-    public class AttributeTestConfigurationConstants
+    public static class AttributeTestConfigurationConstants
     {
         public const string Key = "AttributeKey";
         public const string Section = "AttributeSection";

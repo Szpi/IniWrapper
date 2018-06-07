@@ -4,7 +4,7 @@ using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 
 namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute.Read
 {
-    public class AttributeWithOnlySectionReadTestConfigurationConstants
+    public static class AttributeWithOnlySectionReadTestConfigurationConstants
     {
         public const string TestStringSection = "TestStringAttributeSection";
 

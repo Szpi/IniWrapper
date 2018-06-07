@@ -4,7 +4,7 @@ using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 
 namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute.Read
 {
-    public class AttributeWithOnlyKeyReadTestConfigurationConstants
+    public static class AttributeWithOnlyKeyReadTestConfigurationConstants
     {
         public const string TestStringKey = "TestStringAttributeKey";
 
