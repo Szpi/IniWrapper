@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace IniWrapper.Main
+namespace IniWrapper.Wrapper
 {
-    public interface IIniParser 
+    public interface IIniWrapper
     {
         T LoadConfiguration<T>() where T : new();
         object LoadConfiguration(Type destinationType);
