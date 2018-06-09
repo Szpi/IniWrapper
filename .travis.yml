@@ -12,7 +12,7 @@ script:
   - dotnet restore ./IniWrapper/
   - dotnet build ./IniWrapper/
   - dotnet test ./IniWrapper/IniWrapper.IntegrationTests/IniWrapper.IntegrationTests.csproj --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit*]*
-  - dotnet test ./IniWrapper/IniWrapper.Tests/IniWrapper.IniWrapper.Tests.csproj --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit*]*
+  - dotnet test ./IniWrapper/IniWrapper.Tests/IniWrapper.Tests.csproj --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit*]*
   - curl -s https://codecov.io/bash > codecov
   - chmod +x codecov
   - ./codecov -f ./IniWrapper/IniWrapper.IntegrationTests/coverage.xml
