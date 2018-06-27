@@ -27,8 +27,9 @@ namespace IniWrapper.HandlersFactory
         public (IHandler handler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
         {
             var typeInformation = _typeManager.GetTypeInformation(type);
+            var handlerWithDecorator = GetHandlerWithIgnoreAttributeHandlerDecorator(value, typeInformation, memberInfoWrapper);
 
-            return (GetHandlerWithIgnoreAttributeHandlerDecorator(value, typeInformation, memberInfoWrapper), typeInformation);
+            return (handlerWithDecorator, typeInformation);
         }
 
         private IHandler GetHandlerWithIgnoreAttributeHandlerDecorator(object value,
@@ -52,11 +53,6 @@ namespace IniWrapper.HandlersFactory
 
         private IHandler GetBaseHandler(TypeCode typeCode, bool isEnum, object value)
         {
-            if (isEnum)
-            {
-                return new EnumHandler(typeCode);
-            }
-
             if (typeCode == TypeCode.Object)
             {
                 return new ObjectHandler(IniWrapper);
@@ -65,6 +61,11 @@ namespace IniWrapper.HandlersFactory
             if (value == null)
             {
                 return new NullValueHandler();
+            }
+
+            if (isEnum)
+            {
+                return new EnumHandler(typeCode);
             }
 
             return new PrimitivesHandler();
