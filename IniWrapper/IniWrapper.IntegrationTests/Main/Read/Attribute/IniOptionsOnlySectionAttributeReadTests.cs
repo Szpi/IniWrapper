@@ -136,5 +136,18 @@ namespace IniWrapper.IntegrationTests.Main.Read.Attribute
 
             result.TestEnum.Should().Be(expected);
         }
+
+        [Test]
+        public void LoadConfiguration_CorrectReadEnumList()
+        {
+            _iniParserWrapper.Read(AttributeWithOnlySectionReadTestConfigurationConstants.TestEnumListSection, nameof(AttributeWithOnlySectionReadTestConfiguration.TestEnumList)).Returns("1,2,3,4,");
+            var expected = new List<TestEnum> { TestEnum.One, TestEnum.Two, TestEnum.Three, TestEnum.Four };
+
+            var result = _iniWrapper.LoadConfiguration<AttributeWithOnlySectionReadTestConfiguration>();
+
+            _iniParserWrapper.Received(1).Read(AttributeWithOnlySectionReadTestConfigurationConstants.TestEnumListSection, nameof(AttributeWithOnlySectionReadTestConfiguration.TestEnumList));
+
+            result.TestEnumList.Should().BeEquivalentTo(expected);
+        }
     }
 }

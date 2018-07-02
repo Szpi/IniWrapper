@@ -81,8 +81,7 @@ namespace IniWrapper.Utils
             var nonNullable = Nullable.GetUnderlyingType(type);
             if (nonNullable.IsEnum)
             {
-                var nullableUnderlyingType = typeof(Nullable<>).MakeGenericType(Enum.GetUnderlyingType(nonNullable));
-
+                var nullableUnderlyingType = Enum.GetUnderlyingType(nonNullable);
                 var underlyingType = GetTypeInformation(nullableUnderlyingType);
                 return new TypeDetailsInformation(underlyingType.TypeCode, TypeCode.Empty, true, nullableUnderlyingType);
             }
