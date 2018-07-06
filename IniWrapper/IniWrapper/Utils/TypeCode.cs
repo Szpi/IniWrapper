@@ -3,7 +3,7 @@
     public enum TypeCode
     {
         Empty = 0,
-        Object = 1,
+        ReferenceObject = 1,
         Char = 2,
         CharNullable = 3,
         Boolean = 4,
@@ -44,6 +44,7 @@
         String = 39,
         Bytes = 40,
         Enumerable = 41,
-        Enum = 42
+        Enum = 42,
+        Dictionary = 43,
     }
 }

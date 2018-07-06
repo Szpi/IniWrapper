@@ -1,5 +1,6 @@
 ﻿using System;
 using IniWrapper.Handlers;
+using IniWrapper.Handlers.Dictionary;
 using IniWrapper.Handlers.Enumerable;
 using IniWrapper.Handlers.Enums;
 using IniWrapper.Handlers.Ignore;
@@ -36,24 +37,36 @@ namespace IniWrapper.HandlersFactory
                                                                        TypeDetailsInformation typeInformation,
                                                                        IMemberInfoWrapper memberInfoWrapper)
         {
-            return new IgnoreAttributeHandler(GetHandler(value,typeInformation), memberInfoWrapper);
+            return new IgnoreAttributeHandler(GetHandler(value, typeInformation), memberInfoWrapper);
         }
 
         private IHandler GetHandler(object value, TypeDetailsInformation typeInformation)
         {
-            if (typeInformation.TypeCode == TypeCode.Enumerable)
+            switch (typeInformation.TypeCode)
             {
-                var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeCode, typeInformation.IsEnum, value);
+                case TypeCode.Dictionary:
+                    {
+                        var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum, value);
+                        var underlyingKeyTypeHandler = GetBaseHandler(typeInformation.UnderlyingKeyTypeInformation.TypeCode, typeInformation.UnderlyingKeyTypeInformation.IsEnum, value);
 
-                return new EnumerableHandler(underlyingTypeHandler, typeInformation.UnderlyingTypeCode, typeInformation.UnderlyingType);
+                        return new DictionaryHandler(underlyingTypeHandler, underlyingKeyTypeHandler);
+                    }
+                case TypeCode.Enumerable:
+                    {
+                        var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum, value);
+
+                        return new EnumerableHandler(underlyingTypeHandler, typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.Type);
+                    }
+                default:
+                    {
+                        return GetBaseHandler(typeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum, value);
+                    }
             }
-
-            return GetBaseHandler(typeInformation.TypeCode, typeInformation.IsEnum, value);
         }
 
         private IHandler GetBaseHandler(TypeCode typeCode, bool isEnum, object value)
         {
-            if (typeCode == TypeCode.Object)
+            if (typeCode == TypeCode.ReferenceObject)
             {
                 return new ObjectHandler(IniWrapper);
             }

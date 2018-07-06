@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using IniWrapper.Exceptions;
 using IniWrapper.Manager;
+using IniWrapper.Member;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Handlers.Enumerable
@@ -25,7 +27,7 @@ namespace IniWrapper.Handlers.Enumerable
 
         public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
         {
-            if (_underlyingTypeCode == TypeCode.Object)
+            if (_underlyingTypeCode == TypeCode.ReferenceObject)
             {
                 throw new CollectionOfCopmexTypeException();
             }
@@ -40,27 +42,34 @@ namespace IniWrapper.Handlers.Enumerable
             return returnedList;
         }
 
-        public string FormatToWrite(object objectToFormat)
+        public IEnumerable<IniValue> FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
-            if (!(objectToFormat is IEnumerable enumerable))
+            if (!(objectToFormat is IEnumerable))
             {
-                return string.Empty;
+                defaultIniValue.Value = string.Empty;
+
+                yield return defaultIniValue;
             }
 
-            if (_underlyingTypeCode == TypeCode.Object)
+            if (_underlyingTypeCode == TypeCode.ReferenceObject)
             {
                 throw new CollectionOfCopmexTypeException();
             }
-
+            var enumerable = objectToFormat as IEnumerable;
+            
             var stringBuilder = new StringBuilder();
 
             foreach (var item in enumerable)
             {
-                stringBuilder.Append(_underlyingTypeHandler.FormatToWrite(item));
+                stringBuilder.Append(_underlyingTypeHandler.FormatToWrite(item, defaultIniValue)?.FirstOrDefault()?.Value);
                 stringBuilder.Append(Separator);
             }
+
             RemoveLastSeparator(stringBuilder);
-            return stringBuilder.ToString();
+
+            defaultIniValue.Value = stringBuilder.ToString();
+
+            yield return defaultIniValue;
         }
 
         private static void RemoveLastSeparator(StringBuilder stringBuilder)

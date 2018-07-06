@@ -22,21 +22,23 @@ namespace IniWrapper.Manager.Save
             var value = memberInfoWrapper.GetValue(configuration);
             var (handler, _) = _handlerFactory.GetHandler(memberInfoWrapper.GetMemberType(), value, memberInfoWrapper);
 
-            var valueToSave = handler.FormatToWrite(value);
-
-            var iniValue = new IniValue()
+            var defaultIniValue = new IniValue()
             {
                 Section = _iniValueManager.GetSection(configuration, memberInfoWrapper),
                 Key = _iniValueManager.GetKey(memberInfoWrapper),
-                Value = valueToSave
             };
 
-            if (iniValue.Value == null)
-            {
-                return;
-            }
+            var valuesToSave = handler.FormatToWrite(value, defaultIniValue);
 
-            _iniParserWrapper.Write(iniValue.Section, iniValue.Key, iniValue.Value);
+            foreach (var valueToSave in valuesToSave)
+            {
+                if (valueToSave?.Value == null)
+                {
+                    return;
+                }
+
+                _iniParserWrapper.Write(valueToSave.Section, valueToSave.Key, valueToSave.Value);
+            }
         }
     }
 }

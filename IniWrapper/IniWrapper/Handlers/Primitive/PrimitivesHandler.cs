@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using IniWrapper.Exceptions;
 using IniWrapper.Manager;
+using IniWrapper.Member;
 
 namespace IniWrapper.Handlers.Primitive
 {
@@ -18,9 +21,11 @@ namespace IniWrapper.Handlers.Primitive
             }
         }
 
-        public string FormatToWrite(object objectToFormat)
+        public IEnumerable<IniValue> FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
-            return objectToFormat.ToString();
+            defaultIniValue.Value = objectToFormat.ToString();
+
+            yield return defaultIniValue;
         }
     }
 }

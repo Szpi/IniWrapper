@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IniWrapper.Manager;
 
 namespace IniWrapper.Handlers.NullValue
@@ -10,9 +11,11 @@ namespace IniWrapper.Handlers.NullValue
             return readValue;
         }
 
-        public string FormatToWrite(object objectToFormat)
+        public IEnumerable<IniValue> FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
-            return string.Empty;
+            defaultIniValue.Value = string.Empty;
+
+            yield return defaultIniValue;
         }
     }
 }

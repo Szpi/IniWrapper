@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IniWrapper.Manager;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
@@ -18,11 +19,13 @@ namespace IniWrapper.Handlers.Enums
             return Enum.Parse(destinationType, readValue);
         }
 
-        public string FormatToWrite(object objectToFormat)
+        public IEnumerable<IniValue> FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
             var castedUnderlyingType = ToUInt64(objectToFormat);
 
-            return castedUnderlyingType.ToString();
+            defaultIniValue.Value = castedUnderlyingType.ToString();
+
+            yield return defaultIniValue;
         }
 
         private ulong ToUInt64(object value)

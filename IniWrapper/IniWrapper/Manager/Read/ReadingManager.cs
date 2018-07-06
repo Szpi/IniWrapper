@@ -25,14 +25,14 @@ namespace IniWrapper.Manager.Read
         {
             var (handler, typeDetailsInformation) = _handlerFactory.GetHandler(memberInfoWrapper.GetMemberType(), 0, memberInfoWrapper);
 
-            if (typeDetailsInformation.TypeCode == TypeCode.Object)
+            if (typeDetailsInformation.TypeCode == TypeCode.ReferenceObject)
             {
                 var parsedObjectValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), null, null);
                 memberInfoWrapper.SetValue(configuration, parsedObjectValue);
                 return;
             }
 
-            if (typeDetailsInformation.TypeCode == TypeCode.Enumerable && typeDetailsInformation.UnderlyingTypeCode == TypeCode.Object)
+            if (typeDetailsInformation.TypeCode == TypeCode.Enumerable && typeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ReferenceObject)
             {
                 throw new CollectionOfCopmexTypeException();
             }

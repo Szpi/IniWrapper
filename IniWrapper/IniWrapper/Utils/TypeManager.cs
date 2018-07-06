@@ -54,7 +54,21 @@ namespace IniWrapper.Utils
         {
             if (TypeCodeMap.TryGetValue(type, out var typeCode))
             {
-                return new TypeDetailsInformation(typeCode, TypeCode.Empty, false, null);
+                return new TypeDetailsInformation(typeCode, new UnderlyingTypeInformation(TypeCode.Empty, false, null), null);
+            }
+
+            if (typeof(IDictionary).IsAssignableFrom(type))
+            {
+                var underlyingGenericTypeKey = type.GenericTypeArguments[0];
+                var underlyingGenericTypeValue = type.GenericTypeArguments[1];
+
+                var genericKeyTypeCode = GetTypeInformation(underlyingGenericTypeKey);
+                var genericValueTypeCode = GetTypeInformation(underlyingGenericTypeValue);
+
+                var underlyingKeyTypeInformation = new UnderlyingTypeInformation(genericValueTypeCode.TypeCode, genericValueTypeCode.UnderlyingTypeInformation.IsEnum, genericValueTypeCode.UnderlyingTypeInformation.Type);
+                var underlyingTypeInformation = new UnderlyingTypeInformation(genericKeyTypeCode.TypeCode, genericKeyTypeCode.UnderlyingTypeInformation.IsEnum, genericValueTypeCode.UnderlyingTypeInformation.Type);
+
+                return new TypeDetailsInformation(TypeCode.Dictionary, underlyingTypeInformation, underlyingKeyTypeInformation);
             }
 
             if (typeof(IEnumerable).IsAssignableFrom(type))
@@ -62,20 +76,25 @@ namespace IniWrapper.Utils
                 var underlyingGenericType = type.GenericTypeArguments[0];
                 var genericTypeCode = GetTypeInformation(underlyingGenericType);
 
-                return new TypeDetailsInformation(TypeCode.Enumerable, genericTypeCode.TypeCode, genericTypeCode.IsEnum, underlyingGenericType);
+                return new TypeDetailsInformation(TypeCode.Enumerable,
+                                                  new UnderlyingTypeInformation(
+                                                      genericTypeCode.TypeCode,
+                                                      genericTypeCode.UnderlyingTypeInformation.IsEnum,
+                                                      underlyingGenericType), null);
             }
+
 
             if (type.IsEnum)
             {
                 var underlyingType = Enum.GetUnderlyingType(type);
                 var typeDetailsInformation = GetTypeInformation(underlyingType);
 
-                return new TypeDetailsInformation(typeDetailsInformation.TypeCode, TypeCode.Empty, true, underlyingType);
+                return new TypeDetailsInformation(typeDetailsInformation.TypeCode, new UnderlyingTypeInformation(TypeCode.Empty, true, underlyingType), null);
             }
 
             if (!IsNullableType(type))
             {
-                return new TypeDetailsInformation(TypeCode.Object, TypeCode.Empty, false, null);
+                return new TypeDetailsInformation(TypeCode.ReferenceObject, new UnderlyingTypeInformation(TypeCode.Empty, false, null), null);
             }
 
             var nonNullable = Nullable.GetUnderlyingType(type);
@@ -83,10 +102,10 @@ namespace IniWrapper.Utils
             {
                 var nullableUnderlyingType = Enum.GetUnderlyingType(nonNullable);
                 var underlyingType = GetTypeInformation(nullableUnderlyingType);
-                return new TypeDetailsInformation(underlyingType.TypeCode, TypeCode.Empty, true, nullableUnderlyingType);
+                return new TypeDetailsInformation(underlyingType.TypeCode, new UnderlyingTypeInformation(TypeCode.Empty, true, nullableUnderlyingType), null);
             }
 
-            return new TypeDetailsInformation(TypeCode.Object, TypeCode.Empty, false, null);
+            return new TypeDetailsInformation(TypeCode.ReferenceObject, new UnderlyingTypeInformation(TypeCode.Empty, false, null), null);
         }
 
         private static bool IsNullableType(Type t)

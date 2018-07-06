@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IniWrapper.Attribute;
 using IniWrapper.Manager;
 using IniWrapper.Member;
@@ -22,11 +23,11 @@ namespace IniWrapper.Handlers.Ignore
             return ignoreAttribute == null ? _handler.ParseReadValue(destinationType, readValue, iniValue) : null;
         }
 
-        public string FormatToWrite(object objectToFormat)
+        public IEnumerable<IniValue> FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
             var ignoreAttribute = _memberInfoWrapper.GetAttribute<IniIgnoreAttribute>();
 
-            return ignoreAttribute == null ? _handler.FormatToWrite(objectToFormat) : null;
+            return ignoreAttribute == null ? _handler.FormatToWrite(objectToFormat, defaultIniValue) : null;
         }
     }
 }

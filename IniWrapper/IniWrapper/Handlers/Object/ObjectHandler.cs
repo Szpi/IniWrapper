@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IniWrapper.Manager;
 using IniWrapper.Wrapper;
 
@@ -18,7 +19,7 @@ namespace IniWrapper.Handlers.Object
             return _iniWrapper.LoadConfiguration(destinationType);
         }
 
-        public string FormatToWrite(object objectToFormat)
+        public IEnumerable<IniValue> FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
             _iniWrapper.SaveConfiguration(objectToFormat);
             return null;
