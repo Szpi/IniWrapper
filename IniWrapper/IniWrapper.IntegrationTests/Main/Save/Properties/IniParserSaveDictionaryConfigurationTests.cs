@@ -15,13 +15,13 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
     {
         private IIniWrapper _iniWrapper;
 
-        private IIniParserWrapper _iniParserWrapper;
+        private IIniParser _iniParser;
 
         [SetUp]
         public void SetUp()
         {
-            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
-            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParserWrapper);
+            _iniParser = Substitute.For<IIniParser>();
+            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParser);
         }
 
         [Test]
@@ -37,8 +37,8 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             };
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.IntsDictionary), "1", "2");
-            _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.IntsDictionary), "2", "3");
+            _iniParser.Received(1).Write(nameof(DictionaryConfiguration.IntsDictionary), "1", "2");
+            _iniParser.Received(1).Write(nameof(DictionaryConfiguration.IntsDictionary), "2", "3");
         }
 
         [Test]
@@ -54,8 +54,8 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             };
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.StringIntDictionary), config.StringIntDictionary.FirstOrDefault().Key, "2");
-            _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.StringIntDictionary), config.StringIntDictionary.ElementAt(1).Key, "3");
+            _iniParser.Received(1).Write(nameof(DictionaryConfiguration.StringIntDictionary), config.StringIntDictionary.FirstOrDefault().Key, "2");
+            _iniParser.Received(1).Write(nameof(DictionaryConfiguration.StringIntDictionary), config.StringIntDictionary.ElementAt(1).Key, "3");
         }
 
         [Test]
@@ -71,8 +71,8 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             };
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.StringStringDictionary), config.StringStringDictionary.ElementAt(0).Key, config.StringStringDictionary.ElementAt(0).Value);
-            _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.StringStringDictionary), config.StringStringDictionary.ElementAt(1).Key, config.StringStringDictionary.ElementAt(1).Value);
+            _iniParser.Received(1).Write(nameof(DictionaryConfiguration.StringStringDictionary), config.StringStringDictionary.ElementAt(0).Key, config.StringStringDictionary.ElementAt(0).Value);
+            _iniParser.Received(1).Write(nameof(DictionaryConfiguration.StringStringDictionary), config.StringStringDictionary.ElementAt(1).Key, config.StringStringDictionary.ElementAt(1).Value);
         }
 
         [Test]
@@ -88,8 +88,8 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             };
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.EnumDictionary), "5", "5");
-            _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.EnumDictionary), "2", "4");
+            _iniParser.Received(1).Write(nameof(DictionaryConfiguration.EnumDictionary), "5", "5");
+            _iniParser.Received(1).Write(nameof(DictionaryConfiguration.EnumDictionary), "2", "4");
         }
     }
 }

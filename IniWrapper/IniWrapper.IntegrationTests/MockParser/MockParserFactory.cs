@@ -14,26 +14,26 @@ namespace IniWrapper.IntegrationTests.MockParser
 {
     public static class MockParserFactory
     {
-        public static IIniWrapper CreateWithFileSystem(IIniParserWrapper iniParserWrapper)
+        public static IIniWrapper CreateWithFileSystem(IIniParser iniParser)
         {
             var fileSystem = Substitute.For<IFileSystem>();
 
             fileSystem.File.Exists(Arg.Any<string>()).Returns(true);
-            return Create(iniParserWrapper, fileSystem);
+            return Create(iniParser, fileSystem);
         }
-        public static IIniWrapper Create(IIniParserWrapper iniParserWrapper, IFileSystem fileSystem)
+        public static IIniWrapper Create(IIniParser iniParser, IFileSystem fileSystem)
         {
 
             var handlerFactory = new HandlerFactory(new TypeManager());
 
-            var iniParser = new Wrapper.IniWrapper("dummy",
+            var iniWrapper = new Wrapper.IniWrapper("dummy",
                                           fileSystem,
-                                          new SavingManager(new IniValueManager(new IniValueAttributeManager()), new SavingStrategyFactory(handlerFactory, iniParserWrapper)),
-                                          new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, iniParserWrapper));
+                                          new SavingManager(new IniValueManager(new IniValueAttributeManager()), new SavingStrategyFactory(handlerFactory, iniParser)),
+                                          new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, iniParser));
 
-            handlerFactory.IniWrapper = iniParser;
+            handlerFactory.IniWrapper = iniWrapper;
 
-            return iniParser;
+            return iniWrapper;
         }
     }
 }

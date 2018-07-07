@@ -12,13 +12,13 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
     {
         private IIniWrapper _iniWrapper;
 
-        private IIniParserWrapper _iniParserWrapper;
+        private IIniParser _iniParser;
 
         [SetUp]
         public void SetUp()
         {
-            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
-            _iniWrapper = new IniWrapperFactory().Create("", _iniParserWrapper);
+            _iniParser = Substitute.For<IIniParser>();
+            _iniWrapper = new IniWrapperFactory().Create("", _iniParser);
         }
         [Test]
         public void SaveConfiguration_ShouldIgnoreNullsForStringValues()
@@ -34,10 +34,10 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             };
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(NullStringDictionaryConfiguration.ValueStringDictionary), "10", "test");
-            _iniParserWrapper.Received(1).Write(nameof(NullStringDictionaryConfiguration.ValueStringDictionary), "25", "test2");
+            _iniParser.Received(1).Write(nameof(NullStringDictionaryConfiguration.ValueStringDictionary), "10", "test");
+            _iniParser.Received(1).Write(nameof(NullStringDictionaryConfiguration.ValueStringDictionary), "25", "test2");
 
-            _iniParserWrapper.Received(2).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            _iniParser.Received(2).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
 
         [Test]
@@ -55,10 +55,10 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             };
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(NullableIntDictionaryConfiguration.ValueNullableIntDictionary), "10", "10");
-            _iniParserWrapper.Received(1).Write(nameof(NullableIntDictionaryConfiguration.ValueNullableIntDictionary), "25", "25");
+            _iniParser.Received(1).Write(nameof(NullableIntDictionaryConfiguration.ValueNullableIntDictionary), "10", "10");
+            _iniParser.Received(1).Write(nameof(NullableIntDictionaryConfiguration.ValueNullableIntDictionary), "25", "25");
 
-            _iniParserWrapper.Received(2).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            _iniParser.Received(2).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
 
     }

@@ -10,19 +10,19 @@ namespace IniWrapper.Manager.Save.Strategy.Factory
     public class SavingStrategyFactory : ISavingStrategyFactory
     {
         private readonly IHandlerFactory _handlerFactory;
-        private readonly IIniParserWrapper _iniParserWrapper;
+        private readonly IIniParser _iniParser;
 
-        public SavingStrategyFactory(IHandlerFactory handlerFactory, IIniParserWrapper iniParserWrapper)
+        public SavingStrategyFactory(IHandlerFactory handlerFactory, IIniParser iniParser)
         {
             _handlerFactory = handlerFactory;
-            _iniParserWrapper = iniParserWrapper;
+            _iniParser = iniParser;
         }
 
         public ISavingStrategy GetSavingStrategy(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
         {
             var (handler, typeinformation) = _handlerFactory.GetHandler(type, value, memberInfoWrapper);
 
-            var singleEntitySavingStrategy = new SingleEntitySavingStrategy(handler, _iniParserWrapper);
+            var singleEntitySavingStrategy = new SingleEntitySavingStrategy(handler, _iniParser);
             switch (typeinformation.TypeCode)
             {
                 case TypeCode.Dictionary:

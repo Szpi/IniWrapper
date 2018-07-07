@@ -12,13 +12,13 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
     {
         private IIniWrapper _iniWrapper;
 
-        private IIniParserWrapper _iniParserWrapper;
+        private IIniParser _iniParser;
 
         [SetUp]
         public void SetUp()
         {
-            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
-            _iniWrapper = new IniWrapperFactory().Create("", _iniParserWrapper);
+            _iniParser = Substitute.For<IIniParser>();
+            _iniWrapper = new IniWrapperFactory().Create("", _iniParser);
         }
 
         [Test]
@@ -39,11 +39,11 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
 
             _iniWrapper.SaveConfiguration(config);
 
-            _iniParserWrapper.Received(1).Write(nameof(TestConfigurationField), nameof(TestConfigurationField.TestString), testString);
-            _iniParserWrapper.Received(1).Write(nameof(TestConfigurationField), nameof(TestConfigurationField.TestChar), config.TestConfiguration.TestChar.ToString());
-            _iniParserWrapper.Received(1).Write(nameof(TestConfigurationField), nameof(TestConfigurationField.TestInt), config.TestConfiguration.TestInt.ToString());
-            _iniParserWrapper.Received(1).Write(nameof(TestConfigurationField), nameof(TestConfigurationField.TestUint), config.TestConfiguration.TestUint.ToString());
-            _iniParserWrapper.Received(1).Write(nameof(TestConfigurationField), nameof(TestConfigurationField.TestUintList), "1,2,3,4");
+            _iniParser.Received(1).Write(nameof(TestConfigurationField), nameof(TestConfigurationField.TestString), testString);
+            _iniParser.Received(1).Write(nameof(TestConfigurationField), nameof(TestConfigurationField.TestChar), config.TestConfiguration.TestChar.ToString());
+            _iniParser.Received(1).Write(nameof(TestConfigurationField), nameof(TestConfigurationField.TestInt), config.TestConfiguration.TestInt.ToString());
+            _iniParser.Received(1).Write(nameof(TestConfigurationField), nameof(TestConfigurationField.TestUint), config.TestConfiguration.TestUint.ToString());
+            _iniParser.Received(1).Write(nameof(TestConfigurationField), nameof(TestConfigurationField.TestUintList), "1,2,3,4");
         }
     }
 }

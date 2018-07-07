@@ -12,13 +12,13 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
     {
         private IIniWrapper _iniWrapper;
 
-        private IIniParserWrapper _iniParserWrapper;
+        private IIniParser _iniParser;
 
         [SetUp]
         public void SetUp()
         {
-            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
-            _iniWrapper = new IniWrapperFactory().Create("", _iniParserWrapper);
+            _iniParser = Substitute.For<IIniParser>();
+            _iniWrapper = new IniWrapperFactory().Create("", _iniParser);
         }
 
         [Test]
@@ -33,8 +33,8 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             };
             _iniWrapper.SaveConfiguration(config);
 
-            _iniParserWrapper.Received(1).Write(nameof(NullIEnumerableConfiguration), nameof(NullIEnumerableConfiguration.TestStringList), "a,b,c,d,f");
-            _iniParserWrapper.Received(1).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            _iniParser.Received(1).Write(nameof(NullIEnumerableConfiguration), nameof(NullIEnumerableConfiguration.TestStringList), "a,b,c,d,f");
+            _iniParser.Received(1).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
 
         [Test]
@@ -49,8 +49,8 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             };
             _iniWrapper.SaveConfiguration(config);
 
-            _iniParserWrapper.Received(1).Write(nameof(NullableIEnumerableConfiguration), nameof(NullableIEnumerableConfiguration.NullableIntList), "1,2,3,4,5,6,7,8");
-            _iniParserWrapper.Received(1).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            _iniParser.Received(1).Write(nameof(NullableIEnumerableConfiguration), nameof(NullableIEnumerableConfiguration.NullableIntList), "1,2,3,4,5,6,7,8");
+            _iniParser.Received(1).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
     }
 }

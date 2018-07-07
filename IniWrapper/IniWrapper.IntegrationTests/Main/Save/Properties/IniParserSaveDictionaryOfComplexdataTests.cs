@@ -16,13 +16,13 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
     {
         private IIniWrapper _iniWrapper;
 
-        private IIniParserWrapper _iniParserWrapper;
+        private IIniParser _iniParser;
 
         [SetUp]
         public void SetUp()
         {
-            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
-            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParserWrapper);
+            _iniParser = Substitute.For<IIniParser>();
+            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParser);
         }
 
         [Test]

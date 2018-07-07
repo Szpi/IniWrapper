@@ -6,12 +6,12 @@ namespace IniWrapper.Manager.Save.Strategy
     public class SingleEntitySavingStrategy : ISavingStrategy
     {
         private readonly IHandler _handler;
-        private readonly IIniParserWrapper _iniParserWrapper;
+        private readonly IIniParser _iniParser;
 
-        public SingleEntitySavingStrategy(IHandler handler, IIniParserWrapper iniParserWrapper)
+        public SingleEntitySavingStrategy(IHandler handler, IIniParser iniParser)
         {
             _handler = handler;
-            _iniParserWrapper = iniParserWrapper;
+            _iniParser = iniParser;
         }
 
         public void Save(IniValue defaultIniValue, object value)
@@ -23,7 +23,7 @@ namespace IniWrapper.Manager.Save.Strategy
                 return;
             }
 
-            _iniParserWrapper.Write(valueToSave.Section, valueToSave.Key, valueToSave.Value);
+            _iniParser.Write(valueToSave.Section, valueToSave.Key, valueToSave.Value);
         }
     }
 }
