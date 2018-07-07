@@ -47,7 +47,10 @@ namespace IniWrapper.HandlersFactory
                         var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
                         var underlyingKeyTypeHandler = GetBaseHandler(typeInformation.UnderlyingKeyTypeInformation.TypeCode, typeInformation.UnderlyingKeyTypeInformation.IsEnum);
 
-                        return new DictionaryEnumeratorHandler(underlyingTypeHandler, underlyingKeyTypeHandler);
+                        return new DictionaryEnumeratorHandler(underlyingTypeHandler,
+                                                               underlyingKeyTypeHandler,
+                                                               typeInformation.UnderlyingTypeInformation.TypeCode,
+                                                               typeInformation.UnderlyingKeyTypeInformation.TypeCode);
                     }
                 case TypeCode.Enumerable:
                     {

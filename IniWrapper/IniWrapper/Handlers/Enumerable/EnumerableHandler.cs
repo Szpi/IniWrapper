@@ -61,6 +61,11 @@ namespace IniWrapper.Handlers.Enumerable
 
             foreach (var item in enumerable)
             {
+                if (item == null)
+                {
+                    continue;
+                }
+
                 stringBuilder.Append(_underlyingTypeHandler.FormatToWrite(item, defaultIniValue)?.Value);
                 stringBuilder.Append(Separator);
             }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using IniWrapper.IntegrationTests.Main.Configuration.Fields;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
@@ -10,7 +11,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Save.Properties
 {
     [TestFixture]
-    public class IniParserSaveDictionaryConfiguration
+    public class IniParserSaveDictionaryConfigurationTests
     {
         private IIniWrapper _iniWrapper;
 
@@ -21,12 +22,6 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
         {
             _iniParserWrapper = Substitute.For<IIniParserWrapper>();
             _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParserWrapper);
-        }
-
-        [Test]
-        public void SaveConfiguration_ShouldThrowException_WhenConfigurationHasCollectionOfComplexType()
-        {
-
         }
 
         [Test]
