@@ -4,6 +4,7 @@ using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
+using IniWrapper.Manager.Save.Strategy.Factory;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Utils;
 
@@ -17,7 +18,7 @@ namespace IniWrapper.Wrapper
 
             var iniParser = new IniWrapper(filePath,
                                           new FileSystem(),
-                                          new SavingManager(handlerFactory, new IniValueManager(new IniValueAttributeManager()), iniParserWrapper),
+                                          new SavingManager(new IniValueManager(new IniValueAttributeManager()), new SavingStrategyFactory(handlerFactory, iniParserWrapper)),
                                           new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, iniParserWrapper));
 
             handlerFactory.IniWrapper = iniParser;

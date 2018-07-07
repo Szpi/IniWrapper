@@ -19,13 +19,13 @@ namespace IniWrapper.Handlers.Enums
             return Enum.Parse(destinationType, readValue);
         }
 
-        public IEnumerable<IniValue> FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
             var castedUnderlyingType = ToUInt64(objectToFormat);
 
             defaultIniValue.Value = castedUnderlyingType.ToString();
 
-            yield return defaultIniValue;
+            return defaultIniValue;
         }
 
         private ulong ToUInt64(object value)

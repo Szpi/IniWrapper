@@ -62,6 +62,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.StringIntDictionary), config.StringIntDictionary.FirstOrDefault().Key, "2");
             _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.StringIntDictionary), config.StringIntDictionary.ElementAt(1).Key, "3");
         }
+
         [Test]
         public void SaveConfiguration_ShouldSaveCorrectWriteStringStringDictionary()
         {
@@ -77,6 +78,23 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             _iniWrapper.SaveConfiguration(config);
             _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.StringStringDictionary), config.StringStringDictionary.ElementAt(0).Key, config.StringStringDictionary.ElementAt(0).Value);
             _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.StringStringDictionary), config.StringStringDictionary.ElementAt(1).Key, config.StringStringDictionary.ElementAt(1).Value);
+        }
+
+        [Test]
+        public void SaveConfiguration_ShouldSaveCorrectWriteEnumDictionary()
+        {
+            var config = new DictionaryConfiguration()
+            {
+                EnumDictionary = new Dictionary<TestEnum, TestEnum>()
+                {
+                    [TestEnum.Five] = TestEnum.Five,
+                    [TestEnum.Two] = TestEnum.Four
+                }
+            };
+
+            _iniWrapper.SaveConfiguration(config);
+            _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.EnumDictionary), "5", "5");
+            _iniParserWrapper.Received(1).Write(nameof(DictionaryConfiguration.EnumDictionary), "2", "4");
         }
     }
 }

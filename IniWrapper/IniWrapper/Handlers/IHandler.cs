@@ -7,6 +7,6 @@ namespace IniWrapper.Handlers
     public interface IHandler
     {
         object ParseReadValue(Type destinationType, string readValue, IniValue iniValue);
-        IEnumerable<IniValue> FormatToWrite(object objectToFormat, IniValue defaultIniValue);
+        IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue);
     }
 }

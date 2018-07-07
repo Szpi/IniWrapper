@@ -11,11 +11,11 @@ namespace IniWrapper.Handlers.NullValue
             return readValue;
         }
 
-        public IEnumerable<IniValue> FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
             defaultIniValue.Value = string.Empty;
 
-            yield return defaultIniValue;
+            return defaultIniValue;
         }
     }
 }

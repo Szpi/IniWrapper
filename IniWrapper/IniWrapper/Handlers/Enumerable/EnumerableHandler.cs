@@ -42,13 +42,13 @@ namespace IniWrapper.Handlers.Enumerable
             return returnedList;
         }
 
-        public IEnumerable<IniValue> FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
             if (!(objectToFormat is IEnumerable))
             {
                 defaultIniValue.Value = string.Empty;
 
-                yield return defaultIniValue;
+                return defaultIniValue;
             }
 
             if (_underlyingTypeCode == TypeCode.ReferenceObject)
@@ -61,7 +61,7 @@ namespace IniWrapper.Handlers.Enumerable
 
             foreach (var item in enumerable)
             {
-                stringBuilder.Append(_underlyingTypeHandler.FormatToWrite(item, defaultIniValue)?.FirstOrDefault()?.Value);
+                stringBuilder.Append(_underlyingTypeHandler.FormatToWrite(item, defaultIniValue)?.Value);
                 stringBuilder.Append(Separator);
             }
 
@@ -69,7 +69,7 @@ namespace IniWrapper.Handlers.Enumerable
 
             defaultIniValue.Value = stringBuilder.ToString();
 
-            yield return defaultIniValue;
+            return defaultIniValue;
         }
 
         private static void RemoveLastSeparator(StringBuilder stringBuilder)

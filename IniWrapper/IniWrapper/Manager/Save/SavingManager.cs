@@ -1,26 +1,22 @@
-﻿using IniWrapper.HandlersFactory;
+﻿using IniWrapper.Manager.Save.Strategy.Factory;
 using IniWrapper.Member;
-using IniWrapper.ParserWrapper;
 
 namespace IniWrapper.Manager.Save
 {
     public class SavingManager : ISavingManager
     {
-        private readonly IHandlerFactory _handlerFactory;
         private readonly IIniValueManager _iniValueManager;
-        private readonly IIniParserWrapper _iniParserWrapper;
+        private readonly ISavingStrategyFactory _savingStrategyFactory;
 
-        public SavingManager(IHandlerFactory handlerFactory, IIniValueManager iniValueManager, IIniParserWrapper iniParserWrapper)
+        public SavingManager(IIniValueManager iniValueManager, ISavingStrategyFactory savingStrategyFactory)
         {
-            _handlerFactory = handlerFactory;
             _iniValueManager = iniValueManager;
-            _iniParserWrapper = iniParserWrapper;
+            _savingStrategyFactory = savingStrategyFactory;
         }
 
         public void SaveValue(IMemberInfoWrapper memberInfoWrapper, object configuration)
         {
             var value = memberInfoWrapper.GetValue(configuration);
-            var (handler, _) = _handlerFactory.GetHandler(memberInfoWrapper.GetMemberType(), value, memberInfoWrapper);
 
             var defaultIniValue = new IniValue()
             {
@@ -28,17 +24,8 @@ namespace IniWrapper.Manager.Save
                 Key = _iniValueManager.GetKey(memberInfoWrapper),
             };
 
-            var valuesToSave = handler.FormatToWrite(value, defaultIniValue);
-
-            foreach (var valueToSave in valuesToSave)
-            {
-                if (valueToSave?.Value == null)
-                {
-                    return;
-                }
-
-                _iniParserWrapper.Write(valueToSave.Section, valueToSave.Key, valueToSave.Value);
-            }
+            var savingStrategy = _savingStrategyFactory.GetSavingStrategy(memberInfoWrapper.GetMemberType(), value, memberInfoWrapper);
+            savingStrategy.Save(defaultIniValue, value);
         }
     }
 }

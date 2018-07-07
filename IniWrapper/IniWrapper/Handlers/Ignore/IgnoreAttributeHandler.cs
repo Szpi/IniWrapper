@@ -23,7 +23,7 @@ namespace IniWrapper.Handlers.Ignore
             return ignoreAttribute == null ? _handler.ParseReadValue(destinationType, readValue, iniValue) : null;
         }
 
-        public IEnumerable<IniValue> FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
             var ignoreAttribute = _memberInfoWrapper.GetAttribute<IniIgnoreAttribute>();
 

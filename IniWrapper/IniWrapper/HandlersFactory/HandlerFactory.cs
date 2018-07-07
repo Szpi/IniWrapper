@@ -27,56 +27,54 @@ namespace IniWrapper.HandlersFactory
 
         public (IHandler handler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
         {
-            var typeInformation = _typeManager.GetTypeInformation(type);
-            var handlerWithDecorator = GetHandlerWithIgnoreAttributeHandlerDecorator(value, typeInformation, memberInfoWrapper);
+            var typeInformation = _typeManager.GetTypeInformation(type, value);
+            var handlerWithDecorator = GetHandlerWithIgnoreAttributeHandlerDecorator(typeInformation, memberInfoWrapper);
 
             return (handlerWithDecorator, typeInformation);
         }
 
-        private IHandler GetHandlerWithIgnoreAttributeHandlerDecorator(object value,
-                                                                       TypeDetailsInformation typeInformation,
-                                                                       IMemberInfoWrapper memberInfoWrapper)
+        private IHandler GetHandlerWithIgnoreAttributeHandlerDecorator(TypeDetailsInformation typeInformation, IMemberInfoWrapper memberInfoWrapper)
         {
-            return new IgnoreAttributeHandler(GetHandler(value, typeInformation), memberInfoWrapper);
+            return new IgnoreAttributeHandler(GetHandler(typeInformation), memberInfoWrapper);
         }
 
-        private IHandler GetHandler(object value, TypeDetailsInformation typeInformation)
+        private IHandler GetHandler(TypeDetailsInformation typeInformation)
         {
             switch (typeInformation.TypeCode)
             {
                 case TypeCode.Dictionary:
                     {
-                        var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum, value);
-                        var underlyingKeyTypeHandler = GetBaseHandler(typeInformation.UnderlyingKeyTypeInformation.TypeCode, typeInformation.UnderlyingKeyTypeInformation.IsEnum, value);
+                        var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
+                        var underlyingKeyTypeHandler = GetBaseHandler(typeInformation.UnderlyingKeyTypeInformation.TypeCode, typeInformation.UnderlyingKeyTypeInformation.IsEnum);
 
-                        return new DictionaryHandler(underlyingTypeHandler, underlyingKeyTypeHandler);
+                        return new DictionaryEnumeratorHandler(underlyingTypeHandler, underlyingKeyTypeHandler);
                     }
                 case TypeCode.Enumerable:
                     {
-                        var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum, value);
+                        var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
 
                         return new EnumerableHandler(underlyingTypeHandler, typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.Type);
                     }
                 default:
                     {
-                        return GetBaseHandler(typeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum, value);
+                        return GetBaseHandler(typeInformation.TypeCode, typeInformation.UnderlyingTypeInformation?.IsEnum);
                     }
             }
         }
 
-        private IHandler GetBaseHandler(TypeCode typeCode, bool isEnum, object value)
+        private IHandler GetBaseHandler(TypeCode typeCode, bool? isEnum)
         {
             if (typeCode == TypeCode.ReferenceObject)
             {
                 return new ObjectHandler(IniWrapper);
             }
 
-            if (value == null)
+            if (typeCode == TypeCode.NullValue)
             {
                 return new NullValueHandler();
             }
 
-            if (isEnum)
+            if (isEnum != null && isEnum.Value)
             {
                 return new EnumHandler(typeCode);
             }

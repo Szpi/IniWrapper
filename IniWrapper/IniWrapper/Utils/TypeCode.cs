@@ -46,5 +46,6 @@
         Enumerable = 41,
         Enum = 42,
         Dictionary = 43,
+        NullValue
     }
 }

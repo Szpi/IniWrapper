@@ -19,7 +19,7 @@ namespace IniWrapper.Handlers.Object
             return _iniWrapper.LoadConfiguration(destinationType);
         }
 
-        public IEnumerable<IniValue> FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
             _iniWrapper.SaveConfiguration(objectToFormat);
             return null;

@@ -21,11 +21,11 @@ namespace IniWrapper.Handlers.Primitive
             }
         }
 
-        public IEnumerable<IniValue> FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
             defaultIniValue.Value = objectToFormat.ToString();
 
-            yield return defaultIniValue;
+            return defaultIniValue;
         }
     }
 }
