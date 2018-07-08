@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using IniWrapper.Exceptions;
-using IniWrapper.Handlers.Object;
 using IniWrapper.Manager;
+using IniWrapper.ParserWrapper;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Handlers.Dictionary
@@ -13,18 +14,31 @@ namespace IniWrapper.Handlers.Dictionary
         private readonly IHandler _underlyingKeyTypeHandler;
         private readonly TypeCode _underlyingTypeCode;
         private readonly TypeCode _underlyingKeyTypeCode;
+        private readonly IReadSectionsParser _readSectionsParser;
 
         public DictionaryEnumeratorHandler(IHandler underlyingTypeHandler, IHandler underlyingKeyTypeHandler,
-                                           TypeCode underlyingTypeCode, TypeCode underlyingKeyTypeCode)
+                                           TypeCode underlyingTypeCode,
+                                           TypeCode underlyingKeyTypeCode,
+                                           IReadSectionsParser readSectionsParser)
         {
             _underlyingTypeHandler = underlyingTypeHandler;
             _underlyingKeyTypeHandler = underlyingKeyTypeHandler;
             _underlyingTypeCode = underlyingTypeCode;
             _underlyingKeyTypeCode = underlyingKeyTypeCode;
+            _readSectionsParser = readSectionsParser;
         }
-
-        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
+        
+        public object ParseReadValue(Type destinationType, string readValue)
         {
+            var splitedReadValues = _readSectionsParser.Parse(readValue);
+
+            foreach (var splitedReadValue in splitedReadValues)
+            {
+                var key = _underlyingKeyTypeHandler.ParseReadValue(destinationType, splitedReadValue.Key);
+                var value = _underlyingTypeHandler.ParseReadValue(destinationType, splitedReadValue.Value);
+                //KeyValuePair.Create()    
+            }
+
             return null;
         }
 
@@ -37,7 +51,7 @@ namespace IniWrapper.Handlers.Dictionary
 
             if (!(objectToFormat is IDictionaryEnumerator dictionaryEnumerator))
             {
-               throw new InvalidOperationException();
+                throw new InvalidOperationException();
             }
 
             if (dictionaryEnumerator.Key == null || dictionaryEnumerator.Value == null)

@@ -8,6 +8,7 @@ using IniWrapper.Handlers.NullValue;
 using IniWrapper.Handlers.Object;
 using IniWrapper.Handlers.Primitive;
 using IniWrapper.Member;
+using IniWrapper.ParserWrapper;
 using IniWrapper.Utils;
 using IniWrapper.Wrapper;
 using TypeCode = IniWrapper.Utils.TypeCode;
@@ -50,7 +51,8 @@ namespace IniWrapper.HandlersFactory
                         return new DictionaryEnumeratorHandler(underlyingTypeHandler,
                                                                underlyingKeyTypeHandler,
                                                                typeInformation.UnderlyingTypeInformation.TypeCode,
-                                                               typeInformation.UnderlyingKeyTypeInformation.TypeCode);
+                                                               typeInformation.UnderlyingKeyTypeInformation.TypeCode,
+                                                               new ReadSectionsParser());
                     }
                 case TypeCode.Enumerable:
                     {

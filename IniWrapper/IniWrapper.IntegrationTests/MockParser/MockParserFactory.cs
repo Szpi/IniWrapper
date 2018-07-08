@@ -3,6 +3,7 @@ using IniWrapper.HandlersFactory;
 using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
 using IniWrapper.Manager.Read;
+using IniWrapper.Manager.Read.Strategy.Factory;
 using IniWrapper.Manager.Save;
 using IniWrapper.Manager.Save.Strategy.Factory;
 using IniWrapper.ParserWrapper;
@@ -29,7 +30,7 @@ namespace IniWrapper.IntegrationTests.MockParser
             var iniWrapper = new Wrapper.IniWrapper("dummy",
                                           fileSystem,
                                           new SavingManager(new IniValueManager(new IniValueAttributeManager()), new SavingStrategyFactory(handlerFactory, iniParser)),
-                                          new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, iniParser));
+                                          new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, new ReadingStrategyFactory(iniParser)));
 
             handlerFactory.IniWrapper = iniWrapper;
 

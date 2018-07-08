@@ -1,24 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-using IniWrapper.Exceptions;
 using IniWrapper.Manager;
-using IniWrapper.Member;
 
 namespace IniWrapper.Handlers.Primitive
 {
     public sealed class PrimitivesHandler : IHandler
     {
-        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
+        public object ParseReadValue(Type destinationType, string readValue)
         {
-            try
-            {
-                return Convert.ChangeType(readValue, destinationType);
-            }
-            catch (Exception)
-            {
-                throw new IniWrongFormatException($"Wrong format in {iniValue} read value: {readValue} expected type: {destinationType}");
-            }
+            return Convert.ChangeType(readValue, destinationType);
         }
 
         public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)

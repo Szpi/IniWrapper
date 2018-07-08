@@ -14,7 +14,7 @@ namespace IniWrapper.Handlers.Object
             _iniWrapper = iniWrapper;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
+        public object ParseReadValue(Type destinationType, string readValue)
         {
             return _iniWrapper.LoadConfiguration(destinationType);
         }

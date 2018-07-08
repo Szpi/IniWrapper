@@ -25,7 +25,7 @@ namespace IniWrapper.Handlers.Enumerable
             _underlyingType = underlyingType;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
+        public object ParseReadValue(Type destinationType, string readValue)
         {
             if (_underlyingTypeCode == TypeCode.ReferenceObject)
             {
@@ -37,7 +37,7 @@ namespace IniWrapper.Handlers.Enumerable
 
             foreach (var value in readValue.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries))
             {
-                returnedList.Add(_underlyingTypeHandler.ParseReadValue(_underlyingType, value, iniValue));
+                returnedList.Add(_underlyingTypeHandler.ParseReadValue(_underlyingType, value));
             }
             return returnedList;
         }

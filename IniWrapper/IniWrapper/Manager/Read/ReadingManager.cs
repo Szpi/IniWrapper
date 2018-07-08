@@ -1,8 +1,10 @@
-﻿using IniWrapper.Exceptions;
+﻿using System;
+using IniWrapper.Exceptions;
 using IniWrapper.HandlersFactory;
+using IniWrapper.Manager.Read.Strategy.Factory;
 using IniWrapper.Member;
 using IniWrapper.ParserWrapper;
-using IniWrapper.Utils;
+using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Manager.Read
 {
@@ -10,15 +12,14 @@ namespace IniWrapper.Manager.Read
     {
         private readonly IHandlerFactory _handlerFactory;
         private readonly IIniValueManager _iniValueManager;
-        private readonly IIniParser _iniParser;
+        private readonly IReadingStrategyFactory _readingStrategyFactory;
 
         public ReadingManager(IIniValueManager iniValueManager,
-                              IHandlerFactory handlerFactory,
-                              IIniParser iniParser)
+                              IHandlerFactory handlerFactory, IReadingStrategyFactory readingStrategyFactory)
         {
             _iniValueManager = iniValueManager;
             _handlerFactory = handlerFactory;
-            _iniParser = iniParser;
+            _readingStrategyFactory = readingStrategyFactory;
         }
 
         public void ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration)
@@ -27,14 +28,9 @@ namespace IniWrapper.Manager.Read
 
             if (typeDetailsInformation.TypeCode == TypeCode.ReferenceObject)
             {
-                var parsedObjectValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), null, null);
+                var parsedObjectValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), null);
                 memberInfoWrapper.SetValue(configuration, parsedObjectValue);
                 return;
-            }
-
-            if (typeDetailsInformation.TypeCode == TypeCode.Enumerable && typeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ReferenceObject)
-            {
-                throw new CollectionOfCopmexTypeException();
             }
 
             var iniValue = new IniValue()
@@ -43,16 +39,16 @@ namespace IniWrapper.Manager.Read
                 Key = _iniValueManager.GetKey(memberInfoWrapper)
             };
 
-            var readValue = _iniParser.Read(iniValue.Section, iniValue.Key);
+            var readingStrategy = _readingStrategyFactory.GetReadingStrategy(typeDetailsInformation.TypeCode, handler, typeDetailsInformation);
 
-            if (string.IsNullOrEmpty(readValue))
+            try
             {
-                return;
+                readingStrategy.Read(iniValue, memberInfoWrapper, configuration);
             }
-
-            var parsedValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), readValue, iniValue);
-
-            memberInfoWrapper.SetValue(configuration, parsedValue);
+            catch (FormatException)
+            {
+                throw new IniWrongFormatException($"Wrong format in {iniValue} expected type: {memberInfoWrapper.GetMemberType()}");
+            }
         }
     }
 }

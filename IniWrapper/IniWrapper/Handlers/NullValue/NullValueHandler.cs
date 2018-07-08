@@ -6,7 +6,7 @@ namespace IniWrapper.Handlers.NullValue
 {
     public class NullValueHandler : IHandler
     {
-        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
+        public object ParseReadValue(Type destinationType, string readValue)
         {
             return readValue;
         }

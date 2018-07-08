@@ -25,7 +25,7 @@ namespace IniWrapper.Tests.PrimitivesParsers
         [TestCaseSource(nameof(TestCaseSource))]
         public void ParseReadValue_ShouldParseInt(Type type, string parsingValue, object expected)
         {
-            var result = _primitivesHandler.ParseReadValue(type, parsingValue, null);
+            var result = _primitivesHandler.ParseReadValue(type, parsingValue);
             result.Should().Be(expected);
         }
     }

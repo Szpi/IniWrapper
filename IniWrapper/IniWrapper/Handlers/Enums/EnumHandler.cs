@@ -14,7 +14,7 @@ namespace IniWrapper.Handlers.Enums
             _typeCode = typeCode;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
+        public object ParseReadValue(Type destinationType, string readValue)
         {
             return Enum.Parse(destinationType, readValue);
         }
