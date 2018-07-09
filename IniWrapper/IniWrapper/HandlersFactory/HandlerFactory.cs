@@ -68,7 +68,7 @@ namespace IniWrapper.HandlersFactory
 
         private IHandler GetBaseHandler(TypeCode typeCode, bool? isEnum)
         {
-            if (typeCode == TypeCode.ReferenceObject)
+            if (typeCode == TypeCode.ComplexObject)
             {
                 return new ObjectHandler(IniWrapper);
             }

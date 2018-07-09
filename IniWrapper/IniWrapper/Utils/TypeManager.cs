@@ -101,7 +101,7 @@ namespace IniWrapper.Utils
 
             if (nullable == null)
             {
-                return new TypeDetailsInformation(TypeCode.ReferenceObject, new UnderlyingTypeInformation(TypeCode.Empty, false, null), null);
+                return new TypeDetailsInformation(TypeCode.ComplexObject, new UnderlyingTypeInformation(TypeCode.Empty, false, null), null);
             }
 
             if (nullable.IsEnum)
