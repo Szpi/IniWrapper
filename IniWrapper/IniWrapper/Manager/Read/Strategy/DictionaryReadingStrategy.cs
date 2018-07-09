@@ -16,14 +16,14 @@ namespace IniWrapper.Manager.Read.Strategy
             _readingTypeCode = readingTypeCode;
         }
 
-        public void Read(IniValue iniValue, IMemberInfoWrapper memberInfoWrapper, object configuration)
+        public string Read(IniValue iniValue, IMemberInfoWrapper memberInfoWrapper, object configuration)
         {
             if (_readingTypeCode == TypeCode.ReferenceObject)
             {
                 throw new CollectionOfCopmexTypeException();
             }
 
-            var readValue = _iniParser.Read(iniValue.Key, null);
+            return _iniParser.Read(iniValue.Key, null);
         }
     }
 }

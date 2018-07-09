@@ -39,11 +39,23 @@ namespace IniWrapper.Manager.Read
                 Key = _iniValueManager.GetKey(memberInfoWrapper)
             };
 
-            var readingStrategy = _readingStrategyFactory.GetReadingStrategy(typeDetailsInformation.TypeCode, handler, typeDetailsInformation);
+            var readingStrategy = _readingStrategyFactory.GetReadingStrategy(typeDetailsInformation.TypeCode);
 
+            if (typeDetailsInformation.TypeCode == TypeCode.Enumerable && typeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ReferenceObject)
+            {
+                throw new CollectionOfCopmexTypeException();
+            }
             try
             {
-                readingStrategy.Read(iniValue, memberInfoWrapper, configuration);
+                var readValue = readingStrategy.Read(iniValue, memberInfoWrapper, configuration);
+                if (string.IsNullOrEmpty(readValue))
+                {
+                    return;
+                }
+
+                var parsedValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), readValue);
+
+                memberInfoWrapper.SetValue(configuration, parsedValue);
             }
             catch (FormatException)
             {

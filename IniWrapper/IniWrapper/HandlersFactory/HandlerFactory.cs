@@ -50,8 +50,7 @@ namespace IniWrapper.HandlersFactory
 
                         return new DictionaryEnumeratorHandler(underlyingTypeHandler,
                                                                underlyingKeyTypeHandler,
-                                                               typeInformation.UnderlyingTypeInformation.TypeCode,
-                                                               typeInformation.UnderlyingKeyTypeInformation.TypeCode,
+                                                               typeInformation,
                                                                new ReadSectionsParser());
                     }
                 case TypeCode.Enumerable:

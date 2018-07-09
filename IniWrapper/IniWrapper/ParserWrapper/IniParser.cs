@@ -28,7 +28,7 @@ namespace IniWrapper.ParserWrapper
             var buffer = new byte[2048];
 
             GetPrivateProfileSection(section, buffer, 2048, _filePath);
-            return Encoding.Unicode.GetString(buffer).Trim('\0');
+            return Encoding.ASCII.GetString(buffer).Trim('\0');
         }
 
         public string Read(string section, string key)

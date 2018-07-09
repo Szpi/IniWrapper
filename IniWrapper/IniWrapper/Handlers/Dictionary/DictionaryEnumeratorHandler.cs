@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using IniWrapper.Exceptions;
 using IniWrapper.Manager;
 using IniWrapper.ParserWrapper;
+using IniWrapper.Utils;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Handlers.Dictionary
@@ -12,39 +13,44 @@ namespace IniWrapper.Handlers.Dictionary
     {
         private readonly IHandler _underlyingTypeHandler;
         private readonly IHandler _underlyingKeyTypeHandler;
-        private readonly TypeCode _underlyingTypeCode;
-        private readonly TypeCode _underlyingKeyTypeCode;
+        private readonly TypeDetailsInformation _typeDetailsInformation;
         private readonly IReadSectionsParser _readSectionsParser;
 
         public DictionaryEnumeratorHandler(IHandler underlyingTypeHandler, IHandler underlyingKeyTypeHandler,
-                                           TypeCode underlyingTypeCode,
-                                           TypeCode underlyingKeyTypeCode,
+                                           TypeDetailsInformation typeDetailsInformation,
                                            IReadSectionsParser readSectionsParser)
         {
             _underlyingTypeHandler = underlyingTypeHandler;
             _underlyingKeyTypeHandler = underlyingKeyTypeHandler;
-            _underlyingTypeCode = underlyingTypeCode;
-            _underlyingKeyTypeCode = underlyingKeyTypeCode;
+            _typeDetailsInformation = typeDetailsInformation;
             _readSectionsParser = readSectionsParser;
         }
-        
+
         public object ParseReadValue(Type destinationType, string readValue)
         {
             var splitedReadValues = _readSectionsParser.Parse(readValue);
 
+            var returnedDictionary = (IDictionary)Activator.CreateInstance(destinationType);
+
             foreach (var splitedReadValue in splitedReadValues)
             {
-                var key = _underlyingKeyTypeHandler.ParseReadValue(destinationType, splitedReadValue.Key);
-                var value = _underlyingTypeHandler.ParseReadValue(destinationType, splitedReadValue.Value);
-                //KeyValuePair.Create()    
+                var key = _underlyingKeyTypeHandler.ParseReadValue(_typeDetailsInformation.UnderlyingKeyTypeInformation.Type, splitedReadValue.Key);
+                if (key == null)
+                {
+                    continue;
+                }
+
+                var value = _underlyingTypeHandler.ParseReadValue(_typeDetailsInformation.UnderlyingTypeInformation.Type, splitedReadValue.Value);
+                returnedDictionary.Add(key, value);
             }
 
-            return null;
+            return returnedDictionary;
         }
 
         public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
-            if (_underlyingTypeCode == TypeCode.ReferenceObject || _underlyingKeyTypeCode == TypeCode.ReferenceObject)
+            if (_typeDetailsInformation.UnderlyingKeyTypeInformation.TypeCode == TypeCode.ReferenceObject ||
+                _typeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ReferenceObject)
             {
                 throw new CollectionOfCopmexTypeException();
             }

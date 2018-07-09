@@ -32,8 +32,7 @@ namespace IniWrapper.Handlers.Enumerable
                 throw new CollectionOfCopmexTypeException();
             }
 
-            var listType = typeof(List<>).MakeGenericType(_underlyingType);
-            var returnedList = (IList)Activator.CreateInstance(listType);
+            var returnedList = (IList)Activator.CreateInstance(destinationType);
 
             foreach (var value in readValue.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries))
             {

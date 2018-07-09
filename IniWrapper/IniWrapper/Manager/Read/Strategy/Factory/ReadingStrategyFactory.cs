@@ -13,7 +13,7 @@ namespace IniWrapper.Manager.Read.Strategy.Factory
             _iniParser = iniParser;
         }
 
-        public IReadingStrategy GetReadingStrategy(TypeCode typeCode, IHandler handler, TypeDetailsInformation typeDetailsInformation)
+        public IReadingStrategy GetReadingStrategy(TypeCode typeCode)
         {
             switch (typeCode)
             {
@@ -23,7 +23,7 @@ namespace IniWrapper.Manager.Read.Strategy.Factory
                 }
                 default:
                 {
-                    return new SingleEntityReadingStrategy(_iniParser, handler, typeDetailsInformation);
+                    return new SingleEntityReadingStrategy(_iniParser);
                 }
             }
         }

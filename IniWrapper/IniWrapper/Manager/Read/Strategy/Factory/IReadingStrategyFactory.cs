@@ -5,6 +5,6 @@ namespace IniWrapper.Manager.Read.Strategy.Factory
 {
     public interface IReadingStrategyFactory
     {
-        IReadingStrategy GetReadingStrategy(TypeCode typeCode, IHandler handler, TypeDetailsInformation typeDetailsInformation);
+        IReadingStrategy GetReadingStrategy(TypeCode typeCode);
     }
 }
