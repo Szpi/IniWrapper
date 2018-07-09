@@ -27,7 +27,7 @@ namespace IniWrapper.Handlers.Enumerable
 
         public object ParseReadValue(Type destinationType, string readValue)
         {
-            if (_underlyingTypeCode == TypeCode.ReferenceObject)
+            if (_underlyingTypeCode == TypeCode.ComplexObject)
             {
                 throw new CollectionOfCopmexTypeException();
             }
@@ -50,7 +50,7 @@ namespace IniWrapper.Handlers.Enumerable
                 return defaultIniValue;
             }
 
-            if (_underlyingTypeCode == TypeCode.ReferenceObject)
+            if (_underlyingTypeCode == TypeCode.ComplexObject)
             {
                 throw new CollectionOfCopmexTypeException();
             }

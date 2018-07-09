@@ -49,8 +49,8 @@ namespace IniWrapper.Handlers.Dictionary
 
         public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
-            if (_typeDetailsInformation.UnderlyingKeyTypeInformation.TypeCode == TypeCode.ReferenceObject ||
-                _typeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ReferenceObject)
+            if (_typeDetailsInformation.UnderlyingKeyTypeInformation.TypeCode == TypeCode.ComplexObject ||
+                _typeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ComplexObject)
             {
                 throw new CollectionOfCopmexTypeException();
             }
