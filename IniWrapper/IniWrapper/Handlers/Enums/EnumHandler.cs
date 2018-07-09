@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IniWrapper.Manager;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
@@ -13,16 +14,18 @@ namespace IniWrapper.Handlers.Enums
             _typeCode = typeCode;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
+        public object ParseReadValue(Type destinationType, string readValue)
         {
             return Enum.Parse(destinationType, readValue);
         }
 
-        public string FormatToWrite(object objectToFormat)
+        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
             var castedUnderlyingType = ToUInt64(objectToFormat);
 
-            return castedUnderlyingType.ToString();
+            defaultIniValue.Value = castedUnderlyingType.ToString();
+
+            return defaultIniValue;
         }
 
         private ulong ToUInt64(object value)

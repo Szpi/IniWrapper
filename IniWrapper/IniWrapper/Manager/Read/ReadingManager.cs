@@ -1,8 +1,10 @@
-﻿using IniWrapper.Exceptions;
+﻿using System;
+using IniWrapper.Exceptions;
 using IniWrapper.HandlersFactory;
+using IniWrapper.Manager.Read.Strategy.Factory;
 using IniWrapper.Member;
 using IniWrapper.ParserWrapper;
-using IniWrapper.Utils;
+using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Manager.Read
 {
@@ -10,31 +12,25 @@ namespace IniWrapper.Manager.Read
     {
         private readonly IHandlerFactory _handlerFactory;
         private readonly IIniValueManager _iniValueManager;
-        private readonly IIniParserWrapper _iniParserWrapper;
+        private readonly IReadingStrategyFactory _readingStrategyFactory;
 
         public ReadingManager(IIniValueManager iniValueManager,
-                              IHandlerFactory handlerFactory,
-                              IIniParserWrapper iniParserWrapper)
+                              IHandlerFactory handlerFactory, IReadingStrategyFactory readingStrategyFactory)
         {
             _iniValueManager = iniValueManager;
             _handlerFactory = handlerFactory;
-            _iniParserWrapper = iniParserWrapper;
+            _readingStrategyFactory = readingStrategyFactory;
         }
 
         public void ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration)
         {
             var (handler, typeDetailsInformation) = _handlerFactory.GetHandler(memberInfoWrapper.GetMemberType(), 0, memberInfoWrapper);
 
-            if (typeDetailsInformation.TypeCode == TypeCode.Object)
+            if (typeDetailsInformation.TypeCode == TypeCode.ReferenceObject)
             {
-                var parsedObjectValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), null, null);
+                var parsedObjectValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), null);
                 memberInfoWrapper.SetValue(configuration, parsedObjectValue);
                 return;
-            }
-
-            if (typeDetailsInformation.TypeCode == TypeCode.Enumerable && typeDetailsInformation.UnderlyingTypeCode == TypeCode.Object)
-            {
-                throw new CollectionOfCopmexTypeException();
             }
 
             var iniValue = new IniValue()
@@ -43,16 +39,28 @@ namespace IniWrapper.Manager.Read
                 Key = _iniValueManager.GetKey(memberInfoWrapper)
             };
 
-            var readValue = _iniParserWrapper.Read(iniValue.Section, iniValue.Key);
+            var readingStrategy = _readingStrategyFactory.GetReadingStrategy(typeDetailsInformation.TypeCode);
 
-            if (string.IsNullOrEmpty(readValue))
+            if (typeDetailsInformation.TypeCode == TypeCode.Enumerable && typeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ReferenceObject)
             {
-                return;
+                throw new CollectionOfCopmexTypeException();
             }
+            try
+            {
+                var readValue = readingStrategy.Read(iniValue, memberInfoWrapper, configuration);
+                if (string.IsNullOrEmpty(readValue))
+                {
+                    return;
+                }
 
-            var parsedValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), readValue, iniValue);
+                var parsedValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), readValue);
 
-            memberInfoWrapper.SetValue(configuration, parsedValue);
+                memberInfoWrapper.SetValue(configuration, parsedValue);
+            }
+            catch (FormatException)
+            {
+                throw new IniWrongFormatException($"Wrong format in {iniValue} expected type: {memberInfoWrapper.GetMemberType()}");
+            }
         }
     }
 }

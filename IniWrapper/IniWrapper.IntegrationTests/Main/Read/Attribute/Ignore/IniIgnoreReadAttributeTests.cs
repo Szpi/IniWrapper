@@ -14,20 +14,20 @@ namespace IniWrapper.IntegrationTests.Main.Read.Attribute.Ignore
     {
         private IIniWrapper _iniWrapper;
 
-        private IIniParserWrapper _iniParserWrapper;
+        private IIniParser _iniParser;
 
         [SetUp]
         public void SetUp()
         {
-            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
-            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParserWrapper);
+            _iniParser = Substitute.For<IIniParser>();
+            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParser);
         }
 
         [Test]
         public void LoadConfiguration_ShouldLoadString()
         {
             var testString = "test_string_to_save";
-            _iniParserWrapper.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestString)).Returns(testString);
+            _iniParser.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestString)).Returns(testString);
 
             var result = _iniWrapper.LoadConfiguration<IgnoreAttributeTestConfiguration>();
 
@@ -36,7 +36,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Attribute.Ignore
         [Test]
         public void LoadConfiguration_CorrectIgnoreInt([Values(0, 1, 200, 500, 900)] int value)
         {
-            _iniParserWrapper.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestInt)).Returns(value.ToString());
+            _iniParser.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestInt)).Returns(value.ToString());
 
             var result = _iniWrapper.LoadConfiguration<IgnoreAttributeTestConfiguration>();
             
@@ -46,7 +46,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Attribute.Ignore
         [Test]
         public void LoadConfiguration_CorrectIgnoreUint([Values(0u, 1u, 200u, 500u, 900u)] uint value)
         {
-            _iniParserWrapper.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestUint)).Returns(value.ToString());
+            _iniParser.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestUint)).Returns(value.ToString());
 
             var result = _iniWrapper.LoadConfiguration<IgnoreAttributeTestConfiguration>();
 
@@ -55,7 +55,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Attribute.Ignore
         [Test]
         public void LoadConfiguration_CorrectIgnoreChar([Values('a', 'z', ' ', 'b')] char value)
         {
-            _iniParserWrapper.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestChar)).Returns(value.ToString());
+            _iniParser.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestChar)).Returns(value.ToString());
 
             var result = _iniWrapper.LoadConfiguration<IgnoreAttributeTestConfiguration>();
 
@@ -64,7 +64,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Attribute.Ignore
         [Test]
         public void LoadConfiguration_CorrectIgnoreStringList()
         {
-            _iniParserWrapper.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestStringList)).Returns("a,b,c,d,f");
+            _iniParser.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestStringList)).Returns("a,b,c,d,f");
 
             var result = _iniWrapper.LoadConfiguration<IgnoreAttributeTestConfiguration>();
 
@@ -73,7 +73,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Attribute.Ignore
         [Test]
         public void LoadConfiguration_CorrectIgnoreIntList()
         {
-            _iniParserWrapper.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestIntList)).Returns("1,2,3,4,5,6,7,8");
+            _iniParser.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestIntList)).Returns("1,2,3,4,5,6,7,8");
 
             var result = _iniWrapper.LoadConfiguration<IgnoreAttributeTestConfiguration>();
 
@@ -82,7 +82,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Attribute.Ignore
         [Test]
         public void LoadConfiguration_CorrectIgnoreUintList()
         {
-            _iniParserWrapper.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestUintList)).Returns("1,2,3,4,5,6,7,8");
+            _iniParser.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestUintList)).Returns("1,2,3,4,5,6,7,8");
 
             var result = _iniWrapper.LoadConfiguration<IgnoreAttributeTestConfiguration>();
 
@@ -92,7 +92,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Attribute.Ignore
         [Test]
         public void LoadConfiguration_CorrectIgnoreEnum()
         {
-            _iniParserWrapper.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestEnum)).Returns("Five");
+            _iniParser.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestEnum)).Returns("Five");
 
             var result = _iniWrapper.LoadConfiguration<IgnoreAttributeTestConfiguration>();
 
@@ -102,7 +102,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Attribute.Ignore
         [Test]
         public void LoadConfiguration_CorrectIgnoreOneEnum()
         {
-            _iniParserWrapper.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestEnum)).Returns("1");
+            _iniParser.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestEnum)).Returns("1");
 
             var result = _iniWrapper.LoadConfiguration<IgnoreAttributeTestConfiguration>();
 
@@ -112,7 +112,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Attribute.Ignore
         [Test]
         public void LoadConfiguration_CorrectIgnoreListEnum()
         {
-            _iniParserWrapper.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestEnumList)).Returns("1,2,3");
+            _iniParser.Read(nameof(IgnoreAttributeTestConfiguration), nameof(IgnoreAttributeTestConfiguration.TestEnumList)).Returns("1,2,3");
 
             var result = _iniWrapper.LoadConfiguration<IgnoreAttributeTestConfiguration>();
 

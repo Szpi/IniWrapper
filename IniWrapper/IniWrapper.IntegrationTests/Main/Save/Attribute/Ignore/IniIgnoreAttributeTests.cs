@@ -11,13 +11,13 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute.Ignore
     {
         private IIniWrapper _iniWrapper;
 
-        private IIniParserWrapper _iniParserWrapper;
+        private IIniParser _iniParser;
 
         [SetUp]
         public void SetUp()
         {
-            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
-            _iniWrapper = new IniWrapperFactory().Create("", _iniParserWrapper);
+            _iniParser = Substitute.For<IIniParser>();
+            _iniWrapper = new IniWrapperFactory().Create("", _iniParser);
         }
 
         [Test]
@@ -27,7 +27,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute.Ignore
 
             _iniWrapper.SaveConfiguration(config);
 
-            _iniParserWrapper.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            _iniParser.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
     }
 }

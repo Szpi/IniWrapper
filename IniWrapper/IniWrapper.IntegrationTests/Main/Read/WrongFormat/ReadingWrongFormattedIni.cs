@@ -14,19 +14,19 @@ namespace IniWrapper.IntegrationTests.Main.Read.WrongFormat
     {
         private IIniWrapper _iniWrapper;
 
-        private IIniParserWrapper _iniParserWrapper;
+        private IIniParser _iniParser;
 
         [SetUp]
         public void SetUp()
         {
-            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
-            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParserWrapper);
+            _iniParser = Substitute.For<IIniParser>();
+            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParser);
         }
 
         [Test]
         public void LoadConfiguration_ShouldThrow_WhenWrongFormattedIntIsInFile()
         {
-            _iniParserWrapper.Read(nameof(TestConfigurationField), nameof(TestConfigurationField.TestInt)).Returns("wrong_formatted_int");
+            _iniParser.Read(nameof(TestConfigurationField), nameof(TestConfigurationField.TestInt)).Returns("wrong_formatted_int");
 
             Action result = () => _iniWrapper.LoadConfiguration<TestConfigurationField>();
 

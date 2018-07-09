@@ -1,26 +1,20 @@
 ﻿using System;
-using IniWrapper.Exceptions;
 using IniWrapper.Manager;
 
 namespace IniWrapper.Handlers.Primitive
 {
     public sealed class PrimitivesHandler : IHandler
     {
-        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
+        public object ParseReadValue(Type destinationType, string readValue)
         {
-            try
-            {
-                return Convert.ChangeType(readValue, destinationType);
-            }
-            catch (Exception)
-            {
-                throw new IniWrongFormatException($"Wrong format in {iniValue} read value: {readValue} expected type: {destinationType}");
-            }
+            return Convert.ChangeType(readValue, destinationType);
         }
 
-        public string FormatToWrite(object objectToFormat)
+        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
-            return objectToFormat.ToString();
+            defaultIniValue.Value = objectToFormat.ToString();
+
+            return defaultIniValue;
         }
     }
 }

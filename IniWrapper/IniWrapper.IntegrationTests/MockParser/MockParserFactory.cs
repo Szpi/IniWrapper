@@ -3,7 +3,9 @@ using IniWrapper.HandlersFactory;
 using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
 using IniWrapper.Manager.Read;
+using IniWrapper.Manager.Read.Strategy.Factory;
 using IniWrapper.Manager.Save;
+using IniWrapper.Manager.Save.Strategy.Factory;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Utils;
 using IniWrapper.Wrapper;
@@ -13,26 +15,26 @@ namespace IniWrapper.IntegrationTests.MockParser
 {
     public static class MockParserFactory
     {
-        public static IIniWrapper CreateWithFileSystem(IIniParserWrapper iniParserWrapper)
+        public static IIniWrapper CreateWithFileSystem(IIniParser iniParser)
         {
             var fileSystem = Substitute.For<IFileSystem>();
 
             fileSystem.File.Exists(Arg.Any<string>()).Returns(true);
-            return Create(iniParserWrapper, fileSystem);
+            return Create(iniParser, fileSystem);
         }
-        public static IIniWrapper Create(IIniParserWrapper iniParserWrapper, IFileSystem fileSystem)
+        public static IIniWrapper Create(IIniParser iniParser, IFileSystem fileSystem)
         {
 
             var handlerFactory = new HandlerFactory(new TypeManager());
 
-            var iniParser = new Wrapper.IniWrapper("dummy",
+            var iniWrapper = new Wrapper.IniWrapper("dummy",
                                           fileSystem,
-                                          new SavingManager(handlerFactory, new IniValueManager(new IniValueAttributeManager()), iniParserWrapper),
-                                          new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, iniParserWrapper));
+                                          new SavingManager(new IniValueManager(new IniValueAttributeManager()), new SavingStrategyFactory(handlerFactory, iniParser)),
+                                          new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, new ReadingStrategyFactory(iniParser)));
 
-            handlerFactory.IniWrapper = iniParser;
+            handlerFactory.IniWrapper = iniWrapper;
 
-            return iniParser;
+            return iniWrapper;
         }
     }
 }

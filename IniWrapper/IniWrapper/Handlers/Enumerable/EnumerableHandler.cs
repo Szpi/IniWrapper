@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using IniWrapper.Exceptions;
 using IniWrapper.Manager;
+using IniWrapper.Member;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Handlers.Enumerable
@@ -23,44 +25,55 @@ namespace IniWrapper.Handlers.Enumerable
             _underlyingType = underlyingType;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
+        public object ParseReadValue(Type destinationType, string readValue)
         {
-            if (_underlyingTypeCode == TypeCode.Object)
+            if (_underlyingTypeCode == TypeCode.ReferenceObject)
             {
                 throw new CollectionOfCopmexTypeException();
             }
 
-            var listType = typeof(List<>).MakeGenericType(_underlyingType);
-            var returnedList = (IList)Activator.CreateInstance(listType);
+            var returnedList = (IList)Activator.CreateInstance(destinationType);
 
             foreach (var value in readValue.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries))
             {
-                returnedList.Add(_underlyingTypeHandler.ParseReadValue(_underlyingType, value, iniValue));
+                returnedList.Add(_underlyingTypeHandler.ParseReadValue(_underlyingType, value));
             }
             return returnedList;
         }
 
-        public string FormatToWrite(object objectToFormat)
+        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
-            if (!(objectToFormat is IEnumerable enumerable))
+            if (!(objectToFormat is IEnumerable))
             {
-                return string.Empty;
+                defaultIniValue.Value = string.Empty;
+
+                return defaultIniValue;
             }
 
-            if (_underlyingTypeCode == TypeCode.Object)
+            if (_underlyingTypeCode == TypeCode.ReferenceObject)
             {
                 throw new CollectionOfCopmexTypeException();
             }
-
+            var enumerable = objectToFormat as IEnumerable;
+            
             var stringBuilder = new StringBuilder();
 
             foreach (var item in enumerable)
             {
-                stringBuilder.Append(_underlyingTypeHandler.FormatToWrite(item));
+                if (item == null)
+                {
+                    continue;
+                }
+
+                stringBuilder.Append(_underlyingTypeHandler.FormatToWrite(item, defaultIniValue)?.Value);
                 stringBuilder.Append(Separator);
             }
+
             RemoveLastSeparator(stringBuilder);
-            return stringBuilder.ToString();
+
+            defaultIniValue.Value = stringBuilder.ToString();
+
+            return defaultIniValue;
         }
 
         private static void RemoveLastSeparator(StringBuilder stringBuilder)

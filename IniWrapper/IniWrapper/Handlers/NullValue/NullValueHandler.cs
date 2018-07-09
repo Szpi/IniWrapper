@@ -1,18 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using IniWrapper.Manager;
 
 namespace IniWrapper.Handlers.NullValue
 {
     public class NullValueHandler : IHandler
     {
-        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
+        public object ParseReadValue(Type destinationType, string readValue)
         {
             return readValue;
         }
 
-        public string FormatToWrite(object objectToFormat)
+        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
-            return string.Empty;
+            defaultIniValue.Value = string.Empty;
+
+            return defaultIniValue;
         }
     }
 }

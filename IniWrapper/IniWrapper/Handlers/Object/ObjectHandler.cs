@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IniWrapper.Manager;
 using IniWrapper.Wrapper;
 
@@ -13,12 +14,12 @@ namespace IniWrapper.Handlers.Object
             _iniWrapper = iniWrapper;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue, IniValue iniValue)
+        public object ParseReadValue(Type destinationType, string readValue)
         {
             return _iniWrapper.LoadConfiguration(destinationType);
         }
 
-        public string FormatToWrite(object objectToFormat)
+        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
             _iniWrapper.SaveConfiguration(objectToFormat);
             return null;

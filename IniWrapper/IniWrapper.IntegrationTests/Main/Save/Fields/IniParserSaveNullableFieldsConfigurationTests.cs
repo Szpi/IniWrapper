@@ -12,13 +12,13 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
     {
         private IIniWrapper _iniWrapper;
 
-        private IIniParserWrapper _iniParserWrapper;
+        private IIniParser _iniParser;
 
         [SetUp]
         public void SetUp()
         {
-            _iniParserWrapper = Substitute.For<IIniParserWrapper>();
-            _iniWrapper = new IniWrapperFactory().Create("", _iniParserWrapper);
+            _iniParser = Substitute.For<IIniParser>();
+            _iniWrapper = new IniWrapperFactory().Create("", _iniParser);
         }
 
         [Test]
@@ -30,7 +30,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
             };
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableInt), "10");
+            _iniParser.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableInt), "10");
         }
 
         [Test]
@@ -39,7 +39,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
             var config = new NullableFieldsConfiguration();
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableInt), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableInt), string.Empty);
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
             };
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableEnum), "5");
+            _iniParser.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableEnum), "5");
         }
 
         [Test]
@@ -60,7 +60,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
             var config = new NullableFieldsConfiguration();
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableEnum), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableEnum), string.Empty);
         }
 
         [Test]
@@ -72,7 +72,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
             };
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableUint), "100");
+            _iniParser.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableUint), "100");
         }
 
         [Test]
@@ -81,7 +81,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
             var config = new NullableFieldsConfiguration();
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableUint), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableUint), string.Empty);
         }
 
         [Test]
@@ -93,7 +93,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
             };
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableChar), "x");
+            _iniParser.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableChar), "x");
         }
 
         [Test]
@@ -102,7 +102,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
             var config = new NullableFieldsConfiguration();
 
             _iniWrapper.SaveConfiguration(config);
-            _iniParserWrapper.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableChar), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableFieldsConfiguration), nameof(NullableFieldsConfiguration.TestNullableChar), string.Empty);
         }
     }
 }
