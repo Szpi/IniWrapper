@@ -5,7 +5,7 @@ using IniWrapper.Utils;
 
 namespace IniWrapper.Manager.Read.Strategy
 {
-    public class DictionaryReadingStrategy : IReadingStrategy
+    internal class DictionaryReadingStrategy : IReadingStrategy
     {
         private readonly IIniParser _iniParser;
         private readonly TypeCode _readingTypeCode;

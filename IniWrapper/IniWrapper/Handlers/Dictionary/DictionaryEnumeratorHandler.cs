@@ -9,7 +9,7 @@ using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Handlers.Dictionary
 {
-    public class DictionaryEnumeratorHandler : IHandler
+    internal class DictionaryEnumeratorHandler : IHandler
     {
         private readonly IHandler _underlyingTypeHandler;
         private readonly IHandler _underlyingKeyTypeHandler;

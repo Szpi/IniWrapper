@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace IniWrapper.Member
 {
-    public class FieldInfoWrapper : IMemberInfoWrapper
+    internal class FieldInfoWrapper : IMemberInfoWrapper
     {
         private readonly FieldInfo _fieldInfo;
 

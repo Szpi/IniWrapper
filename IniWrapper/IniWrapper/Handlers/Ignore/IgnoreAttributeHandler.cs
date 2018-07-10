@@ -6,7 +6,7 @@ using IniWrapper.Member;
 
 namespace IniWrapper.Handlers.Ignore
 {
-    public class IgnoreAttributeHandler : IHandler
+    internal class IgnoreAttributeHandler : IHandler
     {
         private readonly IHandler _handler;
         private readonly IMemberInfoWrapper _memberInfoWrapper;

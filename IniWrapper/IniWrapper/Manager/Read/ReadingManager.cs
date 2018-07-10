@@ -8,7 +8,7 @@ using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Manager.Read
 {
-    public class ReadingManager : IReadingManager
+    internal class ReadingManager : IReadingManager
     {
         private readonly IHandlerFactory _handlerFactory;
         private readonly IIniValueManager _iniValueManager;

@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace IniWrapper.Utils
 {
-    public class TypeManager : ITypeManager
+    internal class TypeManager : ITypeManager
     {
         private static readonly Dictionary<Type, TypeCode> TypeCodeMap = new Dictionary<Type, TypeCode>
             {

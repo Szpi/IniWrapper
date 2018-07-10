@@ -3,7 +3,7 @@ using IniWrapper.Member;
 
 namespace IniWrapper.Manager.Attribute
 {
-    public class IniValueAttributeManager : IIniValueManager
+    internal class IniValueAttributeManager : IIniValueManager
     {
         public string GetKey(IMemberInfoWrapper memberInfoWrapper)
         {

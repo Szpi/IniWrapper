@@ -1,12 +1,15 @@
 ﻿using System;
 using System.IO.Abstractions;
+using System.Runtime.CompilerServices;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
 using IniWrapper.Member;
 
+[assembly: InternalsVisibleTo("IniWrapper.IntegrationTests")]
+[assembly: InternalsVisibleTo("IniWrapper.Tests")]
 namespace IniWrapper.Wrapper
 {
-    public sealed class IniWrapper : IIniWrapper
+    internal sealed class IniWrapper : IIniWrapper
     {
         private readonly string _filePath;
         private readonly IFileSystem _fileSystem;
@@ -61,7 +64,7 @@ namespace IniWrapper.Wrapper
             foreach (var field in fields)
             {
                 var fieldInfoWrapper = new FieldInfoWrapper(field);
-               _readingManager.ReadValue(fieldInfoWrapper, configuration);
+                _readingManager.ReadValue(fieldInfoWrapper, configuration);
             }
         }
 
