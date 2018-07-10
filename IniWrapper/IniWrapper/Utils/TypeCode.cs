@@ -1,6 +1,6 @@
 ﻿namespace IniWrapper.Utils
 {
-    public enum TypeCode
+    internal enum TypeCode
     {
         Empty = 0,
         ComplexObject = 1,

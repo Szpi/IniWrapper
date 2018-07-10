@@ -15,7 +15,7 @@ using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.HandlersFactory
 {
-    public class HandlerFactory : IHandlerFactory
+    internal class HandlerFactory : IHandlerFactory
     {
         private readonly ITypeManager _typeManager;
 

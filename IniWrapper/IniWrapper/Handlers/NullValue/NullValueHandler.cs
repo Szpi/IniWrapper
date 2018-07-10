@@ -4,7 +4,7 @@ using IniWrapper.Manager;
 
 namespace IniWrapper.Handlers.NullValue
 {
-    public class NullValueHandler : IHandler
+    internal class NullValueHandler : IHandler
     {
         public object ParseReadValue(Type destinationType, string readValue)
         {

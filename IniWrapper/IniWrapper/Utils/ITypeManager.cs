@@ -2,7 +2,7 @@
 
 namespace IniWrapper.Utils
 {
-    public interface ITypeManager
+    internal interface ITypeManager
     {
         TypeDetailsInformation GetTypeInformation(Type type, object value);
     }

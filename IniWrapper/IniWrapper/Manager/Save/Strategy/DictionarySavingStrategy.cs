@@ -4,7 +4,7 @@ using IniWrapper.ParserWrapper;
 
 namespace IniWrapper.Manager.Save.Strategy
 {
-    public class DictionarySavingStrategy : ISavingStrategy
+    internal class DictionarySavingStrategy : ISavingStrategy
     {
         private readonly ISavingStrategy _singgleEntitySavingStrategy;
 

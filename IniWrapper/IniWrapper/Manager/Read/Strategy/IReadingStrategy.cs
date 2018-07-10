@@ -2,7 +2,7 @@
 
 namespace IniWrapper.Manager.Read.Strategy
 {
-    public interface IReadingStrategy
+    internal interface IReadingStrategy
     {
         string Read(IniValue iniValue, IMemberInfoWrapper memberInfoWrapper, object configuration);
     }

@@ -7,7 +7,7 @@ using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Manager.Save.Strategy.Factory
 {
-    public class SavingStrategyFactory : ISavingStrategyFactory
+    internal class SavingStrategyFactory : ISavingStrategyFactory
     {
         private readonly IHandlerFactory _handlerFactory;
         private readonly IIniParser _iniParser;

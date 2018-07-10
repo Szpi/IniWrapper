@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace IniWrapper.ParserWrapper
 {
-    public class ReadSectionsParser : IReadSectionsParser
+    internal class ReadSectionsParser : IReadSectionsParser
     {
         public IDictionary<string, string> Parse(string readSection)
         {
