@@ -3,7 +3,7 @@ using IniWrapper.Manager;
 
 namespace IniWrapper.Handlers.Primitive
 {
-    public sealed class PrimitivesHandler : IHandler
+    internal sealed class PrimitivesHandler : IHandler
     {
         public object ParseReadValue(Type destinationType, string readValue)
         {

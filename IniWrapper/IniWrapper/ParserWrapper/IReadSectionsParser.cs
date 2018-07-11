@@ -2,7 +2,7 @@
 
 namespace IniWrapper.ParserWrapper
 {
-    public interface IReadSectionsParser
+    internal interface IReadSectionsParser
     {
         IDictionary<string, string> Parse(string readSection);
     }

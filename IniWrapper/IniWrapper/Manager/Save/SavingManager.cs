@@ -3,7 +3,7 @@ using IniWrapper.Member;
 
 namespace IniWrapper.Manager.Save
 {
-    public class SavingManager : ISavingManager
+    internal class SavingManager : ISavingManager
     {
         private readonly IIniValueManager _iniValueManager;
         private readonly ISavingStrategyFactory _savingStrategyFactory;

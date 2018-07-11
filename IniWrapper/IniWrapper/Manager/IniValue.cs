@@ -1,6 +1,6 @@
 ﻿namespace IniWrapper.Manager
 {
-    public class IniValue
+    internal class IniValue
     {
         public string Section { get; set; }
         public string Key { get; set; }

@@ -2,7 +2,7 @@
 
 namespace IniWrapper.Manager
 {
-    public class IniValueManager : IIniValueManager
+    internal class IniValueManager : IIniValueManager
     {
         private readonly IIniValueManager _attributeManager;
 

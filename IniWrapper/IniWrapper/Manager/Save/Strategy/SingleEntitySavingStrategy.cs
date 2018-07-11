@@ -3,7 +3,7 @@ using IniWrapper.ParserWrapper;
 
 namespace IniWrapper.Manager.Save.Strategy
 {
-    public class SingleEntitySavingStrategy : ISavingStrategy
+    internal class SingleEntitySavingStrategy : ISavingStrategy
     {
         private readonly IHandler _handler;
         private readonly IIniParser _iniParser;
