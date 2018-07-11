@@ -27,7 +27,7 @@ namespace IniWrapper.Wrapper
             return iniWrapper;
         }
 
-        public IIniWrapper CreateWithDefaultIniWrapper(string filePath)
+        public IIniWrapper CreateWithDefaultIniParser(string filePath)
         {
             return Create(filePath, new IniParser(filePath));
         }

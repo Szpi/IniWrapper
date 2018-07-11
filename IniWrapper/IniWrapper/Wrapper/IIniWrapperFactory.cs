@@ -6,6 +6,6 @@ namespace IniWrapper.Wrapper
     {
         IIniWrapper Create(string filePath, IIniParser iniParser);
 
-        IIniWrapper CreateWithDefaultIniWrapper(string filePath);
+        IIniWrapper CreateWithDefaultIniParser(string filePath);
     }
 }
