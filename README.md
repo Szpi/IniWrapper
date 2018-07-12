@@ -1,5 +1,5 @@
 # IniWrapper
-![Latest version](https://img.shields.io/nuget/v/IniWrapper.svg) [![codecov](https://codecov.io/gh/Szpi/IniWrapper/branch/master/graph/badge.svg)](https://codecov.io/gh/Szpi/IniWrapper) ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
+[![Latest version](https://img.shields.io/nuget/v/IniWrapper.svg)](https://www.nuget.org/packages/IniWrapper/) [![codecov](https://codecov.io/gh/Szpi/IniWrapper/branch/master/graph/badge.svg)](https://codecov.io/gh/Szpi/IniWrapper) ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
 ## Build Status
 &nbsp; | `VSTS` | `Travis`
@@ -10,12 +10,12 @@ IniWrapper uses reflection to bind value read from ini file to provided model. T
 ## Quick start
 ### Loading configuration
 
-You can use custom IniParser class by passing it in Create Method in IniWrapperFactory class. Then call LoadConfiguration method with class that IniWrapper should discover and bind values.
+You can use custom IniParser class by passing it to Create Method in IniWrapperFactory class. Then call LoadConfiguration method with class that IniWrapper should discover and bind values.
 ``` csharp
-    var iniWrapperFactory = new IniWrapperFactory();
-    var iniWrapper = iniWrapperFactory.Create("test.ini", new CustomIniParser());
-    
-    var loadedIniConfiguration = iniWrapper.LoadConfiguration<TestConfiguration>();
+var iniWrapperFactory = new IniWrapperFactory();
+var iniWrapper = iniWrapperFactory.Create("test.ini", new CustomIniParser());
+
+var loadedIniConfiguration = iniWrapper.LoadConfiguration<TestConfiguration>();
 ```
 
 If you want to use default IniParser you can call CreateWithDefaultIniParser method. By doing this library will create IniParser that wraps Windows C++ methods from kernel. For more information see Microsoft documentation for WritePrivateProfileString, GetPrivateProfileString and GetPrivateProfileSection and  [IniParser.cs](https://github.com/Szpi/IniWrapper/blob/master/IniWrapper/IniWrapper/ParserWrapper/IniParser.cs).
@@ -39,14 +39,20 @@ var iniWrapper = iniWrapperFactory.CreateWithDefaultIniParser("test.ini");
 
 iniWrapper.SaveConfiguration(new TestConfiguration());
 ```
+**Note:**
+In version 1.1.0 and 1.0.0 you have to call IniWrapperFactory with CreateWithDefaultIniWrapper.
+
+``` csharp
+var iniWrapper = iniWrapperFactory.CreateWithDefaultIniWrapper("test.ini");
+```
 ## How does it work?
 For given configuration class:
 ``` csharp
-   public struct TestConfiguration
-    {
-        public string TestString { get; set; }
-        public List<int> TestIntList { get; set; }
-    }
+public struct TestConfiguration
+ {
+    public string TestString { get; set; }
+    public List<int> TestIntList { get; set; }
+ }
 ```
 IniWrapper will call IIniParser with following ini parameters Section:TestConfiguration, Key: TestString, Value : value in TestString
 property.
