@@ -2,7 +2,7 @@
 
 namespace IniWrapper.Manager.Read
 {
-    public interface IReadingManager
+    internal interface IReadingManager
     {
         void ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration);
     }

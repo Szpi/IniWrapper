@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using IniWrapper.Manager;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Handlers.Enums
 {
-    public class EnumHandler : IHandler
+    internal class EnumHandler : IHandler
     {
         private readonly TypeCode _typeCode;
 

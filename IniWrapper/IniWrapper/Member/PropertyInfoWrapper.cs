@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace IniWrapper.Member
 {
-    public class PropertyInfoWrapper : IMemberInfoWrapper
+    internal class PropertyInfoWrapper : IMemberInfoWrapper
     {
         private readonly PropertyInfo _propertyInfo;
 
