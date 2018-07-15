@@ -2,7 +2,7 @@
 
 namespace IniWrapper.Member
 {
-    public interface IMemberInfoWrapper
+    internal interface IMemberInfoWrapper
     {
         Type GetMemberType();
 

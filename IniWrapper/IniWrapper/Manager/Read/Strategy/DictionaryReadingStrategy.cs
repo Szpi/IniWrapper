@@ -5,7 +5,7 @@ using IniWrapper.Utils;
 
 namespace IniWrapper.Manager.Read.Strategy
 {
-    public class DictionaryReadingStrategy : IReadingStrategy
+    internal class DictionaryReadingStrategy : IReadingStrategy
     {
         private readonly IIniParser _iniParser;
         private readonly TypeCode _readingTypeCode;
@@ -18,7 +18,7 @@ namespace IniWrapper.Manager.Read.Strategy
 
         public string Read(IniValue iniValue, IMemberInfoWrapper memberInfoWrapper, object configuration)
         {
-            if (_readingTypeCode == TypeCode.ReferenceObject)
+            if (_readingTypeCode == TypeCode.ComplexObject)
             {
                 throw new CollectionOfComplexTypeException();
             }

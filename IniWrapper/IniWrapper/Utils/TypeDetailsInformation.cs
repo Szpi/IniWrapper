@@ -2,7 +2,7 @@
 
 namespace IniWrapper.Utils
 {
-    public class TypeDetailsInformation
+    internal class TypeDetailsInformation
     {
         public TypeCode TypeCode { get; }
 

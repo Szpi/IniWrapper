@@ -6,7 +6,7 @@ using IniWrapper.Utils;
 
 namespace IniWrapper.Manager.Read.Strategy
 {
-    public class SingleEntityReadingStrategy : IReadingStrategy
+    internal class SingleEntityReadingStrategy : IReadingStrategy
     {
         private readonly IIniParser _iniParser;
 

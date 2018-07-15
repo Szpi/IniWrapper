@@ -2,7 +2,7 @@
 
 namespace IniWrapper.Manager.Save
 {
-    public interface ISavingManager
+    internal interface ISavingManager
     {
         void SaveValue(IMemberInfoWrapper memberInfoWrapper, object configuration);
     }

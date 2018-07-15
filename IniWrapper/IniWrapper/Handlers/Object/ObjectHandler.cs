@@ -5,7 +5,7 @@ using IniWrapper.Wrapper;
 
 namespace IniWrapper.Handlers.Object
 {
-    public class ObjectHandler : IHandler
+    internal class ObjectHandler : IHandler
     {
         private readonly IIniWrapper _iniWrapper;
 

@@ -8,7 +8,7 @@ using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Manager.Read
 {
-    public class ReadingManager : IReadingManager
+    internal class ReadingManager : IReadingManager
     {
         private readonly IHandlerFactory _handlerFactory;
         private readonly IIniValueManager _iniValueManager;
@@ -26,7 +26,7 @@ namespace IniWrapper.Manager.Read
         {
             var (handler, typeDetailsInformation) = _handlerFactory.GetHandler(memberInfoWrapper.GetMemberType(), 0, memberInfoWrapper);
 
-            if (typeDetailsInformation.TypeCode == TypeCode.ReferenceObject)
+            if (typeDetailsInformation.TypeCode == TypeCode.ComplexObject)
             {
                 var parsedObjectValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), null);
                 memberInfoWrapper.SetValue(configuration, parsedObjectValue);
@@ -41,7 +41,7 @@ namespace IniWrapper.Manager.Read
 
             var readingStrategy = _readingStrategyFactory.GetReadingStrategy(typeDetailsInformation.TypeCode);
 
-            if (typeDetailsInformation.TypeCode == TypeCode.Enumerable && typeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ReferenceObject)
+            if (typeDetailsInformation.TypeCode == TypeCode.Enumerable && typeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ComplexObject)
             {
                 throw new CollectionOfComplexTypeException();
             }

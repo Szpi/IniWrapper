@@ -4,7 +4,7 @@ using IniWrapper.Utils;
 
 namespace IniWrapper.Manager.Read.Strategy.Factory
 {
-    public class ReadingStrategyFactory : IReadingStrategyFactory
+    internal class ReadingStrategyFactory : IReadingStrategyFactory
     {
         private readonly IIniParser _iniParser;
 
