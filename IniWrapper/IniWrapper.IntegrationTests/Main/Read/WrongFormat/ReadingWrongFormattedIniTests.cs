@@ -10,7 +10,7 @@ using NUnit.Framework;
 
 namespace IniWrapper.IntegrationTests.Main.Read.WrongFormat
 {
-    public class ReadingWrongFormattedIni
+    public class ReadingWrongFormattedIniTests
     {
         private IIniWrapper _iniWrapper;
 
