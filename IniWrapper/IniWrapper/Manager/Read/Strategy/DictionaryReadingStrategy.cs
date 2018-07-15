@@ -20,7 +20,7 @@ namespace IniWrapper.Manager.Read.Strategy
         {
             if (_readingTypeCode == TypeCode.ReferenceObject)
             {
-                throw new CollectionOfCopmexTypeException();
+                throw new CollectionOfComplexTypeException();
             }
 
             return _iniParser.Read(iniValue.Key, null);

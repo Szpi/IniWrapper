@@ -29,7 +29,7 @@ namespace IniWrapper.Handlers.Enumerable
         {
             if (_underlyingTypeCode == TypeCode.ReferenceObject)
             {
-                throw new CollectionOfCopmexTypeException();
+                throw new CollectionOfComplexTypeException();
             }
 
             var returnedList = (IList)Activator.CreateInstance(destinationType);
@@ -52,7 +52,7 @@ namespace IniWrapper.Handlers.Enumerable
 
             if (_underlyingTypeCode == TypeCode.ReferenceObject)
             {
-                throw new CollectionOfCopmexTypeException();
+                throw new CollectionOfComplexTypeException();
             }
             var enumerable = objectToFormat as IEnumerable;
             

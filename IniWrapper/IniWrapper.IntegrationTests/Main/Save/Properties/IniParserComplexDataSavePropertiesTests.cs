@@ -45,5 +45,19 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             _iniParser.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestUint), config.TestConfiguration.TestUint.ToString());
             _iniParser.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestUintList), "1,2,3,4");
         }
+
+        [Test]
+        public void SaveConfiguration_ShouldSaveCorrectComplexType1()
+        {
+            var testString = "test_string_to_save";
+            var config = new ComplexNullConfiguration()
+            {
+                NullableConfiguration = null
+            };
+
+            _iniWrapper.SaveConfiguration(config);
+
+            _iniParser.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+        }
     }
 }

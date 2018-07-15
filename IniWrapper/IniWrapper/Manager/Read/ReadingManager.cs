@@ -43,7 +43,7 @@ namespace IniWrapper.Manager.Read
 
             if (typeDetailsInformation.TypeCode == TypeCode.Enumerable && typeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ReferenceObject)
             {
-                throw new CollectionOfCopmexTypeException();
+                throw new CollectionOfComplexTypeException();
             }
             try
             {

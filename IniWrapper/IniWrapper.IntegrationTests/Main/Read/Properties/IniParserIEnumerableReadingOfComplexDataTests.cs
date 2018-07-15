@@ -29,7 +29,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
         {
             Action loadConfiguration = () => _iniWrapper.LoadConfiguration<ListOfComplexDataConfiguration>();
 
-            loadConfiguration.Should().Throw<CollectionOfCopmexTypeException>();
+            loadConfiguration.Should().Throw<CollectionOfComplexTypeException>();
         }
     }
 }

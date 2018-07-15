@@ -32,7 +32,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
 
             Action saveConfiguration = () => _iniWrapper.SaveConfiguration(config);
 
-            saveConfiguration.Should().Throw<CollectionOfCopmexTypeException>();
+            saveConfiguration.Should().Throw<CollectionOfComplexTypeException>();
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
 
             Action saveConfiguration = () => _iniWrapper.SaveConfiguration(config);
 
-            saveConfiguration.Should().Throw<CollectionOfCopmexTypeException>();
+            saveConfiguration.Should().Throw<CollectionOfComplexTypeException>();
 
         }
     }

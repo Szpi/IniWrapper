@@ -30,7 +30,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
 
             Action saveConfiguration = () => _iniWrapper.SaveConfiguration(config);
 
-            saveConfiguration.Should().Throw<CollectionOfCopmexTypeException>();
+            saveConfiguration.Should().Throw<CollectionOfComplexTypeException>();
         }
     }
 }
