@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using IniWrapper.Manager;
 using IniWrapper.Wrapper;
 
-namespace IniWrapper.Handlers.Object
+namespace IniWrapper.Handlers.ComplexType
 {
-    internal class ObjectHandler : IHandler
+    internal class ComplexTypeHandler : IHandler
     {
         private readonly IIniWrapper _iniWrapper;
 
-        public ObjectHandler(IIniWrapper iniWrapper)
+        public ComplexTypeHandler(IIniWrapper iniWrapper)
         {
             _iniWrapper = iniWrapper;
         }

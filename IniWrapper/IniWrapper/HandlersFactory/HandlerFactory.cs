@@ -1,11 +1,11 @@
 ﻿using System;
 using IniWrapper.Handlers;
+using IniWrapper.Handlers.ComplexType;
 using IniWrapper.Handlers.Dictionary;
 using IniWrapper.Handlers.Enumerable;
 using IniWrapper.Handlers.Enums;
 using IniWrapper.Handlers.Ignore;
 using IniWrapper.Handlers.NullValue;
-using IniWrapper.Handlers.Object;
 using IniWrapper.Handlers.Primitive;
 using IniWrapper.Member;
 using IniWrapper.ParserWrapper;
@@ -59,6 +59,14 @@ namespace IniWrapper.HandlersFactory
 
                         return new EnumerableHandler(underlyingTypeHandler, typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.Type);
                     }
+                case TypeCode.NullValue:
+                    {
+                        if (typeInformation.UnderlyingTypeInformation?.TypeCode == TypeCode.ComplexObject)
+                        {
+                            return new NullComplexTypeHandler(new ComplexTypeHandler(IniWrapper), typeInformation.UnderlyingTypeInformation.Type);
+                        }
+                        return new NullValueHandler();
+                    }
                 default:
                     {
                         return GetBaseHandler(typeInformation.TypeCode, typeInformation.UnderlyingTypeInformation?.IsEnum);
@@ -70,12 +78,7 @@ namespace IniWrapper.HandlersFactory
         {
             if (typeCode == TypeCode.ComplexObject)
             {
-                return new ObjectHandler(IniWrapper);
-            }
-
-            if (typeCode == TypeCode.NullValue)
-            {
-                return new NullValueHandler();
+                return new ComplexTypeHandler(IniWrapper);
             }
 
             if (isEnum != null && isEnum.Value)

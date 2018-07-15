@@ -8,7 +8,7 @@ namespace IniWrapper.Handlers.NullValue
     {
         public object ParseReadValue(Type destinationType, string readValue)
         {
-            return readValue;
+            throw new NotImplementedException();
         }
 
         public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)

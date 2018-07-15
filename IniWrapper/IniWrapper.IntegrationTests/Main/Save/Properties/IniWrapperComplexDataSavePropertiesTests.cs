@@ -47,9 +47,8 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
         }
 
         [Test]
-        public void SaveConfiguration_ShouldSaveCorrectComplexType1()
+        public void SaveConfiguration_ShouldReplaceAllNullValuesWithEmptyStringForComplexType()
         {
-            var testString = "test_string_to_save";
             var config = new ComplexNullConfiguration()
             {
                 NullableConfiguration = null
@@ -57,7 +56,25 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
 
             _iniWrapper.SaveConfiguration(config);
 
-            _iniParser.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableInt), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableEnum), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableUint), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableChar), string.Empty);
+        }
+        [Test]
+        public void SaveConfiguration_ShouldReplaceAllNullValuesWithEmptyStringForTwoDepthComplexType()
+        {
+            var config = new TwoDepthNullComplexConfiguration()
+            {
+                ComplexTestConfiguration = null
+            };
+
+            _iniWrapper.SaveConfiguration(config);
+
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableInt), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableEnum), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableUint), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableChar), string.Empty);
         }
     }
 }
