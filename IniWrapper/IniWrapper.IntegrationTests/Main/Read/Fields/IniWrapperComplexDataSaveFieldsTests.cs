@@ -20,7 +20,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Fields
         public void SetUp()
         {
             _iniParser = Substitute.For<IIniParser>();
-            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParser);
+            _iniWrapper = MockWrapperFactory.CreateWithFileSystem(_iniParser);
         }
 
         [Test]

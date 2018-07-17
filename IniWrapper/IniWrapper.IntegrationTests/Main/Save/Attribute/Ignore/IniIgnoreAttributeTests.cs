@@ -1,4 +1,5 @@
 ﻿using IniWrapper.IntegrationTests.Main.Configuration.Attribute.Ignore;
+using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Wrapper;
 using NSubstitute;
@@ -17,7 +18,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Attribute.Ignore
         public void SetUp()
         {
             _iniParser = Substitute.For<IIniParser>();
-            _iniWrapper = new IniWrapperFactory().Create("", _iniParser);
+            _iniWrapper = MockWrapperFactory.CreateWithFileSystem(_iniParser);
         }
 
         [Test]

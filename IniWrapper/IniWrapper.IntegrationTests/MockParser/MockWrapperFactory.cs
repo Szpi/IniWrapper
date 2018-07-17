@@ -1,4 +1,5 @@
 ﻿using System.IO.Abstractions;
+using IniWrapper.DefaultConfiguration;
 using IniWrapper.HandlersFactory;
 using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
@@ -7,13 +8,14 @@ using IniWrapper.Manager.Read.Strategy.Factory;
 using IniWrapper.Manager.Save;
 using IniWrapper.Manager.Save.Strategy.Factory;
 using IniWrapper.ParserWrapper;
+using IniWrapper.Settings;
 using IniWrapper.Utils;
 using IniWrapper.Wrapper;
 using NSubstitute;
 
 namespace IniWrapper.IntegrationTests.MockParser
 {
-    public static class MockParserFactory
+    public static class MockWrapperFactory
     {
         public static IIniWrapper CreateWithFileSystem(IIniParser iniParser)
         {
@@ -22,15 +24,18 @@ namespace IniWrapper.IntegrationTests.MockParser
             fileSystem.File.Exists(Arg.Any<string>()).Returns(true);
             return Create(iniParser, fileSystem);
         }
+
         public static IIniWrapper Create(IIniParser iniParser, IFileSystem fileSystem)
         {
-
             var handlerFactory = new HandlerFactory(new TypeManager());
 
-            var iniWrapper = new Wrapper.IniWrapper("dummy",
-                                          fileSystem,
-                                          new SavingManager(new IniValueManager(new IniValueAttributeManager()), new SavingStrategyFactory(handlerFactory, iniParser)),
-                                          new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory, new ReadingStrategyFactory(iniParser)));
+            var savingManager = new SavingManager(new IniValueManager(new IniValueAttributeManager()),
+                                                  new SavingStrategyFactory(handlerFactory, iniParser));
+            var readingManager = new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory,
+                                                    new ReadingStrategyFactory(iniParser));
+            var defaultConfigurationCreationStrategy = new DefaultConfigurationCreationStrategy(fileSystem, new IniSettings());
+
+            var iniWrapper = new Wrapper.IniWrapper(savingManager, readingManager, defaultConfigurationCreationStrategy);
 
             handlerFactory.IniWrapper = iniWrapper;
 

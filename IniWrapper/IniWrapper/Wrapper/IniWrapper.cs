@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO.Abstractions;
 using System.Runtime.CompilerServices;
+using IniWrapper.DefaultConfiguration;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
 using IniWrapper.Member;
@@ -11,20 +12,17 @@ namespace IniWrapper.Wrapper
 {
     internal sealed class IniWrapper : IIniWrapper
     {
-        private readonly string _filePath;
-        private readonly IFileSystem _fileSystem;
         private readonly ISavingManager _savingManager;
         private readonly IReadingManager _readingManager;
+        private readonly IDefaultConfigurationCreationStrategy _configurationCreationStrategy;
 
-        public IniWrapper(string filePath,
-                         IFileSystem fileSystem,
-                         ISavingManager savingManager,
-                         IReadingManager readingManager)
+        public IniWrapper(ISavingManager savingManager,
+                          IReadingManager readingManager,
+                          IDefaultConfigurationCreationStrategy configurationCreationStrategy)
         {
-            _filePath = filePath;
-            _fileSystem = fileSystem;
             _savingManager = savingManager;
             _readingManager = readingManager;
+            _configurationCreationStrategy = configurationCreationStrategy;
         }
 
         public T LoadConfiguration<T>() where T : new()
@@ -34,7 +32,7 @@ namespace IniWrapper.Wrapper
 
         public object LoadConfiguration(Type destinationType)
         {
-            if (!_fileSystem.File.Exists(_filePath))
+            if (_configurationCreationStrategy.ShouldCreateDefaultConfiguration())
             {
                 var defaultConfiguration = Activator.CreateInstance(destinationType);
                 SaveConfiguration(defaultConfiguration);
