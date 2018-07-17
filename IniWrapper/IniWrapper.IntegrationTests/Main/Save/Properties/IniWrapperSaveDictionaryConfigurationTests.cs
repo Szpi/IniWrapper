@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Save.Properties
 {
     [TestFixture]
-    public class IniParserSaveDictionaryConfigurationTests
+    public class IniWrapperSaveDictionaryConfigurationTests
     {
         private IIniWrapper _iniWrapper;
 

@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Read.Properties
 {
     [TestFixture]
-    public class IniParserReadPropertiesConfigurationTests
+    public class IniWrapperReadPropertiesConfigurationTests
     {
         private IIniWrapper _iniWrapper;
 

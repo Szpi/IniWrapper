@@ -9,6 +9,7 @@ using IniWrapper.Handlers.NullValue;
 using IniWrapper.Handlers.Primitive;
 using IniWrapper.Member;
 using IniWrapper.ParserWrapper;
+using IniWrapper.Settings;
 using IniWrapper.Utils;
 using IniWrapper.Wrapper;
 using TypeCode = IniWrapper.Utils.TypeCode;
@@ -18,12 +19,14 @@ namespace IniWrapper.HandlersFactory
     internal class HandlerFactory : IHandlerFactory
     {
         private readonly ITypeManager _typeManager;
+        private readonly IIniSettings _iniSettings;
 
         public IIniWrapper IniWrapper { get; set; }
 
-        public HandlerFactory(ITypeManager typeManager)
+        public HandlerFactory(ITypeManager typeManager, IIniSettings iniSettings)
         {
             _typeManager = typeManager;
+            _iniSettings = iniSettings;
         }
 
         public (IHandler handler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
@@ -57,15 +60,23 @@ namespace IniWrapper.HandlersFactory
                     {
                         var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
 
-                        return new EnumerableHandler(underlyingTypeHandler, typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.Type);
+                        return new EnumerableHandler(underlyingTypeHandler,
+                                                     typeInformation.UnderlyingTypeInformation.TypeCode,
+                                                     typeInformation.UnderlyingTypeInformation.Type,
+                                                     _iniSettings);
                     }
                 case TypeCode.NullValue:
                     {
+                        if (!_iniSettings.ReplaceNullValuesWithEmptyString)
+                        {
+                            return new NullValueHandler();
+                        }
+
                         if (typeInformation.UnderlyingTypeInformation?.TypeCode == TypeCode.ComplexObject)
                         {
                             return new NullComplexTypeHandler(new ComplexTypeHandler(IniWrapper), typeInformation.UnderlyingTypeInformation.Type);
                         }
-                        return new NullValueHandler();
+                        return new NullValueReplaceHandler();
                     }
                 default:
                     {

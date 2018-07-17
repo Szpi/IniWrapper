@@ -18,7 +18,7 @@ namespace IniWrapper.Wrapper
     {
         public IIniWrapper Create(IniSettings iniSettings, IIniParser iniParser)
         {
-            var handlerFactory = new HandlerFactory(new TypeManager());
+            var handlerFactory = new HandlerFactory(new TypeManager(), iniSettings);
 
             var savingManager = new SavingManager(new IniValueManager(new IniValueAttributeManager()),
                                                   new SavingStrategyFactory(handlerFactory, iniParser));

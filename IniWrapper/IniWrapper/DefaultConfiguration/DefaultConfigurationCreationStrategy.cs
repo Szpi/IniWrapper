@@ -6,9 +6,9 @@ namespace IniWrapper.DefaultConfiguration
     internal class DefaultConfigurationCreationStrategy : IDefaultConfigurationCreationStrategy
     {
         private readonly IFileSystem _fileSystem;
-        private readonly IniSettings _iniSettings;
+        private readonly IIniSettings _iniSettings;
 
-        public DefaultConfigurationCreationStrategy(IFileSystem fileSystem, IniSettings iniSettings)
+        public DefaultConfigurationCreationStrategy(IFileSystem fileSystem, IIniSettings iniSettings)
         {
             _fileSystem = fileSystem;
             _iniSettings = iniSettings;

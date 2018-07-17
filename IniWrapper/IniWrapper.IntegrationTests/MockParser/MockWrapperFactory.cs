@@ -27,13 +27,14 @@ namespace IniWrapper.IntegrationTests.MockParser
 
         public static IIniWrapper Create(IIniParser iniParser, IFileSystem fileSystem)
         {
-            var handlerFactory = new HandlerFactory(new TypeManager());
+            var defaultIniSettings = new IniSettings();
+            var handlerFactory = new HandlerFactory(new TypeManager(), defaultIniSettings);
 
             var savingManager = new SavingManager(new IniValueManager(new IniValueAttributeManager()),
                                                   new SavingStrategyFactory(handlerFactory, iniParser));
             var readingManager = new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory,
                                                     new ReadingStrategyFactory(iniParser));
-            var defaultConfigurationCreationStrategy = new DefaultConfigurationCreationStrategy(fileSystem, new IniSettings());
+            var defaultConfigurationCreationStrategy = new DefaultConfigurationCreationStrategy(fileSystem, defaultIniSettings);
 
             var iniWrapper = new Wrapper.IniWrapper(savingManager, readingManager, defaultConfigurationCreationStrategy);
 

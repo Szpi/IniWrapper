@@ -6,23 +6,24 @@ using System.Text;
 using IniWrapper.Exceptions;
 using IniWrapper.Manager;
 using IniWrapper.Member;
+using IniWrapper.Settings;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Handlers.Enumerable
 {
     internal sealed class EnumerableHandler : IHandler
     {
-        private const char Separator = ',';
-
         private readonly IHandler _underlyingTypeHandler;
         private readonly TypeCode _underlyingTypeCode;
         private readonly Type _underlyingType;
+        private readonly IIniSettings _iniSettings;
 
-        public EnumerableHandler(IHandler underlyingTypeHandler, TypeCode underlyingTypeCode, Type underlyingType)
+        public EnumerableHandler(IHandler underlyingTypeHandler, TypeCode underlyingTypeCode, Type underlyingType, IIniSettings iniSettings)
         {
             _underlyingTypeHandler = underlyingTypeHandler;
             _underlyingTypeCode = underlyingTypeCode;
             _underlyingType = underlyingType;
+            _iniSettings = iniSettings;
         }
 
         public object ParseReadValue(Type destinationType, string readValue)
@@ -34,7 +35,7 @@ namespace IniWrapper.Handlers.Enumerable
 
             var returnedList = (IList)Activator.CreateInstance(destinationType);
 
-            foreach (var value in readValue.Split(new[] { Separator }, StringSplitOptions.RemoveEmptyEntries))
+            foreach (var value in readValue.Split(new[] { _iniSettings.EnumerableEntitySeparator }, StringSplitOptions.RemoveEmptyEntries))
             {
                 returnedList.Add(_underlyingTypeHandler.ParseReadValue(_underlyingType, value));
             }
@@ -66,7 +67,7 @@ namespace IniWrapper.Handlers.Enumerable
                 }
 
                 stringBuilder.Append(_underlyingTypeHandler.FormatToWrite(item, defaultIniValue)?.Value);
-                stringBuilder.Append(Separator);
+                stringBuilder.Append(_iniSettings.EnumerableEntitySeparator);
             }
 
             RemoveLastSeparator(stringBuilder);

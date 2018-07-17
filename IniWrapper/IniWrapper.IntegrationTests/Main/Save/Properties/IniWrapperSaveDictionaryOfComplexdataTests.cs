@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Save.Properties
 {
     [TestFixture]
-    public class IniParserSaveDictionaryOfComplexdataTests
+    public class IniWrapperSaveDictionaryOfComplexdataTests
     {
         private IIniWrapper _iniWrapper;
 

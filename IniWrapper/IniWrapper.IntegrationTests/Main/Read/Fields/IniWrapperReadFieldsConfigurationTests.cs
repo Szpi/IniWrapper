@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Read.Fields
 {
     [TestFixture]
-    public sealed class IniParserReadFieldsConfigurationTests
+    public sealed class IniWrapperReadFieldsConfigurationTests
     {
         private IIniWrapper _iniWrapper;
 

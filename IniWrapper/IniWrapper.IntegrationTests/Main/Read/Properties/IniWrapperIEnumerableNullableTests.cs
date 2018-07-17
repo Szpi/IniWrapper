@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Read.Properties
 {
     [TestFixture]
-    public class IniParserIEnumerableNullableTests
+    public class IniWrapperIEnumerableNullableTests
     {
         private IIniWrapper _iniWrapper;
 
