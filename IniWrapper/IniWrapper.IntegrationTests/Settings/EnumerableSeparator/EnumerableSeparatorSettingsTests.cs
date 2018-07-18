@@ -3,6 +3,7 @@ using FluentAssertions;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
+using IniWrapper.Settings;
 using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
@@ -19,7 +20,7 @@ namespace IniWrapper.IntegrationTests.Settings.EnumerableSeparator
             var iniParser = Substitute.For<IIniParser>();
             var iniWrapper = new IniWrapperFactory().Create(x =>
             {
-                x.ShouldCreateDefaultConfiguration = false;
+                x.MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.IgnoreCheck;
                 x.EnumerableEntitySeparator = separator;
             }, iniParser);
 
@@ -42,7 +43,7 @@ namespace IniWrapper.IntegrationTests.Settings.EnumerableSeparator
             var iniParser = Substitute.For<IIniParser>();
             var iniWrapper = new IniWrapperFactory().Create(x =>
             {
-                x.ShouldCreateDefaultConfiguration = false;
+                x.MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.IgnoreCheck;
                 x.EnumerableEntitySeparator = separator;
             }, iniParser);
 

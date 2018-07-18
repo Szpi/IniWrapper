@@ -67,7 +67,7 @@ namespace IniWrapper.HandlersFactory
                     }
                 case TypeCode.NullValue:
                     {
-                        if (!_iniSettings.ReplaceNullValuesWithEmptyString)
+                        if (_iniSettings.NullValueHandling == NullValueHandling.Ignore)
                         {
                             return new NullValueHandler();
                         }

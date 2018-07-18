@@ -6,8 +6,8 @@
 
         public string IniFilePath { get; set; }
 
-        public bool ShouldCreateDefaultConfiguration { get; set; } = true;
+        public MissingFileWhenLoadingHandling MissingFileWhenLoadingHandling { get; set; } = MissingFileWhenLoadingHandling.CreateWithDefaultValues;
 
-        public bool ReplaceNullValuesWithEmptyString { get; set; } = true;
+        public NullValueHandling NullValueHandling { get; set; } = NullValueHandling.ReplaceWithEmptyString;
     }
 }

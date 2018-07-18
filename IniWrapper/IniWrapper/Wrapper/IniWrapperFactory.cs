@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO.Abstractions;
-using IniWrapper.DefaultConfiguration;
+using IniWrapper.ConfigLoadingChecker;
 using IniWrapper.HandlersFactory;
 using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
@@ -26,7 +26,7 @@ namespace IniWrapper.Wrapper
             var readingManager = new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory,
                                                     new ReadingStrategyFactory(iniParser));
 
-            var defaultConfigurationCreationStrategy = new DefaultConfigurationCreationStrategy(new FileSystem(), iniSettings);
+            var defaultConfigurationCreationStrategy = new ConfigurationLoadingChecker(new FileSystem(), iniSettings);
 
             var iniWrapper = new IniWrapper(savingManager, readingManager, defaultConfigurationCreationStrategy);
 

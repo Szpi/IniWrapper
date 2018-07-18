@@ -4,7 +4,7 @@
     {
         char EnumerableEntitySeparator { get; }
         string IniFilePath { get; }
-        bool ShouldCreateDefaultConfiguration { get; }
-        bool ReplaceNullValuesWithEmptyString { get; }
+        MissingFileWhenLoadingHandling MissingFileWhenLoadingHandling { get; }
+        NullValueHandling NullValueHandling { get; }
     }
 }
