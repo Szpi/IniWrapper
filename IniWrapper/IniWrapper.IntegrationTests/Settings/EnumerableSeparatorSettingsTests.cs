@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using FluentAssertions;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
-using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
 using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace IniWrapper.IntegrationTests.Settings.EnumerableSeparator
+namespace IniWrapper.IntegrationTests.Settings
 {
     [TestFixture]
     public class EnumerableSeparatorSettingsTests

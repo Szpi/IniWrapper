@@ -1,7 +1,7 @@
 ﻿using System;
 using IniWrapper.Manager;
 
-namespace IniWrapper.Handlers.ComplexType
+namespace IniWrapper.Handlers.NullValue
 {
     internal class NullComplexTypeHandler : IHandler
     {
