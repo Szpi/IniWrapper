@@ -10,7 +10,11 @@
     <Description>IniWrapper uses reflection to bind value read from ini file to provided model. The purpose of this library is NOT parsing ini file, but to wrap it to provide easier use of existing parsing libraries. In configuration there is possibility to pass IniParser interface, which is used as file access layer. This library provides class that wraps Windows C++ methods to retrieve values from ini file.</Description>    
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
     <Authors>Piotr Szkudlarski</Authors>    
-    <Copyright>2018 Piotr Szkudlarski</Copyright>
+    <Copyright>2018 Piotr Szkudlarski</Copyright>    
+    <PackageReleaseNotes>- Added Settings to configure default behaviour of library
+Breaking changes:
+- Changed IniWrapperFactory method to CreateWithDefaultIniParser
+- fixed typo in CollectionOfComplexTypeException</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
