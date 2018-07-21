@@ -13,17 +13,28 @@ IniWrapper uses reflection to bind value read from ini file to provided model. T
 You can use custom IniParser class by passing it to Create Method in IniWrapperFactory class. Then call LoadConfiguration method with class that IniWrapper should discover and bind values.
 ``` csharp
 var iniWrapperFactory = new IniWrapperFactory();
-var iniWrapper = iniWrapperFactory.Create("test.ini", new CustomIniParser());
+var iniWrapper = iniWrapperFactory.Create(new CustomIniParser());
+
+var loadedIniConfiguration = iniWrapper.LoadConfiguration<TestConfiguration>();
+```
+If you want to use default IniParser you can call CreateWithDefaultIniParser method. By doing this library will create IniParser that wraps Windows C++ methods from kernel. For more information see Microsoft documentation for WritePrivateProfileString, GetPrivateProfileString and GetPrivateProfileSection and [IniParser.cs](https://github.com/Szpi/IniWrapper/blob/master/IniWrapper/IniWrapper/ParserWrapper/IniParser.cs).
+``` csharp
+var iniWrapperFactory = new IniWrapperFactory();;
+var iniWrapper = iniWrapperFactory.CreateWithDefaultIniParser();
 
 var loadedIniConfiguration = iniWrapper.LoadConfiguration<TestConfiguration>();
 ```
 
-If you want to use default IniParser you can call CreateWithDefaultIniParser method. By doing this library will create IniParser that wraps Windows C++ methods from kernel. For more information see Microsoft documentation for WritePrivateProfileString, GetPrivateProfileString and GetPrivateProfileSection and [IniParser.cs](https://github.com/Szpi/IniWrapper/blob/master/IniWrapper/IniWrapper/ParserWrapper/IniParser.cs).
-``` csharp
-var iniWrapperFactory = new IniWrapperFactory();;
-var iniWrapper = iniWrapperFactory.CreateWithDefaultIniParser("test.ini");
-
-var loadedIniConfiguration = iniWrapper.LoadConfiguration<TestConfiguration>();
+Configure library's [Settings](https://github.com/Szpi/IniWrapper/wiki/Settings) to change it's default behaviour.
+```csharp
+var iniWrapper = new IniWrapperFactory().Create(iniSettings =>
+{
+  iniSettings.MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.ForceLoad;
+  iniSettings.EnumerableEntitySeparator = '*';
+  iniSettings.IniFilePath = "test.ini";
+  iniSettings.NullValueHandling = NullValueHandling.ReplaceWithEmptyString;
+  iniSettings.DefaultIniWrapperBufferSize = 1024;
+}, iniParser);
 ```
 **Note:**
 In version 1.1.0 and 1.0.0 you have to call IniWrapperFactory with CreateWithDefaultIniWrapper.
@@ -35,7 +46,7 @@ var iniWrapper = iniWrapperFactory.CreateWithDefaultIniWrapper("test.ini");
 To save configuration just call Save method and pass configuration class.
 ``` csharp
 var iniWrapperFactory = new IniWrapperFactory();
-var iniWrapper = iniWrapperFactory.CreateWithDefaultIniParser("test.ini");
+var iniWrapper = iniWrapperFactory.CreateWithDefaultIniParser();
 
 iniWrapper.SaveConfiguration(new TestConfiguration());
 ```
@@ -49,10 +60,10 @@ var iniWrapper = iniWrapperFactory.CreateWithDefaultIniWrapper("test.ini");
 For given configuration class:
 ``` csharp
 public struct TestConfiguration
- {
+{
     public string TestString { get; set; }
     public List<int> TestIntList { get; set; }
- }
+}
 ```
 IniWrapper will call IIniParser with following ini parameters Section:TestConfiguration, Key: TestString, Value : value in TestString
 property.
@@ -66,5 +77,7 @@ Overall rules:
 - Section is evaluated from property / field name
 - Key is taken from Key (from IDictionary)
 - Value is taken from Value (from IDictionary)
+
+To override library's default name resolving you can use [IniOptionsAttribute](https://github.com/Szpi/IniWrapper/wiki/Attributes).
 
 ***For more information please go to [wiki page](https://github.com/Szpi/IniWrapper/wiki).***
