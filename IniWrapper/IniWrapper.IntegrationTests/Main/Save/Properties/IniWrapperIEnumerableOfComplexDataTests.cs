@@ -2,6 +2,7 @@
 using FluentAssertions;
 using IniWrapper.Exceptions;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
+using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Wrapper;
 using NSubstitute;
@@ -10,7 +11,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Save.Properties
 {
     [TestFixture]
-    public class IniParserIEnumerableOfComplexDataTests
+    public class IniWrapperIEnumerableOfComplexDataTests
     {
         private IIniWrapper _iniWrapper;
 
@@ -20,7 +21,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
         public void SetUp()
         {
             _iniParser = Substitute.For<IIniParser>();
-            _iniWrapper = new IniWrapperFactory().Create("", _iniParser);
+            _iniWrapper = MockWrapperFactory.CreateWithFileSystem(_iniParser);
         }
 
         [Test]
@@ -30,7 +31,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
 
             Action saveConfiguration = () => _iniWrapper.SaveConfiguration(config);
 
-            saveConfiguration.Should().Throw<CollectionOfCopmexTypeException>();
+            saveConfiguration.Should().Throw<CollectionOfComplexTypeException>();
         }
     }
 }

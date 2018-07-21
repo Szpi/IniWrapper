@@ -1,6 +1,4 @@
-﻿using System;
-using FluentAssertions;
-using IniWrapper.Exceptions;
+﻿using FluentAssertions;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
@@ -8,10 +6,10 @@ using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace IniWrapper.IntegrationTests.Main.Read.Properties
+namespace IniWrapper.IntegrationTests.Main.Read.WrongFormat
 {
     [TestFixture]
-    public class IniWrapperIEnumerableReadingOfComplexDataTests
+    public class ReadingEnumOutOfRangeTests
     {
         private IIniWrapper _iniWrapper;
 
@@ -25,11 +23,13 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
         }
 
         [Test]
-        public void LoadConfiguration_ShouldThrowException_WhenConfigurationHasCollectionOfComplexType()
+        public void LoadConfiguration_CorrectEnumOutOfRange()
         {
-            Action loadConfiguration = () => _iniWrapper.LoadConfiguration<ListOfComplexDataConfiguration>();
+            _iniParser.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestEnum)).Returns("1000");
 
-            loadConfiguration.Should().Throw<CollectionOfComplexTypeException>();
+            var result = _iniWrapper.LoadConfiguration<TestConfiguration>();
+
+            result.TestEnum.Should().Be((TestEnum)1000);
         }
     }
 }

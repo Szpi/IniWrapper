@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Read.Fields
 {
     [TestFixture]
-    public class IniParserIEnumerableOfComplexDataTests
+    public class IniWrapperIEnumerableOfComplexDataTests
     {
         private IIniWrapper _iniWrapper;
 
@@ -21,7 +21,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Fields
         public void SetUp()
         {
             _iniParser = Substitute.For<IIniParser>();
-            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParser);
+            _iniWrapper = MockWrapperFactory.CreateWithFileSystem(_iniParser);
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Fields
         {
             Action loadConfiguration = () => _iniWrapper.LoadConfiguration<ListOfComplesDataConfigurationField>();
 
-            loadConfiguration.Should().Throw<CollectionOfCopmexTypeException>();
+            loadConfiguration.Should().Throw<CollectionOfComplexTypeException>();
         }
     }
 }

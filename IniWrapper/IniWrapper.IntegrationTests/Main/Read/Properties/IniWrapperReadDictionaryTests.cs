@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Read.Properties
 {
     [TestFixture]
-    public class IniParserReadDictionaryTests
+    public class IniWrapperReadDictionaryTests
     {
         private IIniWrapper _iniWrapper;
 
@@ -20,7 +20,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
         public void SetUp()
         {
             _iniParser = Substitute.For<IIniParser>();
-            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParser);
+            _iniWrapper = MockWrapperFactory.CreateWithFileSystem(_iniParser);
         }
 
         [Test]

@@ -52,7 +52,7 @@ namespace IniWrapper.Handlers.Dictionary
             if (_typeDetailsInformation.UnderlyingKeyTypeInformation.TypeCode == TypeCode.ComplexObject ||
                 _typeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ComplexObject)
             {
-                throw new CollectionOfCopmexTypeException();
+                throw new CollectionOfComplexTypeException();
             }
 
             if (!(objectToFormat is IDictionaryEnumerator dictionaryEnumerator))

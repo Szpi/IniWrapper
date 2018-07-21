@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO.Abstractions;
 using System.Runtime.CompilerServices;
+using IniWrapper.ConfigLoadingChecker;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
 using IniWrapper.Member;
@@ -11,20 +12,17 @@ namespace IniWrapper.Wrapper
 {
     internal sealed class IniWrapper : IIniWrapper
     {
-        private readonly string _filePath;
-        private readonly IFileSystem _fileSystem;
         private readonly ISavingManager _savingManager;
         private readonly IReadingManager _readingManager;
+        private readonly IConfigurationLoadingChecker _configurationLoadingChecker;
 
-        public IniWrapper(string filePath,
-                         IFileSystem fileSystem,
-                         ISavingManager savingManager,
-                         IReadingManager readingManager)
+        public IniWrapper(ISavingManager savingManager,
+                          IReadingManager readingManager,
+                          IConfigurationLoadingChecker configurationLoadingChecker)
         {
-            _filePath = filePath;
-            _fileSystem = fileSystem;
             _savingManager = savingManager;
             _readingManager = readingManager;
+            _configurationLoadingChecker = configurationLoadingChecker;
         }
 
         public T LoadConfiguration<T>() where T : new()
@@ -34,15 +32,20 @@ namespace IniWrapper.Wrapper
 
         public object LoadConfiguration(Type destinationType)
         {
-            if (!_fileSystem.File.Exists(_filePath))
+            if (_configurationLoadingChecker.ShouldReadConfigurationFromFile())
             {
-                var defaultConfiguration = Activator.CreateInstance(destinationType);
-                SaveConfiguration(defaultConfiguration);
-                return defaultConfiguration;
+                var result = Activator.CreateInstance(destinationType);
+                return ReadFromFile(result);
             }
 
-            var result = Activator.CreateInstance(destinationType);
-            return ReadFromFile(result);
+            if (!_configurationLoadingChecker.ShouldCreateDefaultConfiguration())
+            {
+                return Activator.CreateInstance(destinationType);
+            }
+
+            var defaultConfiguration = Activator.CreateInstance(destinationType);
+            SaveConfiguration(defaultConfiguration);
+            return defaultConfiguration;
         }
 
         public void SaveConfiguration(object configuration)

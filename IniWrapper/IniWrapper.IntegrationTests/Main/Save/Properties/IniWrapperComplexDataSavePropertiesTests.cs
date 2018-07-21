@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
+using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Wrapper;
 using NSubstitute;
@@ -8,7 +9,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Save.Properties
 {
     [TestFixture]
-    public class IniParserComplexDataSavePropertiesTests
+    public class IniWrapperComplexDataSavePropertiesTests
     {
         private IIniWrapper _iniWrapper;
 
@@ -18,7 +19,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
         public void SetUp()
         {
             _iniParser = Substitute.For<IIniParser>();
-            _iniWrapper = new IniWrapperFactory().Create("", _iniParser);
+            _iniWrapper = MockWrapperFactory.CreateWithFileSystem(_iniParser);
         }
 
         [Test]
@@ -44,6 +45,37 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             _iniParser.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestInt), config.TestConfiguration.TestInt.ToString());
             _iniParser.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestUint), config.TestConfiguration.TestUint.ToString());
             _iniParser.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestUintList), "1,2,3,4");
+        }
+
+        [Test]
+        public void SaveConfiguration_ShouldReplaceAllNullValuesWithEmptyStringForComplexType()
+        {
+            var config = new ComplexNullConfiguration()
+            {
+                NullableConfiguration = null
+            };
+
+            _iniWrapper.SaveConfiguration(config);
+
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableInt), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableEnum), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableUint), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableChar), string.Empty);
+        }
+        [Test]
+        public void SaveConfiguration_ShouldReplaceAllNullValuesWithEmptyStringForTwoDepthComplexType()
+        {
+            var config = new TwoDepthNullComplexConfiguration()
+            {
+                ComplexTestConfiguration = null
+            };
+
+            _iniWrapper.SaveConfiguration(config);
+
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableInt), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableEnum), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableUint), string.Empty);
+            _iniParser.Received(1).Write(nameof(NullableConfiguration), nameof(NullableConfiguration.TestNullableChar), string.Empty);
         }
     }
 }

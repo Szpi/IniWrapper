@@ -10,7 +10,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Read.Properties
 {
     [TestFixture]
-    public class IniWrapperIEnumerableNullableTests
+    public class IniWrapperReadDefaultValuesTests
     {
         private IIniWrapper _iniWrapper;
 
@@ -24,14 +24,13 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
         }
 
         [Test]
-        public void LoadConfiguration_CorrectReadNullableIntList()
+        public void SaveConfiguration_ShouldSaveCorrectDefaultValues()
         {
-            _iniParser.Read(nameof(NullableIEnumerableConfiguration), nameof(NullableIEnumerableConfiguration.NullableIntList)).Returns("1,2,3,4,5,6,7,8");
-            var expected = new List<int?> { 1, 2, 3, 4, 5, 6, 7, 8 };
+            var result = _iniWrapper.LoadConfiguration<DefaultValuesConfiguration>();
 
-            var result = _iniWrapper.LoadConfiguration<NullableIEnumerableConfiguration>();
-
-            result.NullableIntList.Should().BeEquivalentTo(expected);
+            result.DefaultInt.Should().Be(DefaultValuesConfigurationConsts.DefaultInt);
+            result.DefaultString.Should().Be(DefaultValuesConfigurationConsts.DefaultString);
+            result.DefaultList.Should().BeEquivalentTo(new List<int> { 10, 11, 12, 13 });
         }
     }
 }

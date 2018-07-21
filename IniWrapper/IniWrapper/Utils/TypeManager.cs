@@ -52,11 +52,27 @@ namespace IniWrapper.Utils
 
         public TypeDetailsInformation GetTypeInformation(Type type, object value)
         {
-            if (value == null)
+            var typeInformation = GetBaseTypeInformation(type);
+
+            if (value != null)
             {
-                return new TypeDetailsInformation(TypeCode.NullValue, null, null);
+                return typeInformation;
             }
 
+            if (typeInformation.TypeCode == TypeCode.ComplexObject)
+            {
+                return new TypeDetailsInformation(TypeCode.NullValue,
+                                                  new UnderlyingTypeInformation(typeInformation.TypeCode,
+                                                                                typeInformation.UnderlyingTypeInformation.IsEnum,
+                                                                                typeInformation.UnderlyingTypeInformation.Type),
+                                                  null); 
+            }
+
+            return new TypeDetailsInformation(TypeCode.NullValue, null, null);
+        }
+
+        private TypeDetailsInformation GetBaseTypeInformation(Type type)
+        {
             if (!IsNullableType(type) && TypeCodeMap.TryGetValue(type, out var typeCode))
             {
                 return new TypeDetailsInformation(typeCode, new UnderlyingTypeInformation(typeCode, false, type), null);
@@ -67,8 +83,8 @@ namespace IniWrapper.Utils
                 var underlyingGenericTypeKey = type.GenericTypeArguments[0];
                 var underlyingGenericTypeValue = type.GenericTypeArguments[1];
 
-                var genericKeyTypeCode = GetTypeInformation(underlyingGenericTypeKey, value);
-                var genericValueTypeCode = GetTypeInformation(underlyingGenericTypeValue, value);
+                var genericKeyTypeCode = GetBaseTypeInformation(underlyingGenericTypeKey);
+                var genericValueTypeCode = GetBaseTypeInformation(underlyingGenericTypeValue);
 
                 var underlyingKeyTypeInformation = new UnderlyingTypeInformation(genericKeyTypeCode.TypeCode, genericKeyTypeCode.UnderlyingTypeInformation.IsEnum, genericKeyTypeCode.UnderlyingTypeInformation.Type);
                 var underlyingTypeInformation = new UnderlyingTypeInformation(genericValueTypeCode.TypeCode, genericValueTypeCode.UnderlyingTypeInformation.IsEnum, genericValueTypeCode.UnderlyingTypeInformation.Type);
@@ -79,7 +95,7 @@ namespace IniWrapper.Utils
             if (typeof(IEnumerable).IsAssignableFrom(type))
             {
                 var underlyingGenericType = type.GenericTypeArguments[0];
-                var genericTypeCode = GetTypeInformation(underlyingGenericType, value);
+                var genericTypeCode = GetBaseTypeInformation(underlyingGenericType);
 
                 return new TypeDetailsInformation(TypeCode.Enumerable,
                                                   new UnderlyingTypeInformation(
@@ -88,11 +104,10 @@ namespace IniWrapper.Utils
                                                       genericTypeCode.UnderlyingTypeInformation.Type), null);
             }
 
-
             if (type.IsEnum)
             {
                 var underlyingType = Enum.GetUnderlyingType(type);
-                var typeDetailsInformation = GetTypeInformation(underlyingType, value);
+                var typeDetailsInformation = GetBaseTypeInformation(underlyingType);
 
                 return new TypeDetailsInformation(typeDetailsInformation.TypeCode, new UnderlyingTypeInformation(TypeCode.Empty, true, type), null);
             }
@@ -101,13 +116,13 @@ namespace IniWrapper.Utils
 
             if (nullable == null)
             {
-                return new TypeDetailsInformation(TypeCode.ComplexObject, new UnderlyingTypeInformation(TypeCode.Empty, false, null), null);
+                return new TypeDetailsInformation(TypeCode.ComplexObject, new UnderlyingTypeInformation(TypeCode.Empty, false, type), null);
             }
 
             if (nullable.IsEnum)
             {
                 var nullableUnderlyingType = Enum.GetUnderlyingType(nullable);
-                var underlyingType = GetTypeInformation(nullableUnderlyingType, value);
+                var underlyingType = GetBaseTypeInformation(nullableUnderlyingType);
                 return new TypeDetailsInformation(underlyingType.TypeCode, new UnderlyingTypeInformation(TypeCode.Empty, true, nullableUnderlyingType), null);
             }
 

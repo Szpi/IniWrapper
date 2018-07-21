@@ -11,7 +11,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Save.Fields
 {
     [TestFixture]
-    public class IniParserSaveDictionaryConfigurationTests
+    public class IniWrapperSaveDictionaryConfigurationTests
     {
         private IIniWrapper _iniWrapper;
 
@@ -21,7 +21,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
         public void SetUp()
         {
             _iniParser = Substitute.For<IIniParser>();
-            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParser);
+            _iniWrapper = MockWrapperFactory.CreateWithFileSystem(_iniParser);
         }
 
         [Test]

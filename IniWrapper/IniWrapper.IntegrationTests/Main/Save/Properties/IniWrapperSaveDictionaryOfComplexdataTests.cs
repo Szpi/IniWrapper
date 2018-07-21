@@ -12,7 +12,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Save.Properties
 {
     [TestFixture]
-    public class IniParserSaveDictionaryOfComplexdataTests
+    public class IniWrapperSaveDictionaryOfComplexdataTests
     {
         private IIniWrapper _iniWrapper;
 
@@ -22,7 +22,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
         public void SetUp()
         {
             _iniParser = Substitute.For<IIniParser>();
-            _iniWrapper = MockParserFactory.CreateWithFileSystem(_iniParser);
+            _iniWrapper = MockWrapperFactory.CreateWithFileSystem(_iniParser);
         }
 
         [Test]
@@ -32,7 +32,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
 
             Action saveConfiguration = () => _iniWrapper.SaveConfiguration(config);
 
-            saveConfiguration.Should().Throw<CollectionOfCopmexTypeException>();
+            saveConfiguration.Should().Throw<CollectionOfComplexTypeException>();
         }
 
         [Test]
@@ -42,7 +42,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
 
             Action saveConfiguration = () => _iniWrapper.SaveConfiguration(config);
 
-            saveConfiguration.Should().Throw<CollectionOfCopmexTypeException>();
+            saveConfiguration.Should().Throw<CollectionOfComplexTypeException>();
 
         }
     }

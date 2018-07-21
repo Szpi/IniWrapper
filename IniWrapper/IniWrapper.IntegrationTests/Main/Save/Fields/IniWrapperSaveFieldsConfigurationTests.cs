@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using IniWrapper.IntegrationTests.Main.Configuration.Fields;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
+using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Wrapper;
 using NSubstitute;
@@ -9,7 +10,7 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.Main.Save.Fields
 {
     [TestFixture]
-    public sealed class IniParserSaveFieldsConfigurationTests
+    public sealed class IniWrapperSaveFieldsConfigurationTests
     {
         private IIniWrapper _iniWrapper;
 
@@ -19,7 +20,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Fields
         public void SetUp()
         {
             _iniParser = Substitute.For<IIniParser>();
-            _iniWrapper = new IniWrapperFactory().Create("", _iniParser);
+            _iniWrapper = MockWrapperFactory.CreateWithFileSystem(_iniParser);
         }
 
         [Test]
