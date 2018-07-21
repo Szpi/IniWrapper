@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO.Abstractions;
+using FluentAssertions;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
@@ -13,6 +15,23 @@ namespace IniWrapper.IntegrationTests.Settings
     [TestFixture]
     public class MissingFileSettingsTests
     {
+
+        [TestCase(MissingFileWhenLoadingHandling.DoNotLoad)]
+        [TestCase(MissingFileWhenLoadingHandling.CreateWithDefaultValues)]
+        public void DoNotCall_And_CreateWithDefaultValues_ShouldThrow_WhenIniPathIsNullOrEmpty(MissingFileWhenLoadingHandling missingFileWhenLoadingHandling)
+        {
+            var iniParser = Substitute.For<IIniParser>();
+
+            var inisettings = new IniSettings()
+            {
+                MissingFileWhenLoadingHandling = missingFileWhenLoadingHandling
+            };
+
+            Action result = () => new IniWrapperFactory().Create(inisettings, iniParser);
+
+            result.Should().Throw<ArgumentException>();
+        }
+
         [Test]
         public void DoNotCallIniParser_When_DoNotLoadIsSet()
         {
@@ -20,7 +39,8 @@ namespace IniWrapper.IntegrationTests.Settings
 
             var inisettings = new IniSettings()
             {
-                MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.DoNotLoad
+                MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.DoNotLoad,
+                IniFilePath = "dummyPath"
             };
 
             var iniWrapper = new IniWrapperFactory().Create(inisettings, iniParser);
@@ -38,7 +58,8 @@ namespace IniWrapper.IntegrationTests.Settings
 
             var inisettings = new IniSettings()
             {
-                MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.CreateWithDefaultValues
+                MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.CreateWithDefaultValues,
+                IniFilePath = "dummyPath"
             };
 
             var iniWrapper = new IniWrapperFactory().Create(inisettings, iniParser);
@@ -56,7 +77,7 @@ namespace IniWrapper.IntegrationTests.Settings
 
             var inisettings = new IniSettings()
             {
-                MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.IgnoreCheck
+                MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.ForceLoad
             };
 
             var iniWrapper = new IniWrapperFactory().Create(inisettings, iniParser);
@@ -119,7 +140,7 @@ namespace IniWrapper.IntegrationTests.Settings
 
             var inisettings = new IniSettings()
             {
-                MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.IgnoreCheck
+                MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.ForceLoad
             };
 
             var iniWrapper = MockWrapperFactory.Create(inisettings, iniParser, fileSystem);

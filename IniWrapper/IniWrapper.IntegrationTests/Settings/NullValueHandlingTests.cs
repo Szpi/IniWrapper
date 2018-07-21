@@ -17,7 +17,7 @@ namespace IniWrapper.IntegrationTests.Settings
             var iniParser = Substitute.For<IIniParser>();
             var iniWrapper = new IniWrapperFactory().Create(x =>
             {
-                x.MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.IgnoreCheck;
+                x.MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.ForceLoad;
                 x.NullValueHandling = NullValueHandling.Ignore;
             }, iniParser);
 
@@ -34,7 +34,7 @@ namespace IniWrapper.IntegrationTests.Settings
             var iniParser = Substitute.For<IIniParser>();
             var iniWrapper = new IniWrapperFactory().Create(x =>
             {
-                x.MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.IgnoreCheck;
+                x.MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.ForceLoad;
                 x.NullValueHandling = NullValueHandling.ReplaceWithEmptyString;
             }, iniParser);
 
@@ -51,7 +51,7 @@ namespace IniWrapper.IntegrationTests.Settings
             var iniParser = Substitute.For<IIniParser>();
             var iniWrapper = new IniWrapperFactory().Create(x =>
             {
-                x.MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.IgnoreCheck;
+                x.MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.ForceLoad;
                 x.NullValueHandling = NullValueHandling.Ignore;
             }, iniParser);
 
@@ -67,7 +67,7 @@ namespace IniWrapper.IntegrationTests.Settings
             var iniParser = Substitute.For<IIniParser>();
             var iniWrapper = new IniWrapperFactory().Create(x =>
             {
-                x.MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.IgnoreCheck;
+                x.MissingFileWhenLoadingHandling = MissingFileWhenLoadingHandling.ForceLoad;
                 x.NullValueHandling = NullValueHandling.ReplaceWithEmptyString;
             }, iniParser);
 

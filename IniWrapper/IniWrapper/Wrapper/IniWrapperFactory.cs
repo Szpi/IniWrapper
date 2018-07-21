@@ -18,6 +18,8 @@ namespace IniWrapper.Wrapper
     {
         public IIniWrapper Create(IniSettings iniSettings, IIniParser iniParser)
         {
+            CheckSettings(iniSettings);
+
             var handlerFactory = new HandlerFactory(new TypeManager(), iniSettings);
 
             var savingManager = new SavingManager(new IniValueManager(new IniValueAttributeManager()),
@@ -57,7 +59,7 @@ namespace IniWrapper.Wrapper
                 throw new ArgumentException($"{nameof(iniSettings.IniFilePath)} must be provided when calling CreateWithDefaultIniParser. Assign it or use Create with custom IniParser.");
             }
 
-            return Create(iniSettings, new IniParser(iniSettings.IniFilePath));
+            return Create(iniSettings, new IniParser(iniSettings.IniFilePath, iniSettings.DefaultIniWrapperBufferSize));
         }
 
         public IIniWrapper CreateWithDefaultIniParser(Action<IniSettings> iniSettings)
@@ -72,6 +74,16 @@ namespace IniWrapper.Wrapper
         public IIniWrapper CreateWithDefaultIniParser()
         {
             return CreateWithDefaultIniParser(new IniSettings());
+        }
+        private static void CheckSettings(IniSettings iniSettings)
+        {
+            if ((iniSettings.MissingFileWhenLoadingHandling == MissingFileWhenLoadingHandling.CreateWithDefaultValues ||
+                 iniSettings.MissingFileWhenLoadingHandling == MissingFileWhenLoadingHandling.DoNotLoad) &&
+                string.IsNullOrEmpty(iniSettings.IniFilePath))
+            {
+                throw new ArgumentException(
+                    $"Please specify {nameof(iniSettings.IniFilePath)} in settings with chosen {nameof(MissingFileWhenLoadingHandling)}");
+            }
         }
     }
 }

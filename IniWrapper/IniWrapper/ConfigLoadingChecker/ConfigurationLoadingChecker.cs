@@ -16,7 +16,7 @@ namespace IniWrapper.ConfigLoadingChecker
 
         public bool ShouldReadConfigurationFromFile()
         {
-            return _iniSettings.MissingFileWhenLoadingHandling == MissingFileWhenLoadingHandling.IgnoreCheck || _fileSystem.File.Exists(_iniSettings.IniFilePath);
+            return _iniSettings.MissingFileWhenLoadingHandling == MissingFileWhenLoadingHandling.ForceLoad || _fileSystem.File.Exists(_iniSettings.IniFilePath);
         }
 
         public bool ShouldCreateDefaultConfiguration()

@@ -8,7 +8,7 @@
         /// <summary>
         /// Library will not check if file exists. It will always try to load from file.
         /// </summary>
-        IgnoreCheck,
+        ForceLoad,
         /// <summary>
         /// If file is missing library will return instance of given configuration class. It won't neither write nor read anything from file.
         /// </summary>

@@ -8,6 +8,8 @@ namespace IniWrapper.ParserWrapper
     public sealed class IniParser : IIniParser
     {
         private readonly string _filePath;
+        private readonly int _bufferSize;
+
         [DllImport("kernel32", CharSet = CharSet.Unicode)]
         private static extern long WritePrivateProfileString(string section, string key, string value, string filePath);
 
@@ -18,14 +20,15 @@ namespace IniWrapper.ParserWrapper
         [DllImport("kernel32.dll")]
         private static extern int GetPrivateProfileSection(string lpAppName, byte[] lpszReturnBuffer, int nSize, string lpFileName);
 
-        public IniParser(string iniPath)
+        public IniParser(string iniPath, int bufferSize)
         {
             _filePath = iniPath;
+            _bufferSize = bufferSize;
         }
 
         public string ReadAllFromSection(string section)
         {
-            var buffer = new byte[2048];
+            var buffer = new byte[_bufferSize];
 
             GetPrivateProfileSection(section, buffer, 2048, _filePath);
             return Encoding.ASCII.GetString(buffer).Trim('\0');
@@ -38,7 +41,7 @@ namespace IniWrapper.ParserWrapper
                 return ReadAllFromSection(section);
             }
 
-            var returnValueBuffer = new StringBuilder(2048);
+            var returnValueBuffer = new StringBuilder(_bufferSize);
             GetPrivateProfileString(section, key, string.Empty, returnValueBuffer, returnValueBuffer.Capacity, _filePath);
 
             return returnValueBuffer.ToString();
