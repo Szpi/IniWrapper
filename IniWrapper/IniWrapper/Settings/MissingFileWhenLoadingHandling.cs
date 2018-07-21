@@ -15,7 +15,7 @@
         DoNotLoad,
         /// <summary>
         /// If file is missing library will create instance of given configuration class save it to file and return instance.
-        /// Note: FilePath have to be set.
+        /// Note: FilePath has to be set.
         /// </summary>
         CreateWithDefaultValues
     }
