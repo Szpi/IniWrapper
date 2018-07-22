@@ -8,14 +8,14 @@ using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Converters.Enumerable
 {
-    internal sealed class EnumerableIniConverter : IIniConverter
+    internal sealed class EnumerableConverter : IIniConverter
     {
         private readonly IIniConverter _underlyingTypeIniConverter;
         private readonly TypeCode _underlyingTypeCode;
         private readonly Type _underlyingType;
         private readonly IIniSettings _iniSettings;
 
-        public EnumerableIniConverter(IIniConverter underlyingTypeIniConverter, TypeCode underlyingTypeCode, Type underlyingType, IIniSettings iniSettings)
+        public EnumerableConverter(IIniConverter underlyingTypeIniConverter, TypeCode underlyingTypeCode, Type underlyingType, IIniSettings iniSettings)
         {
             _underlyingTypeIniConverter = underlyingTypeIniConverter;
             _underlyingTypeCode = underlyingTypeCode;

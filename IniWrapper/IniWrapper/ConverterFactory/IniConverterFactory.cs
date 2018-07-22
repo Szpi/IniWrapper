@@ -48,7 +48,7 @@ namespace IniWrapper.ConverterFactory
 
         private IIniConverter GetHandlerWithIgnoreAttributeHandlerDecorator(TypeDetailsInformation typeInformation, IMemberInfoWrapper memberInfoWrapper)
         {
-            return new IgnoreAttributeIniConverter(GetHandler(typeInformation), memberInfoWrapper);
+            return new IgnoreAttributeConverter(GetHandler(typeInformation), memberInfoWrapper);
         }
 
         private IIniConverter GetHandler(TypeDetailsInformation typeInformation)
@@ -60,7 +60,7 @@ namespace IniWrapper.ConverterFactory
                         var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
                         var underlyingKeyTypeHandler = GetBaseHandler(typeInformation.UnderlyingKeyTypeInformation.TypeCode, typeInformation.UnderlyingKeyTypeInformation.IsEnum);
 
-                        return new DictionaryEnumeratorIniConverter(underlyingTypeHandler,
+                        return new DictionaryEnumeratorConverter(underlyingTypeHandler,
                                                                underlyingKeyTypeHandler,
                                                                typeInformation,
                                                                new ReadSectionsParser());
@@ -69,7 +69,7 @@ namespace IniWrapper.ConverterFactory
                     {
                         var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
 
-                        return new EnumerableIniConverter(underlyingTypeHandler,
+                        return new EnumerableConverter(underlyingTypeHandler,
                                                      typeInformation.UnderlyingTypeInformation.TypeCode,
                                                      typeInformation.UnderlyingTypeInformation.Type,
                                                      _iniSettings);
@@ -78,14 +78,14 @@ namespace IniWrapper.ConverterFactory
                     {
                         if (_iniSettings.NullValueHandling == NullValueHandling.Ignore)
                         {
-                            return new NullValueIniConverter();
+                            return new NullValueConverter();
                         }
 
                         if (typeInformation.UnderlyingTypeInformation?.TypeCode == TypeCode.ComplexObject)
                         {
-                            return new NullComplexTypeIniConverter(new ComplexTypeIniConverter(IniWrapper), typeInformation.UnderlyingTypeInformation.Type);
+                            return new NullComplexTypeConverter(new ComplexTypeConverter(IniWrapper), typeInformation.UnderlyingTypeInformation.Type);
                         }
-                        return new NullValueReplaceIniConverter();
+                        return new NullValueReplaceConverter();
                     }
                 default:
                     {
@@ -98,15 +98,15 @@ namespace IniWrapper.ConverterFactory
         {
             if (typeCode == TypeCode.ComplexObject)
             {
-                return new ComplexTypeIniConverter(IniWrapper);
+                return new ComplexTypeConverter(IniWrapper);
             }
 
             if (isEnum != null && isEnum.Value)
             {
-                return new EnumIniConverter(typeCode);
+                return new EnumConverter(typeCode);
             }
 
-            return new PrimitivesIniConverter();
+            return new PrimitivesConverter();
         }
     }
 }

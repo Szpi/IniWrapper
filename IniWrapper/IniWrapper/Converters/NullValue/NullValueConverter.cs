@@ -3,7 +3,7 @@ using IniWrapper.Manager;
 
 namespace IniWrapper.Converters.NullValue
 {
-    internal class NullValueIniConverter : IIniConverter
+    internal class NullValueConverter : IIniConverter
     {
         public object ParseReadValue(Type destinationType, string readValue)
         {

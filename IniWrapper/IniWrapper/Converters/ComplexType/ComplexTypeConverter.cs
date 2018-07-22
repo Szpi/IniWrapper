@@ -4,11 +4,11 @@ using IniWrapper.Wrapper;
 
 namespace IniWrapper.Converters.ComplexType
 {
-    internal class ComplexTypeIniConverter : IIniConverter
+    internal class ComplexTypeConverter : IIniConverter
     {
         private readonly IIniWrapper _iniWrapper;
 
-        public ComplexTypeIniConverter(IIniWrapper iniWrapper)
+        public ComplexTypeConverter(IIniWrapper iniWrapper)
         {
             _iniWrapper = iniWrapper;
         }

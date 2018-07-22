@@ -5,12 +5,12 @@ using IniWrapper.Member;
 
 namespace IniWrapper.Converters.Ignore
 {
-    internal class IgnoreAttributeIniConverter : IIniConverter
+    internal class IgnoreAttributeConverter : IIniConverter
     {
         private readonly IIniConverter _iniConverter;
         private readonly IMemberInfoWrapper _memberInfoWrapper;
 
-        public IgnoreAttributeIniConverter(IIniConverter iniConverter, IMemberInfoWrapper memberInfoWrapperWrapper)
+        public IgnoreAttributeConverter(IIniConverter iniConverter, IMemberInfoWrapper memberInfoWrapperWrapper)
         {
             _iniConverter = iniConverter;
             _memberInfoWrapper = memberInfoWrapperWrapper;

@@ -3,12 +3,12 @@ using IniWrapper.Manager;
 
 namespace IniWrapper.Converters.NullValue
 {
-    internal class NullComplexTypeIniConverter : IIniConverter
+    internal class NullComplexTypeConverter : IIniConverter
     {
         private readonly IIniConverter _complexTypeIniConverter;
         private readonly Type _complexType;
 
-        public NullComplexTypeIniConverter(IIniConverter complexTypeIniConverter, Type complexType)
+        public NullComplexTypeConverter(IIniConverter complexTypeIniConverter, Type complexType)
         {
             _complexTypeIniConverter = complexTypeIniConverter;
             _complexType = complexType;

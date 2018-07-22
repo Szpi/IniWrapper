@@ -1,18 +1,18 @@
 ﻿using System;
 using IniWrapper.Manager;
 
-namespace IniWrapper.Converters.NullValue
+namespace IniWrapper.Converters.Enums
 {
-    internal class NullValueReplaceConverter : IIniConverter
+    public class EnumStringConverter : IIniConverter
     {
         public object ParseReadValue(Type destinationType, string readValue)
         {
-            throw new NotImplementedException();
+            return Enum.Parse(destinationType, readValue);
         }
 
         public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
-            defaultIniValue.Value = string.Empty;
+            defaultIniValue.Value = objectToFormat.ToString();
 
             return defaultIniValue;
         }

@@ -11,7 +11,7 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
     <Authors>Piotr Szkudlarski</Authors>    
     <Copyright>2018 Piotr Szkudlarski</Copyright>    
-    <PackageReleaseNotes>- Added CustomHandlerAttribute</PackageReleaseNotes>
+    <PackageReleaseNotes>- Added CustomConverterAttribute</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

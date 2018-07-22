@@ -8,14 +8,14 @@ using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Converters.Dictionary
 {
-    internal class DictionaryEnumeratorIniConverter : IIniConverter
+    internal class DictionaryEnumeratorConverter : IIniConverter
     {
         private readonly IIniConverter _underlyingTypeIniConverter;
         private readonly IIniConverter _underlyingKeyTypeIniConverter;
         private readonly TypeDetailsInformation _typeDetailsInformation;
         private readonly IReadSectionsParser _readSectionsParser;
 
-        public DictionaryEnumeratorIniConverter(IIniConverter underlyingTypeIniConverter, IIniConverter underlyingKeyTypeIniConverter,
+        public DictionaryEnumeratorConverter(IIniConverter underlyingTypeIniConverter, IIniConverter underlyingKeyTypeIniConverter,
                                            TypeDetailsInformation typeDetailsInformation,
                                            IReadSectionsParser readSectionsParser)
         {

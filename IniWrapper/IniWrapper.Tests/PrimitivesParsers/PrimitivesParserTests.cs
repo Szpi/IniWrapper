@@ -8,7 +8,7 @@ namespace IniWrapper.Tests.PrimitivesParsers
     [TestFixture]
     public class PrimitivesParserTests
     {
-        private PrimitivesIniConverter _primitivesIniConverter;
+        private PrimitivesConverter _primitivesConverter;
 
         static object[] TestCaseSource =
         {
@@ -19,13 +19,13 @@ namespace IniWrapper.Tests.PrimitivesParsers
         [SetUp]
         public void SetUp()
         {
-            _primitivesIniConverter = new PrimitivesIniConverter();
+            _primitivesConverter = new PrimitivesConverter();
         }
 
         [TestCaseSource(nameof(TestCaseSource))]
         public void ParseReadValue_ShouldParseInt(Type type, string parsingValue, object expected)
         {
-            var result = _primitivesIniConverter.ParseReadValue(type, parsingValue);
+            var result = _primitivesConverter.ParseReadValue(type, parsingValue);
             result.Should().Be(expected);
         }
     }

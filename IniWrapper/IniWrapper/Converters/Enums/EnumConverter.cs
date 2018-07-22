@@ -4,11 +4,11 @@ using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Converters.Enums
 {
-    internal class EnumIniConverter : IIniConverter
+    internal class EnumConverter : IIniConverter
     {
         private readonly TypeCode _typeCode;
 
-        public EnumIniConverter(TypeCode typeCode)
+        public EnumConverter(TypeCode typeCode)
         {
             _typeCode = typeCode;
         }
