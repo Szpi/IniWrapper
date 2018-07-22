@@ -1,27 +1,26 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using IniWrapper.Exceptions;
 using IniWrapper.Manager;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Utils;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
-namespace IniWrapper.Handlers.Dictionary
+namespace IniWrapper.Converters.Dictionary
 {
-    internal class DictionaryEnumeratorHandler : IHandler
+    internal class DictionaryEnumeratorIniConverter : IIniConverter
     {
-        private readonly IHandler _underlyingTypeHandler;
-        private readonly IHandler _underlyingKeyTypeHandler;
+        private readonly IIniConverter _underlyingTypeIniConverter;
+        private readonly IIniConverter _underlyingKeyTypeIniConverter;
         private readonly TypeDetailsInformation _typeDetailsInformation;
         private readonly IReadSectionsParser _readSectionsParser;
 
-        public DictionaryEnumeratorHandler(IHandler underlyingTypeHandler, IHandler underlyingKeyTypeHandler,
+        public DictionaryEnumeratorIniConverter(IIniConverter underlyingTypeIniConverter, IIniConverter underlyingKeyTypeIniConverter,
                                            TypeDetailsInformation typeDetailsInformation,
                                            IReadSectionsParser readSectionsParser)
         {
-            _underlyingTypeHandler = underlyingTypeHandler;
-            _underlyingKeyTypeHandler = underlyingKeyTypeHandler;
+            _underlyingTypeIniConverter = underlyingTypeIniConverter;
+            _underlyingKeyTypeIniConverter = underlyingKeyTypeIniConverter;
             _typeDetailsInformation = typeDetailsInformation;
             _readSectionsParser = readSectionsParser;
         }
@@ -34,13 +33,13 @@ namespace IniWrapper.Handlers.Dictionary
 
             foreach (var splitedReadValue in splitedReadValues)
             {
-                var key = _underlyingKeyTypeHandler.ParseReadValue(_typeDetailsInformation.UnderlyingKeyTypeInformation.Type, splitedReadValue.Key);
+                var key = _underlyingKeyTypeIniConverter.ParseReadValue(_typeDetailsInformation.UnderlyingKeyTypeInformation.Type, splitedReadValue.Key);
                 if (key == null)
                 {
                     continue;
                 }
 
-                var value = _underlyingTypeHandler.ParseReadValue(_typeDetailsInformation.UnderlyingTypeInformation.Type, splitedReadValue.Value);
+                var value = _underlyingTypeIniConverter.ParseReadValue(_typeDetailsInformation.UnderlyingTypeInformation.Type, splitedReadValue.Value);
                 returnedDictionary.Add(key, value);
             }
 
@@ -68,8 +67,8 @@ namespace IniWrapper.Handlers.Dictionary
             return new IniValue
             {
                 Section = defaultIniValue.Key,
-                Key = _underlyingKeyTypeHandler.FormatToWrite(dictionaryEnumerator.Key, defaultIniValue)?.Value,
-                Value = _underlyingTypeHandler.FormatToWrite(dictionaryEnumerator.Value, defaultIniValue)?.Value,
+                Key = _underlyingKeyTypeIniConverter.FormatToWrite(dictionaryEnumerator.Key, defaultIniValue)?.Value,
+                Value = _underlyingTypeIniConverter.FormatToWrite(dictionaryEnumerator.Value, defaultIniValue)?.Value,
             };
         }
     }

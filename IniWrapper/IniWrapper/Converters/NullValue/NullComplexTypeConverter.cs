@@ -1,16 +1,16 @@
 ﻿using System;
 using IniWrapper.Manager;
 
-namespace IniWrapper.Handlers.NullValue
+namespace IniWrapper.Converters.NullValue
 {
-    internal class NullComplexTypeHandler : IHandler
+    internal class NullComplexTypeIniConverter : IIniConverter
     {
-        private readonly IHandler _complexTypeHandler;
+        private readonly IIniConverter _complexTypeIniConverter;
         private readonly Type _complexType;
 
-        public NullComplexTypeHandler(IHandler complexTypeHandler, Type complexType)
+        public NullComplexTypeIniConverter(IIniConverter complexTypeIniConverter, Type complexType)
         {
-            _complexTypeHandler = complexTypeHandler;
+            _complexTypeIniConverter = complexTypeIniConverter;
             _complexType = complexType;
         }
 
@@ -22,7 +22,7 @@ namespace IniWrapper.Handlers.NullValue
         public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
             objectToFormat = Activator.CreateInstance(_complexType);
-            return _complexTypeHandler.FormatToWrite(objectToFormat, defaultIniValue);
+            return _complexTypeIniConverter.FormatToWrite(objectToFormat, defaultIniValue);
         }
     }
 }

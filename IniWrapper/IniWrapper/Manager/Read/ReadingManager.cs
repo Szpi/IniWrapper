@@ -1,6 +1,6 @@
 ﻿using System;
+using IniWrapper.ConverterFactory;
 using IniWrapper.Exceptions;
-using IniWrapper.HandlersFactory;
 using IniWrapper.Manager.Read.Strategy.Factory;
 using IniWrapper.Member;
 using IniWrapper.ParserWrapper;
@@ -10,21 +10,21 @@ namespace IniWrapper.Manager.Read
 {
     internal class ReadingManager : IReadingManager
     {
-        private readonly IHandlerFactory _handlerFactory;
+        private readonly IIniConverterFactory _iniConverterFactory;
         private readonly IIniValueManager _iniValueManager;
         private readonly IReadingStrategyFactory _readingStrategyFactory;
 
         public ReadingManager(IIniValueManager iniValueManager,
-                              IHandlerFactory handlerFactory, IReadingStrategyFactory readingStrategyFactory)
+                              IIniConverterFactory iniConverterFactory, IReadingStrategyFactory readingStrategyFactory)
         {
             _iniValueManager = iniValueManager;
-            _handlerFactory = handlerFactory;
+            _iniConverterFactory = iniConverterFactory;
             _readingStrategyFactory = readingStrategyFactory;
         }
 
         public void ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration)
         {
-            var (handler, typeDetailsInformation) = _handlerFactory.GetHandler(memberInfoWrapper.GetMemberType(), 0, memberInfoWrapper);
+            var (handler, typeDetailsInformation) = _iniConverterFactory.GetHandler(memberInfoWrapper.GetMemberType(), 0, memberInfoWrapper);
 
             if (typeDetailsInformation.TypeCode == TypeCode.ComplexObject)
             {

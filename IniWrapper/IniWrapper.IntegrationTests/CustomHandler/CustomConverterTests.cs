@@ -1,6 +1,6 @@
 ﻿using System;
 using FluentAssertions;
-using IniWrapper.IntegrationTests.Main.Configuration.Attribute.IniHandler;
+using IniWrapper.IntegrationTests.Main.Configuration.Attribute.IniConverter;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
 using IniWrapper.Wrapper;
@@ -10,23 +10,23 @@ using NUnit.Framework;
 namespace IniWrapper.IntegrationTests.CustomHandler
 {
     [TestFixture]
-    public class CustomHandlerTests
+    public class CustomConverterTests
     {
         [Test]
-        public void PropertyDecoratedWithIniHandler_ShouldInstantiateHandler_AndCallFormatToWrite_WhenSaving()
+        public void PropertyDecoratedWithIniConverter_ShouldInstantiateConverter_AndCallFormatToWrite_WhenSaving()
         {
             var iniParser = Substitute.For<IIniParser>();
             var iniWrapper = new IniWrapperFactory().Create(x =>
             {
             }, iniParser);
 
-            Action result = () => iniWrapper.SaveConfiguration(new IniHandlerConfiguration());
+            Action result = () => iniWrapper.SaveConfiguration(new IniConverterConfiguration());
 
             result.Should().Throw<TestCustomIniHandlerException>().WithMessage("FormatToWrite");
         }
 
         [Test]
-        public void PropertyDecoratedWithIniHandler_ShouldInstantiateHandler_AndCallParseReadValue_WhenLoading()
+        public void PropertyDecoratedWithIniConverterShouldInstantiateConverter_AndCallParseReadValue_WhenLoading()
         {
             var iniParser = Substitute.For<IIniParser>();
             iniParser.Read(Arg.Any<string>(), Arg.Any<string>()).Returns("dummy");
@@ -37,7 +37,7 @@ namespace IniWrapper.IntegrationTests.CustomHandler
                                                                     MissingFileWhenLoadingHandling.ForceLoad;
                                                             }, iniParser);
 
-            Action result = () => iniWrapper.LoadConfiguration<IniHandlerConfiguration>();
+            Action result = () => iniWrapper.LoadConfiguration<IniConverterConfiguration>();
 
             result.Should().Throw<TestCustomIniHandlerException>().WithMessage("ParseReadValue");
         }

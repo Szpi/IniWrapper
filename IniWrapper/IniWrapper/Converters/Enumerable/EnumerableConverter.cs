@@ -1,26 +1,23 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using IniWrapper.Exceptions;
 using IniWrapper.Manager;
-using IniWrapper.Member;
 using IniWrapper.Settings;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
-namespace IniWrapper.Handlers.Enumerable
+namespace IniWrapper.Converters.Enumerable
 {
-    internal sealed class EnumerableHandler : IHandler
+    internal sealed class EnumerableIniConverter : IIniConverter
     {
-        private readonly IHandler _underlyingTypeHandler;
+        private readonly IIniConverter _underlyingTypeIniConverter;
         private readonly TypeCode _underlyingTypeCode;
         private readonly Type _underlyingType;
         private readonly IIniSettings _iniSettings;
 
-        public EnumerableHandler(IHandler underlyingTypeHandler, TypeCode underlyingTypeCode, Type underlyingType, IIniSettings iniSettings)
+        public EnumerableIniConverter(IIniConverter underlyingTypeIniConverter, TypeCode underlyingTypeCode, Type underlyingType, IIniSettings iniSettings)
         {
-            _underlyingTypeHandler = underlyingTypeHandler;
+            _underlyingTypeIniConverter = underlyingTypeIniConverter;
             _underlyingTypeCode = underlyingTypeCode;
             _underlyingType = underlyingType;
             _iniSettings = iniSettings;
@@ -37,7 +34,7 @@ namespace IniWrapper.Handlers.Enumerable
 
             foreach (var value in readValue.Split(new[] { _iniSettings.EnumerableEntitySeparator }, StringSplitOptions.RemoveEmptyEntries))
             {
-                returnedList.Add(_underlyingTypeHandler.ParseReadValue(_underlyingType, value));
+                returnedList.Add(_underlyingTypeIniConverter.ParseReadValue(_underlyingType, value));
             }
             return returnedList;
         }
@@ -66,7 +63,7 @@ namespace IniWrapper.Handlers.Enumerable
                     continue;
                 }
 
-                stringBuilder.Append(_underlyingTypeHandler.FormatToWrite(item, defaultIniValue)?.Value);
+                stringBuilder.Append(_underlyingTypeIniConverter.FormatToWrite(item, defaultIniValue)?.Value);
                 stringBuilder.Append(_iniSettings.EnumerableEntitySeparator);
             }
 

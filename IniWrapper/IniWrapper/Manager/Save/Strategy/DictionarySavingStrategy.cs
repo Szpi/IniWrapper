@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using IniWrapper.Handlers;
 using IniWrapper.ParserWrapper;
 
 namespace IniWrapper.Manager.Save.Strategy

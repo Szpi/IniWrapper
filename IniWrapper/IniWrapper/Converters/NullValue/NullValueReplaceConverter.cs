@@ -1,9 +1,9 @@
 ﻿using System;
 using IniWrapper.Manager;
 
-namespace IniWrapper.Handlers.NullValue
+namespace IniWrapper.Converters.NullValue
 {
-    internal class NullValueHandler : IHandler
+    internal class NullValueReplaceIniConverter : IIniConverter
     {
         public object ParseReadValue(Type destinationType, string readValue)
         {
@@ -12,7 +12,8 @@ namespace IniWrapper.Handlers.NullValue
 
         public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
         {
-            defaultIniValue.Value = null;
+            defaultIniValue.Value = string.Empty;
+
             return defaultIniValue;
         }
     }

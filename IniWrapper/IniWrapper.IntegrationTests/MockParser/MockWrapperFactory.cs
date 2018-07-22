@@ -1,6 +1,6 @@
 ﻿using System.IO.Abstractions;
 using IniWrapper.ConfigLoadingChecker;
-using IniWrapper.HandlersFactory;
+using IniWrapper.ConverterFactory;
 using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
 using IniWrapper.Manager.Read;
@@ -31,7 +31,7 @@ namespace IniWrapper.IntegrationTests.MockParser
         }
         public static IIniWrapper Create(IniSettings iniSettings, IIniParser iniParser, IFileSystem fileSystem)
         {
-            var handlerFactory = new HandlerFactory(new TypeManager(), iniSettings);
+            var handlerFactory = new IniConverterFactory(new TypeManager(), iniSettings);
 
             var savingManager = new SavingManager(new IniValueManager(new IniValueAttributeManager()),
                                                   new SavingStrategyFactory(handlerFactory, iniParser));

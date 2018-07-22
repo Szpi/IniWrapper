@@ -1,5 +1,4 @@
-﻿using IniWrapper.Handlers;
-using IniWrapper.ParserWrapper;
+﻿using IniWrapper.ParserWrapper;
 using IniWrapper.Utils;
 
 namespace IniWrapper.Manager.Read.Strategy.Factory

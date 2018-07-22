@@ -2,13 +2,13 @@
 using IniWrapper.Manager;
 using IniWrapper.Wrapper;
 
-namespace IniWrapper.Handlers.ComplexType
+namespace IniWrapper.Converters.ComplexType
 {
-    internal class ComplexTypeHandler : IHandler
+    internal class ComplexTypeIniConverter : IIniConverter
     {
         private readonly IIniWrapper _iniWrapper;
 
-        public ComplexTypeHandler(IIniWrapper iniWrapper)
+        public ComplexTypeIniConverter(IIniWrapper iniWrapper)
         {
             _iniWrapper = iniWrapper;
         }

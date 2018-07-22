@@ -1,22 +1,22 @@
-﻿using IniWrapper.Handlers;
+﻿using IniWrapper.Converters;
 using IniWrapper.ParserWrapper;
 
 namespace IniWrapper.Manager.Save.Strategy
 {
     internal class SingleEntitySavingStrategy : ISavingStrategy
     {
-        private readonly IHandler _handler;
+        private readonly IIniConverter _iniConverter;
         private readonly IIniParser _iniParser;
 
-        public SingleEntitySavingStrategy(IHandler handler, IIniParser iniParser)
+        public SingleEntitySavingStrategy(IIniConverter iniConverter, IIniParser iniParser)
         {
-            _handler = handler;
+            _iniConverter = iniConverter;
             _iniParser = iniParser;
         }
 
         public void Save(IniValue defaultIniValue, object value)
         {
-            var valueToSave = _handler.FormatToWrite(value, defaultIniValue);
+            var valueToSave = _iniConverter.FormatToWrite(value, defaultIniValue);
 
             if (valueToSave?.Value == null)
             {

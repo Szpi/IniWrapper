@@ -1,5 +1,5 @@
 ﻿using System;
-using IniWrapper.HandlersFactory;
+using IniWrapper.ConverterFactory;
 using IniWrapper.Member;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Utils;
@@ -9,18 +9,18 @@ namespace IniWrapper.Manager.Save.Strategy.Factory
 {
     internal class SavingStrategyFactory : ISavingStrategyFactory
     {
-        private readonly IHandlerFactory _handlerFactory;
+        private readonly IIniConverterFactory _iniConverterFactory;
         private readonly IIniParser _iniParser;
 
-        public SavingStrategyFactory(IHandlerFactory handlerFactory, IIniParser iniParser)
+        public SavingStrategyFactory(IIniConverterFactory iniConverterFactory, IIniParser iniParser)
         {
-            _handlerFactory = handlerFactory;
+            _iniConverterFactory = iniConverterFactory;
             _iniParser = iniParser;
         }
 
         public ISavingStrategy GetSavingStrategy(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
         {
-            var (handler, typeinformation) = _handlerFactory.GetHandler(type, value, memberInfoWrapper);
+            var (handler, typeinformation) = _iniConverterFactory.GetHandler(type, value, memberInfoWrapper);
 
             var singleEntitySavingStrategy = new SingleEntitySavingStrategy(handler, _iniParser);
             switch (typeinformation.TypeCode)

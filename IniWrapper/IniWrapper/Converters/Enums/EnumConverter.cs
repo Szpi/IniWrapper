@@ -2,13 +2,13 @@
 using IniWrapper.Manager;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
-namespace IniWrapper.Handlers.Enums
+namespace IniWrapper.Converters.Enums
 {
-    internal class EnumHandler : IHandler
+    internal class EnumIniConverter : IIniConverter
     {
         private readonly TypeCode _typeCode;
 
-        public EnumHandler(TypeCode typeCode)
+        public EnumIniConverter(TypeCode typeCode)
         {
             _typeCode = typeCode;
         }

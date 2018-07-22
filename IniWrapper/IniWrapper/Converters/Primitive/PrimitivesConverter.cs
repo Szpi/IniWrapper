@@ -1,9 +1,9 @@
 ﻿using System;
 using IniWrapper.Manager;
 
-namespace IniWrapper.Handlers.Primitive
+namespace IniWrapper.Converters.Primitive
 {
-    internal sealed class PrimitivesHandler : IHandler
+    internal sealed class PrimitivesIniConverter : IIniConverter
     {
         public object ParseReadValue(Type destinationType, string readValue)
         {

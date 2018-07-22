@@ -1,8 +1,8 @@
 ﻿using System;
-using IniWrapper.Handlers;
+using IniWrapper.Converters;
 using IniWrapper.Manager;
 
-namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute.IniHandler
+namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute.IniConverter
 {
 
     public class TestCustomIniHandlerException : Exception
@@ -13,7 +13,7 @@ namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute.IniHandler
         }
     }
 
-    public class CustomIniHandler : IHandler
+    public class CustomIniIniConverter : IIniConverter
     {
         public object ParseReadValue(Type destinationType, string readValue)
         {

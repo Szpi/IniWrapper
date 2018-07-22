@@ -1,6 +1,6 @@
 ﻿using System;
 using FluentAssertions;
-using IniWrapper.Handlers.Primitive;
+using IniWrapper.Converters.Primitive;
 using NUnit.Framework;
 
 namespace IniWrapper.Tests.PrimitivesParsers
@@ -8,7 +8,7 @@ namespace IniWrapper.Tests.PrimitivesParsers
     [TestFixture]
     public class PrimitivesParserTests
     {
-        private PrimitivesHandler _primitivesHandler;
+        private PrimitivesIniConverter _primitivesIniConverter;
 
         static object[] TestCaseSource =
         {
@@ -19,13 +19,13 @@ namespace IniWrapper.Tests.PrimitivesParsers
         [SetUp]
         public void SetUp()
         {
-            _primitivesHandler = new PrimitivesHandler();
+            _primitivesIniConverter = new PrimitivesIniConverter();
         }
 
         [TestCaseSource(nameof(TestCaseSource))]
         public void ParseReadValue_ShouldParseInt(Type type, string parsingValue, object expected)
         {
-            var result = _primitivesHandler.ParseReadValue(type, parsingValue);
+            var result = _primitivesIniConverter.ParseReadValue(type, parsingValue);
             result.Should().Be(expected);
         }
     }

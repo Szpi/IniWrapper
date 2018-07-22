@@ -1,13 +1,13 @@
 ﻿using System;
 using IniWrapper.Attribute;
-using IniWrapper.Handlers;
-using IniWrapper.Handlers.ComplexType;
-using IniWrapper.Handlers.Dictionary;
-using IniWrapper.Handlers.Enumerable;
-using IniWrapper.Handlers.Enums;
-using IniWrapper.Handlers.Ignore;
-using IniWrapper.Handlers.NullValue;
-using IniWrapper.Handlers.Primitive;
+using IniWrapper.Converters;
+using IniWrapper.Converters.ComplexType;
+using IniWrapper.Converters.Dictionary;
+using IniWrapper.Converters.Enumerable;
+using IniWrapper.Converters.Enums;
+using IniWrapper.Converters.Ignore;
+using IniWrapper.Converters.NullValue;
+using IniWrapper.Converters.Primitive;
 using IniWrapper.Member;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
@@ -15,29 +15,29 @@ using IniWrapper.Utils;
 using IniWrapper.Wrapper;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
-namespace IniWrapper.HandlersFactory
+namespace IniWrapper.ConverterFactory
 {
-    internal class HandlerFactory : IHandlerFactory
+    internal class IniConverterFactory : IIniConverterFactory
     {
         private readonly ITypeManager _typeManager;
         private readonly IIniSettings _iniSettings;
 
         public IIniWrapper IniWrapper { get; set; }
 
-        public HandlerFactory(ITypeManager typeManager, IIniSettings iniSettings)
+        public IniConverterFactory(ITypeManager typeManager, IIniSettings iniSettings)
         {
             _typeManager = typeManager;
             _iniSettings = iniSettings;
         }
 
-        public (IHandler handler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
+        public (IIniConverter handler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
         {
             var typeInformation = _typeManager.GetTypeInformation(type, value);
 
-            var customIniHandlerAttribute = memberInfoWrapper.GetAttribute<IniHandlerAttribute>();
+            var customIniHandlerAttribute = memberInfoWrapper.GetAttribute<IniConverterAttribute>();
             if (customIniHandlerAttribute != null)
             {
-                var customHandler = (IHandler) Activator.CreateInstance(customIniHandlerAttribute.IniHandlerType, customIniHandlerAttribute.ConverterParameters);
+                var customHandler = (IIniConverter) Activator.CreateInstance(customIniHandlerAttribute.IniHandlerType, customIniHandlerAttribute.ConverterParameters);
                 return (customHandler, typeInformation);
             }
 
@@ -46,12 +46,12 @@ namespace IniWrapper.HandlersFactory
             return (handlerWithDecorator, typeInformation);
         }
 
-        private IHandler GetHandlerWithIgnoreAttributeHandlerDecorator(TypeDetailsInformation typeInformation, IMemberInfoWrapper memberInfoWrapper)
+        private IIniConverter GetHandlerWithIgnoreAttributeHandlerDecorator(TypeDetailsInformation typeInformation, IMemberInfoWrapper memberInfoWrapper)
         {
-            return new IgnoreAttributeHandler(GetHandler(typeInformation), memberInfoWrapper);
+            return new IgnoreAttributeIniConverter(GetHandler(typeInformation), memberInfoWrapper);
         }
 
-        private IHandler GetHandler(TypeDetailsInformation typeInformation)
+        private IIniConverter GetHandler(TypeDetailsInformation typeInformation)
         {
             switch (typeInformation.TypeCode)
             {
@@ -60,7 +60,7 @@ namespace IniWrapper.HandlersFactory
                         var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
                         var underlyingKeyTypeHandler = GetBaseHandler(typeInformation.UnderlyingKeyTypeInformation.TypeCode, typeInformation.UnderlyingKeyTypeInformation.IsEnum);
 
-                        return new DictionaryEnumeratorHandler(underlyingTypeHandler,
+                        return new DictionaryEnumeratorIniConverter(underlyingTypeHandler,
                                                                underlyingKeyTypeHandler,
                                                                typeInformation,
                                                                new ReadSectionsParser());
@@ -69,7 +69,7 @@ namespace IniWrapper.HandlersFactory
                     {
                         var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
 
-                        return new EnumerableHandler(underlyingTypeHandler,
+                        return new EnumerableIniConverter(underlyingTypeHandler,
                                                      typeInformation.UnderlyingTypeInformation.TypeCode,
                                                      typeInformation.UnderlyingTypeInformation.Type,
                                                      _iniSettings);
@@ -78,14 +78,14 @@ namespace IniWrapper.HandlersFactory
                     {
                         if (_iniSettings.NullValueHandling == NullValueHandling.Ignore)
                         {
-                            return new NullValueHandler();
+                            return new NullValueIniConverter();
                         }
 
                         if (typeInformation.UnderlyingTypeInformation?.TypeCode == TypeCode.ComplexObject)
                         {
-                            return new NullComplexTypeHandler(new ComplexTypeHandler(IniWrapper), typeInformation.UnderlyingTypeInformation.Type);
+                            return new NullComplexTypeIniConverter(new ComplexTypeIniConverter(IniWrapper), typeInformation.UnderlyingTypeInformation.Type);
                         }
-                        return new NullValueReplaceHandler();
+                        return new NullValueReplaceIniConverter();
                     }
                 default:
                     {
@@ -94,19 +94,19 @@ namespace IniWrapper.HandlersFactory
             }
         }
 
-        private IHandler GetBaseHandler(TypeCode typeCode, bool? isEnum)
+        private IIniConverter GetBaseHandler(TypeCode typeCode, bool? isEnum)
         {
             if (typeCode == TypeCode.ComplexObject)
             {
-                return new ComplexTypeHandler(IniWrapper);
+                return new ComplexTypeIniConverter(IniWrapper);
             }
 
             if (isEnum != null && isEnum.Value)
             {
-                return new EnumHandler(typeCode);
+                return new EnumIniConverter(typeCode);
             }
 
-            return new PrimitivesHandler();
+            return new PrimitivesIniConverter();
         }
     }
 }
