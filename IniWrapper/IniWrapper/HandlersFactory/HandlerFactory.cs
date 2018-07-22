@@ -1,4 +1,5 @@
 ﻿using System;
+using IniWrapper.Attribute;
 using IniWrapper.Handlers;
 using IniWrapper.Handlers.ComplexType;
 using IniWrapper.Handlers.Dictionary;
@@ -32,6 +33,14 @@ namespace IniWrapper.HandlersFactory
         public (IHandler handler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
         {
             var typeInformation = _typeManager.GetTypeInformation(type, value);
+
+            var customIniHandlerAttribute = memberInfoWrapper.GetAttribute<IniHandlerAttribute>();
+            if (customIniHandlerAttribute != null)
+            {
+                var customHandler = (IHandler) Activator.CreateInstance(customIniHandlerAttribute.IniHandlerType, customIniHandlerAttribute.ConverterParameters);
+                return (customHandler, typeInformation);
+            }
+
             var handlerWithDecorator = GetHandlerWithIgnoreAttributeHandlerDecorator(typeInformation, memberInfoWrapper);
 
             return (handlerWithDecorator, typeInformation);

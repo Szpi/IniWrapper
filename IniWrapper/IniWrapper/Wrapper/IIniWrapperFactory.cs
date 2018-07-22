@@ -12,6 +12,5 @@ namespace IniWrapper.Wrapper
 
         IIniWrapper CreateWithDefaultIniParser(IniSettings iniSettings);
         IIniWrapper CreateWithDefaultIniParser(Action<IniSettings> iniSettings);
-        IIniWrapper CreateWithDefaultIniParser();
     }
 }

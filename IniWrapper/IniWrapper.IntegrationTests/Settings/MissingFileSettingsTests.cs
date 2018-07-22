@@ -15,7 +15,6 @@ namespace IniWrapper.IntegrationTests.Settings
     [TestFixture]
     public class MissingFileSettingsTests
     {
-
         [TestCase(MissingFileWhenLoadingHandling.DoNotLoad)]
         [TestCase(MissingFileWhenLoadingHandling.CreateWithDefaultValues)]
         public void DoNotCall_And_CreateWithDefaultValues_ShouldThrow_WhenIniPathIsNullOrEmpty(MissingFileWhenLoadingHandling missingFileWhenLoadingHandling)

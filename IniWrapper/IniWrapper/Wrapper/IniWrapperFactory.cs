@@ -71,10 +71,6 @@ namespace IniWrapper.Wrapper
             return CreateWithDefaultIniParser(settings);
         }
 
-        public IIniWrapper CreateWithDefaultIniParser()
-        {
-            return CreateWithDefaultIniParser(new IniSettings());
-        }
         private static void CheckSettings(IniSettings iniSettings)
         {
             if ((iniSettings.MissingFileWhenLoadingHandling == MissingFileWhenLoadingHandling.CreateWithDefaultValues ||

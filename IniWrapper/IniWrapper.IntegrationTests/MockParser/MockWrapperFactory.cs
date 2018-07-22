@@ -39,7 +39,7 @@ namespace IniWrapper.IntegrationTests.MockParser
                                                     new ReadingStrategyFactory(iniParser));
             var defaultConfigurationCreationStrategy = new ConfigurationLoadingChecker(fileSystem, iniSettings);
 
-            var iniWrapper = new Wrapper.IniWrapper(savingManager, readingManager, defaultConfigurationCreationStrategy);
+            var iniWrapper = new IniWrapper.Wrapper.IniWrapper(savingManager, readingManager, defaultConfigurationCreationStrategy);
 
             handlerFactory.IniWrapper = iniWrapper;
 

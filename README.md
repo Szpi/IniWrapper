@@ -19,7 +19,7 @@ var loadedIniConfiguration = iniWrapper.LoadConfiguration<TestConfiguration>();
 ```
 If you want to use default IniParser you can call CreateWithDefaultIniParser method. By doing this library will create IniParser that wraps Windows C++ methods from kernel. For more information see Microsoft documentation for WritePrivateProfileString, GetPrivateProfileString and GetPrivateProfileSection and [IniParser.cs](https://github.com/Szpi/IniWrapper/blob/master/IniWrapper/IniWrapper/ParserWrapper/IniParser.cs).
 ``` csharp
-var iniWrapperFactory = new IniWrapperFactory();;
+var iniWrapperFactory = new IniWrapperFactory();
 var iniWrapper = iniWrapperFactory.CreateWithDefaultIniParser();
 
 var loadedIniConfiguration = iniWrapper.LoadConfiguration<TestConfiguration>();
