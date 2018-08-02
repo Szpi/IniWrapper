@@ -1,7 +1,7 @@
 ﻿using System;
 using IniWrapper.ConverterFactory;
+using IniWrapper.Converters;
 using IniWrapper.Exceptions;
-using IniWrapper.Manager.Read.Strategy.Factory;
 using IniWrapper.Member;
 using IniWrapper.ParserWrapper;
 using TypeCode = IniWrapper.Utils.TypeCode;
@@ -12,14 +12,15 @@ namespace IniWrapper.Manager.Read
     {
         private readonly IIniConverterFactory _iniConverterFactory;
         private readonly IIniValueManager _iniValueManager;
-        private readonly IReadingStrategyFactory _readingStrategyFactory;
+        private readonly IIniParser _iniParser;
 
         public ReadingManager(IIniValueManager iniValueManager,
-                              IIniConverterFactory iniConverterFactory, IReadingStrategyFactory readingStrategyFactory)
+                              IIniConverterFactory iniConverterFactory,
+                              IIniParser iniParser)
         {
             _iniValueManager = iniValueManager;
             _iniConverterFactory = iniConverterFactory;
-            _readingStrategyFactory = readingStrategyFactory;
+            _iniParser = iniParser;
         }
 
         public void ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration)
@@ -28,7 +29,7 @@ namespace IniWrapper.Manager.Read
 
             if (typeDetailsInformation.TypeCode == TypeCode.ComplexObject)
             {
-                var parsedObjectValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), null);
+                var parsedObjectValue = handler.ParseReadValue(null, typeDetailsInformation.Type, null);
                 memberInfoWrapper.SetValue(configuration, parsedObjectValue);
                 return;
             }
@@ -39,21 +40,22 @@ namespace IniWrapper.Manager.Read
                 Key = _iniValueManager.GetKey(memberInfoWrapper)
             };
 
-            var readingStrategy = _readingStrategyFactory.GetReadingStrategy(typeDetailsInformation.TypeCode);
-
             if (typeDetailsInformation.TypeCode == TypeCode.Enumerable && typeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ComplexObject)
             {
                 throw new CollectionOfComplexTypeException();
             }
             try
             {
-                var readValue = readingStrategy.Read(iniValue, memberInfoWrapper, configuration);
-                if (string.IsNullOrEmpty(readValue))
+                var iniContext = new IniContext(memberInfoWrapper, typeDetailsInformation, iniValue, _iniParser);
+
+                var readValue = _iniParser.Read(iniValue.Section, iniValue.Key);
+
+                var parsedValue = handler.ParseReadValue(readValue, typeDetailsInformation.Type, iniContext);
+
+                if (parsedValue == null)
                 {
                     return;
                 }
-
-                var parsedValue = handler.ParseReadValue(memberInfoWrapper.GetMemberType(), readValue);
 
                 memberInfoWrapper.SetValue(configuration, parsedValue);
             }

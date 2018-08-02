@@ -5,15 +5,15 @@ namespace IniWrapper.Converters.NullValue
 {
     internal class NullValueConverter : IIniConverter
     {
-        public object ParseReadValue(Type destinationType, string readValue)
+        public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
         {
             throw new NotImplementedException();
         }
 
-        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniContext iniContext)
         {
-            defaultIniValue.Value = null;
-            return defaultIniValue;
+            iniContext.IniValue.Value = null;
+            return iniContext.IniValue;
         }
     }
 }

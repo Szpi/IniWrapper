@@ -9,18 +9,18 @@ namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute.IniConverter
     {
         public TestCustomIniHandlerException(string text) : base(text)
         {
-            
+
         }
     }
 
     public class CustomIniIniConverter : IIniConverter
     {
-        public object ParseReadValue(Type destinationType, string readValue)
+        public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
         {
             throw new TestCustomIniHandlerException("ParseReadValue");
         }
 
-        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniContext iniContexte)
         {
             throw new TestCustomIniHandlerException("FormatToWrite");
         }

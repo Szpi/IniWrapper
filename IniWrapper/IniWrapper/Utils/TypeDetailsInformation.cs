@@ -2,9 +2,10 @@
 
 namespace IniWrapper.Utils
 {
-    internal class TypeDetailsInformation
+    public class TypeDetailsInformation
     {
         public TypeCode TypeCode { get; }
+        public Type Type { get; }
 
         public UnderlyingTypeInformation UnderlyingTypeInformation { get; }
         public UnderlyingTypeInformation UnderlyingKeyTypeInformation { get; }
@@ -12,11 +13,13 @@ namespace IniWrapper.Utils
 
         public TypeDetailsInformation(TypeCode typeCode,
                                       UnderlyingTypeInformation underlyingTypeInformation,
-                                      UnderlyingTypeInformation underlyingKeyTypeInformation)
+                                      UnderlyingTypeInformation underlyingKeyTypeInformation,
+                                      Type type)
         {
             TypeCode = typeCode;
             UnderlyingTypeInformation = underlyingTypeInformation;
             UnderlyingKeyTypeInformation = underlyingKeyTypeInformation;
+            Type = type;
         }
         
     }

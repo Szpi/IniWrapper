@@ -13,12 +13,12 @@ namespace IniWrapper.Converters.ComplexType
             _iniWrapper = iniWrapper;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue)
+        public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
         {
             return _iniWrapper.LoadConfiguration(destinationType);
         }
 
-        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniContext iniContext)
         {
             _iniWrapper.SaveConfiguration(objectToFormat);
             return null;

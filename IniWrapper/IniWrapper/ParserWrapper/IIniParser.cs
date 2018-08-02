@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace IniWrapper.ParserWrapper
+﻿namespace IniWrapper.ParserWrapper
 {
     public interface IIniParser
     {

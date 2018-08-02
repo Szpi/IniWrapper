@@ -13,18 +13,23 @@ namespace IniWrapper.Converters.Enums
             _typeCode = typeCode;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue)
+        public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
         {
+            if (string.IsNullOrEmpty(readValue))
+            {
+                return null;
+            }
             return Enum.Parse(destinationType, readValue);
         }
 
-        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniContext iniContext)
         {
+
             var castedUnderlyingType = ToUInt64(objectToFormat);
 
-            defaultIniValue.Value = castedUnderlyingType.ToString();
+            iniContext.IniValue.Value = castedUnderlyingType.ToString();
 
-            return defaultIniValue;
+            return iniContext.IniValue;
         }
 
         private ulong ToUInt64(object value)

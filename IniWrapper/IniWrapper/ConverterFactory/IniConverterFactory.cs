@@ -32,12 +32,12 @@ namespace IniWrapper.ConverterFactory
 
         public (IIniConverter handler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
         {
-            var typeInformation = _typeManager.GetTypeInformation(type, value);
+            var typeInformation = _typeManager.GetTypeInformation(type, value, memberInfoWrapper);
 
             var customIniHandlerAttribute = memberInfoWrapper.GetAttribute<IniConverterAttribute>();
             if (customIniHandlerAttribute != null)
             {
-                var customHandler = (IIniConverter) Activator.CreateInstance(customIniHandlerAttribute.IniHandlerType, customIniHandlerAttribute.ConverterParameters);
+                var customHandler = (IIniConverter)Activator.CreateInstance(customIniHandlerAttribute.IniHandlerType, customIniHandlerAttribute.ConverterParameters);
                 return (customHandler, typeInformation);
             }
 
@@ -60,19 +60,15 @@ namespace IniWrapper.ConverterFactory
                         var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
                         var underlyingKeyTypeHandler = GetBaseHandler(typeInformation.UnderlyingKeyTypeInformation.TypeCode, typeInformation.UnderlyingKeyTypeInformation.IsEnum);
 
-                        return new DictionaryEnumeratorConverter(underlyingTypeHandler,
+                        return new DictionaryConverter(underlyingTypeHandler,
                                                                underlyingKeyTypeHandler,
-                                                               typeInformation,
                                                                new ReadSectionsParser());
                     }
                 case TypeCode.Enumerable:
                     {
                         var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
 
-                        return new EnumerableConverter(underlyingTypeHandler,
-                                                     typeInformation.UnderlyingTypeInformation.TypeCode,
-                                                     typeInformation.UnderlyingTypeInformation.Type,
-                                                     _iniSettings);
+                        return new EnumerableConverter(underlyingTypeHandler,_iniSettings);
                     }
                 case TypeCode.NullValue:
                     {

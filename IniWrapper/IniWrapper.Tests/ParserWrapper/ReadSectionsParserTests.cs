@@ -2,7 +2,6 @@
 using FluentAssertions;
 using IniWrapper.ParserWrapper;
 using NUnit.Framework;
-using NUnit.Framework.Internal;
 
 namespace IniWrapper.Tests.ParserWrapper
 {

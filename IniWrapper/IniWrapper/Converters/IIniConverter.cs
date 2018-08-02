@@ -5,7 +5,8 @@ namespace IniWrapper.Converters
 {
     public interface IIniConverter
     {
-        object ParseReadValue(Type destinationType, string readValue);
-        IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue);
+        object ParseReadValue(string readValue, Type destinationType, IniContext iniContext);
+
+        IniValue FormatToWrite(object objectToFormat, IniContext iniContext);
     }
 }

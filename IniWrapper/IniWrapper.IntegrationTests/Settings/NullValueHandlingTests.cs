@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using IniWrapper.IntegrationTests.Main.Configuration.Properties;
+﻿using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
 using IniWrapper.Wrapper;

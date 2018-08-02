@@ -1,7 +1,6 @@
 ﻿using System;
 using FluentAssertions;
 using IniWrapper.Exceptions;
-using IniWrapper.IntegrationTests.Main.Configuration.Fields;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;

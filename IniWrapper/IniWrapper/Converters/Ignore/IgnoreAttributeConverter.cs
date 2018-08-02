@@ -16,17 +16,17 @@ namespace IniWrapper.Converters.Ignore
             _memberInfoWrapper = memberInfoWrapperWrapper;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue)
+        public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
         {
             var ignoreAttribute = _memberInfoWrapper.GetAttribute<IniIgnoreAttribute>();
-            return ignoreAttribute == null ? _iniConverter.ParseReadValue(destinationType, readValue) : null;
+            return ignoreAttribute == null ? _iniConverter.ParseReadValue(readValue, destinationType, iniContext) : null;
         }
 
-        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniContext iniContext)
         {
             var ignoreAttribute = _memberInfoWrapper.GetAttribute<IniIgnoreAttribute>();
 
-            return ignoreAttribute == null ? _iniConverter.FormatToWrite(objectToFormat, defaultIniValue) : null;
+            return ignoreAttribute == null ? _iniConverter.FormatToWrite(objectToFormat, iniContext) : null;
         }
     }
 }

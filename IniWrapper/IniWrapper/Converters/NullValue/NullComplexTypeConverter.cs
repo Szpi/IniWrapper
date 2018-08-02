@@ -14,15 +14,15 @@ namespace IniWrapper.Converters.NullValue
             _complexType = complexType;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue)
+        public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
         {
             throw new NotImplementedException();
         }
 
-        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniContext iniContext)
         {
             objectToFormat = Activator.CreateInstance(_complexType);
-            return _complexTypeIniConverter.FormatToWrite(objectToFormat, defaultIniValue);
+            return _complexTypeIniConverter.FormatToWrite(objectToFormat, iniContext);
         }
     }
 }

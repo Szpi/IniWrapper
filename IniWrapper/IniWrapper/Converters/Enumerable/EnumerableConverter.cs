@@ -11,49 +11,51 @@ namespace IniWrapper.Converters.Enumerable
     internal sealed class EnumerableConverter : IIniConverter
     {
         private readonly IIniConverter _underlyingTypeIniConverter;
-        private readonly TypeCode _underlyingTypeCode;
-        private readonly Type _underlyingType;
         private readonly IIniSettings _iniSettings;
 
-        public EnumerableConverter(IIniConverter underlyingTypeIniConverter, TypeCode underlyingTypeCode, Type underlyingType, IIniSettings iniSettings)
+        public EnumerableConverter(IIniConverter underlyingTypeIniConverter, IIniSettings iniSettings)
         {
             _underlyingTypeIniConverter = underlyingTypeIniConverter;
-            _underlyingTypeCode = underlyingTypeCode;
-            _underlyingType = underlyingType;
             _iniSettings = iniSettings;
         }
 
-        public object ParseReadValue(Type destinationType, string readValue)
+        public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
         {
-            if (_underlyingTypeCode == TypeCode.ComplexObject)
+            if (iniContext.TypeDetailsInformation.TypeCode == TypeCode.ComplexObject)
             {
                 throw new CollectionOfComplexTypeException();
             }
 
-            var returnedList = (IList)Activator.CreateInstance(destinationType);
-
-            foreach (var value in readValue.Split(new[] { _iniSettings.EnumerableEntitySeparator }, StringSplitOptions.RemoveEmptyEntries))
+            if (string.IsNullOrEmpty(readValue))
             {
-                returnedList.Add(_underlyingTypeIniConverter.ParseReadValue(_underlyingType, value));
+                return null;
+            }
+
+            var returnedList = (IList)Activator.CreateInstance(iniContext.TypeDetailsInformation.Type);
+
+            foreach (var singleEntity in readValue.Split(new[] { _iniSettings.EnumerableEntitySeparator }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                returnedList.Add(_underlyingTypeIniConverter.ParseReadValue(singleEntity, iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type, iniContext));
             }
             return returnedList;
         }
 
-        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniContext iniContext)
         {
             if (!(objectToFormat is IEnumerable))
             {
-                defaultIniValue.Value = string.Empty;
+                iniContext.IniValue.Value = string.Empty;
 
-                return defaultIniValue;
+                return iniContext.IniValue;
             }
 
-            if (_underlyingTypeCode == TypeCode.ComplexObject)
+            if (iniContext.TypeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ComplexObject)
             {
                 throw new CollectionOfComplexTypeException();
             }
+
             var enumerable = objectToFormat as IEnumerable;
-            
+
             var stringBuilder = new StringBuilder();
 
             foreach (var item in enumerable)
@@ -63,15 +65,15 @@ namespace IniWrapper.Converters.Enumerable
                     continue;
                 }
 
-                stringBuilder.Append(_underlyingTypeIniConverter.FormatToWrite(item, defaultIniValue)?.Value);
+                stringBuilder.Append(_underlyingTypeIniConverter.FormatToWrite(item, iniContext)?.Value);
                 stringBuilder.Append(_iniSettings.EnumerableEntitySeparator);
             }
 
             RemoveLastSeparator(stringBuilder);
 
-            defaultIniValue.Value = stringBuilder.ToString();
+            iniContext.IniValue.Value = stringBuilder.ToString();
 
-            return defaultIniValue;
+            return iniContext.IniValue;
         }
 
         private static void RemoveLastSeparator(StringBuilder stringBuilder)

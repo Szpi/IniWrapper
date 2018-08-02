@@ -5,16 +5,16 @@ namespace IniWrapper.Converters.Enums
 {
     public class EnumStringConverter : IIniConverter
     {
-        public object ParseReadValue(Type destinationType, string readValue)
+        public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
         {
             return Enum.Parse(destinationType, readValue);
         }
 
-        public IniValue FormatToWrite(object objectToFormat, IniValue defaultIniValue)
+        public IniValue FormatToWrite(object objectToFormat, IniContext iniContext)
         {
-            defaultIniValue.Value = objectToFormat.ToString();
+            iniContext.IniValue.Value = objectToFormat.ToString();
 
-            return defaultIniValue;
+            return iniContext.IniValue;
         }
     }
 }
