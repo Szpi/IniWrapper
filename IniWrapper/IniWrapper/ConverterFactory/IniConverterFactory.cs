@@ -79,7 +79,7 @@ namespace IniWrapper.ConverterFactory
 
                         if (typeInformation.UnderlyingTypeInformation?.TypeCode == TypeCode.ComplexObject)
                         {
-                            return new NullComplexTypeConverter(new ComplexTypeConverter(IniWrapper), typeInformation.UnderlyingTypeInformation.Type);
+                            return new NullComplexTypeConverter(new ComplexTypeConverter(IniWrapper));
                         }
                         return new NullValueReplaceConverter();
                     }

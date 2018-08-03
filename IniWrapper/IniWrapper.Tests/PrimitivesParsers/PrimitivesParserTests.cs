@@ -35,7 +35,7 @@ namespace IniWrapper.Tests.PrimitivesParsers
                                                 null,
                                                 type), null, null);
 
-            var result = _primitivesConverter.ParseReadValue(parsingValue, null, iniContext);
+            var result = _primitivesConverter.ParseReadValue(parsingValue, type, iniContext);
             result.Should().Be(expected);
         }
     }
