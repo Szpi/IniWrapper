@@ -74,7 +74,7 @@ namespace IniWrapper.Wrapper
                 string.IsNullOrEmpty(iniSettings.IniFilePath))
             {
                 throw new ArgumentException(
-                    $"Please specify {nameof(iniSettings.IniFilePath)} in settings with chosen {nameof(MissingFileWhenLoadingHandling)}");
+                    $"Please specify {nameof(iniSettings.IniFilePath)} in settings with chosen {nameof(MissingFileWhenLoadingHandling)} or chose {nameof(MissingFileWhenLoadingHandling.ForceLoad)}");
             }
         }
     }
