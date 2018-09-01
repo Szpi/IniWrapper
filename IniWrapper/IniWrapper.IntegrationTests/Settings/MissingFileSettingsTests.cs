@@ -64,7 +64,7 @@ namespace IniWrapper.IntegrationTests.Settings
 
             iniWrapper.LoadConfiguration<TestConfiguration>();
 
-            iniParser.Received(9).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            iniParser.Received(10).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
             iniParser.Received(0).Read(Arg.Any<string>(), Arg.Any<string>());
         }
 
@@ -83,7 +83,7 @@ namespace IniWrapper.IntegrationTests.Settings
             iniWrapper.LoadConfiguration<TestConfiguration>();
 
             iniParser.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
-            iniParser.Received(9).Read(Arg.Any<string>(), Arg.Any<string>());
+            iniParser.Received(10).Read(Arg.Any<string>(), Arg.Any<string>());
         }
 
         [Test]
@@ -104,7 +104,7 @@ namespace IniWrapper.IntegrationTests.Settings
             iniWrapper.LoadConfiguration<TestConfiguration>();
 
             iniParser.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
-            iniParser.Received(9).Read(Arg.Any<string>(), Arg.Any<string>());
+            iniParser.Received(10).Read(Arg.Any<string>(), Arg.Any<string>());
         }
 
         [Test]
@@ -125,7 +125,7 @@ namespace IniWrapper.IntegrationTests.Settings
             iniWrapper.LoadConfiguration<TestConfiguration>();
 
             iniParser.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
-            iniParser.Received(9).Read(Arg.Any<string>(), Arg.Any<string>());
+            iniParser.Received(10).Read(Arg.Any<string>(), Arg.Any<string>());
         }
 
         [Test]
@@ -146,7 +146,7 @@ namespace IniWrapper.IntegrationTests.Settings
             iniWrapper.LoadConfiguration<TestConfiguration>();
 
             iniParser.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
-            iniParser.Received(9).Read(Arg.Any<string>(), Arg.Any<string>());
+            iniParser.Received(10).Read(Arg.Any<string>(), Arg.Any<string>());
         }
     }
 }
