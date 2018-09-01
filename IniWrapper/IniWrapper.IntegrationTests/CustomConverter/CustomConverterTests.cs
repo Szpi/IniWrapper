@@ -8,7 +8,7 @@ using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace IniWrapper.IntegrationTests.CustomHandler
+namespace IniWrapper.IntegrationTests.CustomConverter
 {
     [TestFixture]
     public class CustomConverterTests
