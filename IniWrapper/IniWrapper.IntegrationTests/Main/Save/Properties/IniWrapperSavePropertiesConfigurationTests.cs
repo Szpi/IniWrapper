@@ -147,6 +147,18 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             _iniParser.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestUintList), string.Empty);
         }
 
+        [TestCase(true,"True")]
+        [TestCase(false,"False")]
+        public void SaveConfiguration_SaveBool(bool value, string expected)
+        {
+            var config = new TestConfiguration()
+            {
+                TestBool = value
+            };
+            _iniWrapper.SaveConfiguration(config);
+
+            _iniParser.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestBool), expected);
+        }
 
         [Test]
         public void SaveConfiguration_ReplaceNullValuesWithEmptyString()

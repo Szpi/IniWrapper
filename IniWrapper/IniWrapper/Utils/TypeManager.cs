@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Numerics;
+using IniWrapper.Member;
 
 namespace IniWrapper.Utils
 {
@@ -50,9 +51,9 @@ namespace IniWrapper.Utils
                 { typeof(byte[]), TypeCode.Bytes },
             };
 
-        public TypeDetailsInformation GetTypeInformation(Type type, object value)
+        public TypeDetailsInformation GetTypeInformation(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
         {
-            var typeInformation = GetBaseTypeInformation(type);
+            var typeInformation = GetBaseTypeInformation(type, memberInfoWrapper);
 
             if (value != null)
             {
@@ -65,17 +66,18 @@ namespace IniWrapper.Utils
                                                   new UnderlyingTypeInformation(typeInformation.TypeCode,
                                                                                 typeInformation.UnderlyingTypeInformation.IsEnum,
                                                                                 typeInformation.UnderlyingTypeInformation.Type),
-                                                  null); 
+                                                  null,
+                                                  memberInfoWrapper.GetMemberType());
             }
 
-            return new TypeDetailsInformation(TypeCode.NullValue, null, null);
+            return new TypeDetailsInformation(TypeCode.NullValue, null, null, memberInfoWrapper.GetMemberType());
         }
 
-        private TypeDetailsInformation GetBaseTypeInformation(Type type)
+        private TypeDetailsInformation GetBaseTypeInformation(Type type, IMemberInfoWrapper memberInfoWrapper)
         {
             if (!IsNullableType(type) && TypeCodeMap.TryGetValue(type, out var typeCode))
             {
-                return new TypeDetailsInformation(typeCode, new UnderlyingTypeInformation(typeCode, false, type), null);
+                return new TypeDetailsInformation(typeCode, new UnderlyingTypeInformation(typeCode, false, type), null, memberInfoWrapper.GetMemberType());
             }
 
             if (typeof(IDictionary).IsAssignableFrom(type))
@@ -83,50 +85,73 @@ namespace IniWrapper.Utils
                 var underlyingGenericTypeKey = type.GenericTypeArguments[0];
                 var underlyingGenericTypeValue = type.GenericTypeArguments[1];
 
-                var genericKeyTypeCode = GetBaseTypeInformation(underlyingGenericTypeKey);
-                var genericValueTypeCode = GetBaseTypeInformation(underlyingGenericTypeValue);
+                var genericKeyTypeCode = GetBaseTypeInformation(underlyingGenericTypeKey, memberInfoWrapper);
+                var genericValueTypeCode = GetBaseTypeInformation(underlyingGenericTypeValue, memberInfoWrapper);
 
                 var underlyingKeyTypeInformation = new UnderlyingTypeInformation(genericKeyTypeCode.TypeCode, genericKeyTypeCode.UnderlyingTypeInformation.IsEnum, genericKeyTypeCode.UnderlyingTypeInformation.Type);
                 var underlyingTypeInformation = new UnderlyingTypeInformation(genericValueTypeCode.TypeCode, genericValueTypeCode.UnderlyingTypeInformation.IsEnum, genericValueTypeCode.UnderlyingTypeInformation.Type);
 
-                return new TypeDetailsInformation(TypeCode.Dictionary, underlyingTypeInformation, underlyingKeyTypeInformation);
+                return new TypeDetailsInformation(TypeCode.Dictionary, underlyingTypeInformation, underlyingKeyTypeInformation, memberInfoWrapper.GetMemberType());
             }
 
             if (typeof(IEnumerable).IsAssignableFrom(type))
             {
                 var underlyingGenericType = type.GenericTypeArguments[0];
-                var genericTypeCode = GetBaseTypeInformation(underlyingGenericType);
+                var genericTypeCode = GetBaseTypeInformation(underlyingGenericType, memberInfoWrapper);
 
                 return new TypeDetailsInformation(TypeCode.Enumerable,
                                                   new UnderlyingTypeInformation(
                                                       genericTypeCode.TypeCode,
                                                       genericTypeCode.UnderlyingTypeInformation.IsEnum,
-                                                      genericTypeCode.UnderlyingTypeInformation.Type), null);
+                                                      genericTypeCode.UnderlyingTypeInformation.Type), 
+                                                  null,
+                                                  memberInfoWrapper.GetMemberType());
             }
 
             if (type.IsEnum)
             {
                 var underlyingType = Enum.GetUnderlyingType(type);
-                var typeDetailsInformation = GetBaseTypeInformation(underlyingType);
+                var typeDetailsInformation = GetBaseTypeInformation(underlyingType, memberInfoWrapper);
 
-                return new TypeDetailsInformation(typeDetailsInformation.TypeCode, new UnderlyingTypeInformation(TypeCode.Empty, true, type), null);
+                return new TypeDetailsInformation(typeDetailsInformation.TypeCode,
+                                                  new UnderlyingTypeInformation(TypeCode.Empty,
+                                                                                true,
+                                                                                type),
+                                                  null,
+                                                  memberInfoWrapper.GetMemberType());
             }
 
             var nullable = Nullable.GetUnderlyingType(type);
 
             if (nullable == null)
             {
-                return new TypeDetailsInformation(TypeCode.ComplexObject, new UnderlyingTypeInformation(TypeCode.Empty, false, type), null);
+                return new TypeDetailsInformation(TypeCode.ComplexObject,
+                                                  new UnderlyingTypeInformation(TypeCode.Empty,
+                                                                                false,
+                                                                                type),
+                                                  null,
+                                                  memberInfoWrapper.GetMemberType());
             }
 
             if (nullable.IsEnum)
             {
                 var nullableUnderlyingType = Enum.GetUnderlyingType(nullable);
-                var underlyingType = GetBaseTypeInformation(nullableUnderlyingType);
-                return new TypeDetailsInformation(underlyingType.TypeCode, new UnderlyingTypeInformation(TypeCode.Empty, true, nullableUnderlyingType), null);
+                var underlyingType = GetBaseTypeInformation(nullableUnderlyingType, memberInfoWrapper);
+
+                return new TypeDetailsInformation(underlyingType.TypeCode,
+                                                  new UnderlyingTypeInformation(TypeCode.Empty,
+                                                                                true,
+                                                                                nullableUnderlyingType),
+                                                  null,
+                                                  memberInfoWrapper.GetMemberType());
             }
 
-            return new TypeDetailsInformation(TypeCode.Nullable, new UnderlyingTypeInformation(TypeCode.Empty, false, nullable), null);
+            return new TypeDetailsInformation(TypeCode.Nullable,
+                                              new UnderlyingTypeInformation(TypeCode.Empty,
+                                                                            false,
+                                                                            nullable),
+                                              null,
+                                              memberInfoWrapper.GetMemberType());
         }
 
         private static bool IsNullableType(Type t)

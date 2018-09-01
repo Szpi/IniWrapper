@@ -24,7 +24,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
         }
 
         [Test]
-        public void LoadConfiguration_ShouldSaveCorrectComplexType()
+        public void LoadConfiguration_ShouldLoadCorrectComplexType()
         {
             var testString = "test_string_to_save";
             var config = new ComplexTestConfiguration()

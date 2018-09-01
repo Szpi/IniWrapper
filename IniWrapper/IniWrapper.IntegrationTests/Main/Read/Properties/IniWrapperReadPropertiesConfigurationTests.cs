@@ -114,5 +114,16 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
 
             result.TestEnum.Should().Be(expected);
         }
+
+        [TestCase(true, "True")]
+        [TestCase(false, "False")]
+        public void SaveConfiguration_SaveBool(bool expected, string value)
+        {
+            _iniParser.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestBool)).Returns(value);
+
+            var result = _iniWrapper.LoadConfiguration<TestConfiguration>();
+
+            result.TestBool.Should().Be(expected);
+        }
     }
 }

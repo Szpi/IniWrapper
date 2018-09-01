@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using IniWrapper.IntegrationTests.Main.Configuration.Properties;
+﻿using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
 using IniWrapper.Wrapper;
@@ -59,7 +58,7 @@ namespace IniWrapper.IntegrationTests.Settings
 
             iniWrapper.SaveConfiguration(config);
 
-            iniParser.Received(4).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            iniParser.Received(5).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
         [Test]
         public void SettingsNullValueHandling_ReplaceWithEmptyString_ShouldSaveDefaultValues()
@@ -75,7 +74,7 @@ namespace IniWrapper.IntegrationTests.Settings
 
             iniWrapper.SaveConfiguration(config);
 
-            iniParser.Received(9).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            iniParser.Received(10).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
     }
 }

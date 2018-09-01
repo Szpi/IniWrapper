@@ -11,10 +11,7 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
     <Authors>Piotr Szkudlarski</Authors>    
     <Copyright>2018 Piotr Szkudlarski</Copyright>    
-    <PackageReleaseNotes>- Added Settings to configure default behaviour of library
-Breaking changes:
-- Changed IniWrapperFactory method to CreateWithDefaultIniParser
-- fixed typo in CollectionOfComplexTypeException</PackageReleaseNotes>
+    <PackageReleaseNotes>- Added CustomConverterAttribute</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

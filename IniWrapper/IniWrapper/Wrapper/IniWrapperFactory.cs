@@ -1,13 +1,11 @@
 ﻿using System;
 using System.IO.Abstractions;
 using IniWrapper.ConfigLoadingChecker;
-using IniWrapper.HandlersFactory;
+using IniWrapper.ConverterFactory;
 using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
 using IniWrapper.Manager.Read;
-using IniWrapper.Manager.Read.Strategy.Factory;
 using IniWrapper.Manager.Save;
-using IniWrapper.Manager.Save.Strategy.Factory;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
 using IniWrapper.Utils;
@@ -20,19 +18,17 @@ namespace IniWrapper.Wrapper
         {
             CheckSettings(iniSettings);
 
-            var handlerFactory = new HandlerFactory(new TypeManager(), iniSettings);
+            var converterFactory = new IniConverterFactory(new TypeManager(), iniSettings);
 
-            var savingManager = new SavingManager(new IniValueManager(new IniValueAttributeManager()),
-                                                  new SavingStrategyFactory(handlerFactory, iniParser));
+            var savingManager = new SavingManager(new IniValueManager(new IniValueAttributeManager()), iniParser, converterFactory);
 
-            var readingManager = new ReadingManager(new IniValueManager(new IniValueAttributeManager()), handlerFactory,
-                                                    new ReadingStrategyFactory(iniParser));
+            var readingManager = new ReadingManager(new IniValueManager(new IniValueAttributeManager()), converterFactory, iniParser);
 
             var defaultConfigurationCreationStrategy = new ConfigurationLoadingChecker(new FileSystem(), iniSettings);
 
             var iniWrapper = new IniWrapper(savingManager, readingManager, defaultConfigurationCreationStrategy);
 
-            handlerFactory.IniWrapper = iniWrapper;
+            converterFactory.IniWrapper = iniWrapper;
 
             return iniWrapper;
         }
@@ -71,10 +67,6 @@ namespace IniWrapper.Wrapper
             return CreateWithDefaultIniParser(settings);
         }
 
-        public IIniWrapper CreateWithDefaultIniParser()
-        {
-            return CreateWithDefaultIniParser(new IniSettings());
-        }
         private static void CheckSettings(IniSettings iniSettings)
         {
             if ((iniSettings.MissingFileWhenLoadingHandling == MissingFileWhenLoadingHandling.CreateWithDefaultValues ||
@@ -82,7 +74,7 @@ namespace IniWrapper.Wrapper
                 string.IsNullOrEmpty(iniSettings.IniFilePath))
             {
                 throw new ArgumentException(
-                    $"Please specify {nameof(iniSettings.IniFilePath)} in settings with chosen {nameof(MissingFileWhenLoadingHandling)}");
+                    $"Please specify {nameof(iniSettings.IniFilePath)} in settings with chosen {nameof(MissingFileWhenLoadingHandling)} or chose {nameof(MissingFileWhenLoadingHandling.ForceLoad)}");
             }
         }
     }

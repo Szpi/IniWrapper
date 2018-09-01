@@ -2,7 +2,7 @@
 
 namespace IniWrapper.Utils
 {
-    internal class UnderlyingTypeInformation
+    public class UnderlyingTypeInformation
     {
         public bool IsEnum { get; }
 

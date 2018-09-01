@@ -1,5 +1,4 @@
-﻿using System;
-using IniWrapper.IntegrationTests.Main.Configuration.Properties;
+﻿using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Wrapper;

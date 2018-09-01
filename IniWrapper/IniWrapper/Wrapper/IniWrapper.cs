@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO.Abstractions;
 using System.Runtime.CompilerServices;
 using IniWrapper.ConfigLoadingChecker;
 using IniWrapper.Manager.Read;

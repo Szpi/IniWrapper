@@ -1,17 +1,21 @@
-﻿using IniWrapper.Manager.Save.Strategy.Factory;
+﻿using IniWrapper.ConverterFactory;
+using IniWrapper.Converters;
 using IniWrapper.Member;
+using IniWrapper.ParserWrapper;
 
 namespace IniWrapper.Manager.Save
 {
     internal class SavingManager : ISavingManager
     {
         private readonly IIniValueManager _iniValueManager;
-        private readonly ISavingStrategyFactory _savingStrategyFactory;
+        private readonly IIniParser _iniParser;
+        private readonly IIniConverterFactory _iniConverterFactory;
 
-        public SavingManager(IIniValueManager iniValueManager, ISavingStrategyFactory savingStrategyFactory)
+        public SavingManager(IIniValueManager iniValueManager, IIniParser iniParser, IIniConverterFactory iniConverterFactory)
         {
             _iniValueManager = iniValueManager;
-            _savingStrategyFactory = savingStrategyFactory;
+            _iniParser = iniParser;
+            _iniConverterFactory = iniConverterFactory;
         }
 
         public void SaveValue(IMemberInfoWrapper memberInfoWrapper, object configuration)
@@ -24,8 +28,18 @@ namespace IniWrapper.Manager.Save
                 Key = _iniValueManager.GetKey(memberInfoWrapper),
             };
 
-            var savingStrategy = _savingStrategyFactory.GetSavingStrategy(memberInfoWrapper.GetMemberType(), value, memberInfoWrapper);
-            savingStrategy.Save(defaultIniValue, value);
+            var (handler, typeinformation) = _iniConverterFactory.GetHandler(memberInfoWrapper.GetMemberType(), value, memberInfoWrapper);
+
+            var iniContext = new IniContext(memberInfoWrapper, typeinformation, defaultIniValue, _iniParser);
+
+            var valueToSave = handler.FormatToWrite(value, iniContext);
+
+            if (valueToSave?.Value == null)
+            {
+                return;
+            }
+
+            _iniParser.Write(valueToSave.Section, valueToSave.Key, valueToSave.Value);
         }
     }
 }

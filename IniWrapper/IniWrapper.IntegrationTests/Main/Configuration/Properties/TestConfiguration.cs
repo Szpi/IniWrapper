@@ -14,5 +14,6 @@ namespace IniWrapper.IntegrationTests.Main.Configuration.Properties
 
         public TestEnum TestEnum { get; set; }
         public List<TestEnum> TestEnumList { get; set; }
+        public bool TestBool { get; set; }
     }
 }

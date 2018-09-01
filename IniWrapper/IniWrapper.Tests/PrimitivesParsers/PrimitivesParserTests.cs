@@ -1,14 +1,17 @@
 ﻿using System;
 using FluentAssertions;
-using IniWrapper.Handlers.Primitive;
+using IniWrapper.Converters;
+using IniWrapper.Converters.Primitive;
+using IniWrapper.Utils;
 using NUnit.Framework;
+using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Tests.PrimitivesParsers
 {
     [TestFixture]
     public class PrimitivesParserTests
     {
-        private PrimitivesHandler _primitivesHandler;
+        private PrimitivesConverter _primitivesConverter;
 
         static object[] TestCaseSource =
         {
@@ -19,13 +22,20 @@ namespace IniWrapper.Tests.PrimitivesParsers
         [SetUp]
         public void SetUp()
         {
-            _primitivesHandler = new PrimitivesHandler();
+            _primitivesConverter = new PrimitivesConverter();
         }
 
         [TestCaseSource(nameof(TestCaseSource))]
         public void ParseReadValue_ShouldParseInt(Type type, string parsingValue, object expected)
         {
-            var result = _primitivesHandler.ParseReadValue(type, parsingValue);
+            var iniContext = new IniContext(null,
+                                            new TypeDetailsInformation(
+                                                TypeCode.BigInteger,
+                                                null,
+                                                null,
+                                                type), null, null);
+
+            var result = _primitivesConverter.ParseReadValue(parsingValue, type, iniContext);
             result.Should().Be(expected);
         }
     }

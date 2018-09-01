@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO.Abstractions;
 using FluentAssertions;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
@@ -15,7 +14,6 @@ namespace IniWrapper.IntegrationTests.Settings
     [TestFixture]
     public class MissingFileSettingsTests
     {
-
         [TestCase(MissingFileWhenLoadingHandling.DoNotLoad)]
         [TestCase(MissingFileWhenLoadingHandling.CreateWithDefaultValues)]
         public void DoNotCall_And_CreateWithDefaultValues_ShouldThrow_WhenIniPathIsNullOrEmpty(MissingFileWhenLoadingHandling missingFileWhenLoadingHandling)
@@ -66,7 +64,7 @@ namespace IniWrapper.IntegrationTests.Settings
 
             iniWrapper.LoadConfiguration<TestConfiguration>();
 
-            iniParser.Received(9).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            iniParser.Received(10).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
             iniParser.Received(0).Read(Arg.Any<string>(), Arg.Any<string>());
         }
 
@@ -85,7 +83,7 @@ namespace IniWrapper.IntegrationTests.Settings
             iniWrapper.LoadConfiguration<TestConfiguration>();
 
             iniParser.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
-            iniParser.Received(9).Read(Arg.Any<string>(), Arg.Any<string>());
+            iniParser.Received(10).Read(Arg.Any<string>(), Arg.Any<string>());
         }
 
         [Test]
@@ -106,7 +104,7 @@ namespace IniWrapper.IntegrationTests.Settings
             iniWrapper.LoadConfiguration<TestConfiguration>();
 
             iniParser.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
-            iniParser.Received(9).Read(Arg.Any<string>(), Arg.Any<string>());
+            iniParser.Received(10).Read(Arg.Any<string>(), Arg.Any<string>());
         }
 
         [Test]
@@ -127,7 +125,7 @@ namespace IniWrapper.IntegrationTests.Settings
             iniWrapper.LoadConfiguration<TestConfiguration>();
 
             iniParser.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
-            iniParser.Received(9).Read(Arg.Any<string>(), Arg.Any<string>());
+            iniParser.Received(10).Read(Arg.Any<string>(), Arg.Any<string>());
         }
 
         [Test]
@@ -148,7 +146,7 @@ namespace IniWrapper.IntegrationTests.Settings
             iniWrapper.LoadConfiguration<TestConfiguration>();
 
             iniParser.Received(0).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
-            iniParser.Received(9).Read(Arg.Any<string>(), Arg.Any<string>());
+            iniParser.Received(10).Read(Arg.Any<string>(), Arg.Any<string>());
         }
     }
 }
