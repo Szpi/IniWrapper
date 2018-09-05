@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Text;
 using IniWrapper.Exceptions;
 using IniWrapper.Manager;
@@ -31,7 +32,13 @@ namespace IniWrapper.Converters.Enumerable
                 return null;
             }
 
-            var returnedList = (IList)Activator.CreateInstance(iniContext.TypeDetailsInformation.Type);
+            var genericType = iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type;
+            if (iniContext.TypeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.Nullable)
+            {
+                genericType = typeof(Nullable<>).MakeGenericType(iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type);
+            }
+            var listType = typeof(List<>).MakeGenericType(genericType);
+            var returnedList = (IList)Activator.CreateInstance(listType);
 
             foreach (var singleEntity in readValue.Split(new[] { _iniSettings.EnumerableEntitySeparator }, StringSplitOptions.RemoveEmptyEntries))
             {
@@ -47,11 +54,6 @@ namespace IniWrapper.Converters.Enumerable
                 iniContext.IniValue.Value = string.Empty;
 
                 return iniContext.IniValue;
-            }
-
-            if (iniContext.TypeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ComplexObject)
-            {
-                throw new CollectionOfComplexTypeException();
             }
 
             var enumerable = objectToFormat as IEnumerable;

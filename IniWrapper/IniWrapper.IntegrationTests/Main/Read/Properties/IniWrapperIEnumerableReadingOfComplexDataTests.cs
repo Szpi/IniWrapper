@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FluentAssertions;
 using IniWrapper.Exceptions;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
@@ -25,11 +26,17 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
         }
 
         [Test]
-        public void LoadConfiguration_ShouldThrowException_WhenConfigurationHasCollectionOfComplexType()
-        {
-            Action loadConfiguration = () => _iniWrapper.LoadConfiguration<ListOfComplexDataConfiguration>();
 
-            loadConfiguration.Should().Throw<CollectionOfComplexTypeException>();
+        [Ignore("notimplemented")]
+        public void LoadConfiguration_ShouldLoadComplexType()
+        {
+            _iniParser.Read($"{nameof(TestConfiguration)}_0", nameof(TestConfiguration.TestInt)).Returns("20");
+            _iniParser.Read($"{nameof(TestConfiguration)}_1", nameof(TestConfiguration.TestInt)).Returns("25");
+            var result = _iniWrapper.LoadConfiguration<ListOfComplexDataConfiguration>();
+
+            result.TestConfigurations.Should().HaveCount(2);
+            result.TestConfigurations.ElementAt(0).TestInt.Should().Be(20);
+            result.TestConfigurations.ElementAt(1).TestInt.Should().Be(25);
         }
     }
 }

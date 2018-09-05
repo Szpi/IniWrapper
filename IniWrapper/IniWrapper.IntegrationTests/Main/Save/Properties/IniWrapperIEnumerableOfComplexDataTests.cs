@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentAssertions;
 using IniWrapper.Exceptions;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
@@ -25,13 +26,28 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
         }
 
         [Test]
-        public void SaveConfiguration_ShouldThrowException_WhenConfigurationHasCollectionOfComplexType()
+
+        [Ignore("notimplemented")]
+        public void SaveConfiguration_ShouldSaveListOfComplexType()
         {
-            var config = new ListOfComplexDataConfiguration();
+            var config = new ListOfComplexDataConfiguration()
+            {
+                TestConfigurations = new List<TestConfiguration>()
+                {
+                    new TestConfiguration()
+                    {
+                        TestInt = 100,
+                    },
+                    new TestConfiguration()
+                    {
+                        TestInt = 200,
+                    },
+                }
+            };
 
-            Action saveConfiguration = () => _iniWrapper.SaveConfiguration(config);
-
-            saveConfiguration.Should().Throw<CollectionOfComplexTypeException>();
+            _iniWrapper.SaveConfiguration(config);
+            _iniParser.Received(1).Write($"{nameof(TestConfiguration)}_0", nameof(TestConfiguration.TestInt), "100");
+            _iniParser.Received(1).Write($"{nameof(TestConfiguration)}_1", nameof(TestConfiguration.TestInt), "200");
         }
     }
 }

@@ -9,7 +9,7 @@ namespace IniWrapper.IntegrationTests.Main.Configuration.Properties
         public uint TestUint { get; set; }
         public char TestChar { get; set; }
         public List<string> TestStringList { get; set; }
-        public List<int> TestIntList { get; set; }
+        public IEnumerable<int> TestIntList { get; set; }
         public List<uint> TestUintList { get; set; }
 
         public TestEnum TestEnum { get; set; }

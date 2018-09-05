@@ -39,11 +39,7 @@ namespace IniWrapper.Manager.Read
                 Section = _iniValueManager.GetSection(configuration, memberInfoWrapper),
                 Key = _iniValueManager.GetKey(memberInfoWrapper)
             };
-
-            if (typeDetailsInformation.TypeCode == TypeCode.Enumerable && typeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ComplexObject)
-            {
-                throw new CollectionOfComplexTypeException();
-            }
+           
             try
             {
                 var iniContext = new IniContext(memberInfoWrapper, typeDetailsInformation, iniValue, _iniParser);

@@ -66,9 +66,13 @@ namespace IniWrapper.ConverterFactory
                     }
                 case TypeCode.Enumerable:
                     {
+                        if (typeInformation.UnderlyingTypeInformation?.TypeCode == TypeCode.ComplexObject)
+                        {
+                            return new EnumerableComplexTypesConverter(IniWrapper as IIniWrapperWithCustomMemberInfo, _iniSettings);
+                        }
                         var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
 
-                        return new EnumerableConverter(underlyingTypeHandler,_iniSettings);
+                        return new EnumerableConverter(underlyingTypeHandler, _iniSettings);
                     }
                 case TypeCode.NullValue:
                     {

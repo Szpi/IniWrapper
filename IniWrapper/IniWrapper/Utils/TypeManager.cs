@@ -80,7 +80,7 @@ namespace IniWrapper.Utils
                 return new TypeDetailsInformation(typeCode, new UnderlyingTypeInformation(typeCode, false, type), null, memberInfoWrapper.GetMemberType());
             }
 
-            if (typeof(IDictionary).IsAssignableFrom(type))
+            if ((type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>)) || typeof(IDictionary).IsAssignableFrom(type) )
             {
                 var underlyingGenericTypeKey = type.GenericTypeArguments[0];
                 var underlyingGenericTypeValue = type.GenericTypeArguments[1];

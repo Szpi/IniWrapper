@@ -1,6 +1,5 @@
-﻿using System;
+﻿using System.Linq;
 using FluentAssertions;
-using IniWrapper.Exceptions;
 using IniWrapper.IntegrationTests.Main.Configuration.Fields;
 using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
@@ -25,11 +24,16 @@ namespace IniWrapper.IntegrationTests.Main.Read.Fields
         }
 
         [Test]
-        public void SaveConfiguration_ShouldThrowException_WhenConfigurationHasCollectionOfComplexType()
+        [Ignore("notimplemented")]
+        public void SaveConfiguration_ShouldSaveListOfComplexType()
         {
-            Action loadConfiguration = () => _iniWrapper.LoadConfiguration<ListOfComplesDataConfigurationField>();
+            _iniParser.Read($"{nameof(TestConfigurationField)}_0", nameof(TestConfigurationField.TestInt)).Returns("20");
+            _iniParser.Read($"{nameof(TestConfigurationField)}_1", nameof(TestConfigurationField.TestInt)).Returns("25");
+            var result = _iniWrapper.LoadConfiguration<ListOfComplesDataConfigurationField>();
 
-            loadConfiguration.Should().Throw<CollectionOfComplexTypeException>();
+            result.TestConfigurations.Should().HaveCount(2);
+            result.TestConfigurations.ElementAt(0).TestInt.Should().Be(20);
+            result.TestConfigurations.ElementAt(1).TestInt.Should().Be(25);
         }
     }
 }
