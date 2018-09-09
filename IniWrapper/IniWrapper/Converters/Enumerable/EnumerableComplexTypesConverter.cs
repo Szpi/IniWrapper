@@ -29,20 +29,29 @@ namespace IniWrapper.Converters.Enumerable
             {
                 var dynamicIniOptionsAttribute = new IniOptionsAttribute()
                 {
-                    Section = $"{iniContext.IniValue.Section}_{i}"
+                    Section = GenerateDynamicSection(iniContext, i)
                 };
+
+                var section = iniContext.IniParser.Read(dynamicIniOptionsAttribute.Section, null);
+                if (string.IsNullOrEmpty(section))
+                {
+                    break;
+                }
+
                 var memberInfoFactory = new ComplexTypeMemberInfoFactory(dynamicIniOptionsAttribute);
                 var loadedComplexType = _iniWrapperWithCustomMemberInfo.LoadConfigurationFromFileWithCustomMemberInfo(iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type, memberInfoFactory);
 
                 if (loadedComplexType == null)
                 {
-                   break;
+                    break;
                 }
 
                 returnedList.Add(loadedComplexType);
             }
             return returnedList;
         }
+
+        
 
         public IniValue FormatToWrite(object objectToFormat, IniContext iniContext)
         {
@@ -59,7 +68,7 @@ namespace IniWrapper.Converters.Enumerable
 
                 var dynamicIniOptionsAttribute = new IniOptionsAttribute()
                 {
-                    Section = $"{iniContext.IniValue.Section}_{index}"
+                    Section = GenerateDynamicSection(iniContext,index)
                 };
                 var memberInfoFactory = new ComplexTypeMemberInfoFactory(dynamicIniOptionsAttribute);
 
@@ -68,6 +77,10 @@ namespace IniWrapper.Converters.Enumerable
             }
 
             return null;
+        }
+        private static string GenerateDynamicSection(IniContext iniContext, int i)
+        {
+            return $"{iniContext.IniValue.Key}_{i}";
         }
     }
 }
