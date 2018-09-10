@@ -24,7 +24,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
         }
 
         [Test]
-        public void SaveConfiguration_ShouldSaveCorrectDefaultValues()
+        public void LoadConfiguration_ShouldHaveCorrectDefaultValues()
         {
             var result = _iniWrapper.LoadConfiguration<DefaultValuesConfiguration>();
 
