@@ -30,7 +30,7 @@ namespace IniWrapper.ConverterFactory
             _iniSettings = iniSettings;
         }
 
-        public (IIniConverter handler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
+        public (IIniConverter handler, IIniConverter defaultHandler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
         {
             var typeInformation = _typeManager.GetTypeInformation(type, value, memberInfoWrapper);
 
@@ -38,12 +38,13 @@ namespace IniWrapper.ConverterFactory
             if (customIniHandlerAttribute != null)
             {
                 var customHandler = (IIniConverter)Activator.CreateInstance(customIniHandlerAttribute.IniHandlerType, customIniHandlerAttribute.ConverterParameters);
-                return (customHandler, typeInformation);
+                var handlerWithDecorator = GetHandlerWithIgnoreAttributeHandlerDecorator(typeInformation, memberInfoWrapper);
+                return (customHandler, handlerWithDecorator, typeInformation);
             }
 
-            var handlerWithDecorator = GetHandlerWithIgnoreAttributeHandlerDecorator(typeInformation, memberInfoWrapper);
+            var handlerWithIgnoreAttributeHandlerDecorator = GetHandlerWithIgnoreAttributeHandlerDecorator(typeInformation, memberInfoWrapper);
 
-            return (handlerWithDecorator, typeInformation);
+            return (handlerWithIgnoreAttributeHandlerDecorator, null, typeInformation);
         }
 
         private IIniConverter GetHandlerWithIgnoreAttributeHandlerDecorator(TypeDetailsInformation typeInformation, IMemberInfoWrapper memberInfoWrapper)

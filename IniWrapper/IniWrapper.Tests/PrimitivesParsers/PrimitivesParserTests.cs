@@ -33,7 +33,7 @@ namespace IniWrapper.Tests.PrimitivesParsers
                                                 TypeCode.BigInteger,
                                                 null,
                                                 null,
-                                                type), null, null);
+                                                type), null, null, null);
 
             var result = _primitivesConverter.ParseReadValue(parsingValue, type, iniContext);
             result.Should().Be(expected);

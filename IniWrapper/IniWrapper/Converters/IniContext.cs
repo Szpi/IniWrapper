@@ -1,4 +1,5 @@
-﻿using IniWrapper.Manager;
+﻿using IniWrapper.ConverterFactory;
+using IniWrapper.Manager;
 using IniWrapper.Member;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Utils;
@@ -11,13 +12,19 @@ namespace IniWrapper.Converters
         public TypeDetailsInformation TypeDetailsInformation { get; }
         public IniValue IniValue { get; }
         public IIniParser IniParser { get;  }
+        public IIniConverter DefaultConverter { get; set; }
 
-        public IniContext(IMemberInfoWrapper memberInfoWrapper, TypeDetailsInformation typeDetailsInformation, IniValue iniValue, IIniParser iniParser)
+        public IniContext(IMemberInfoWrapper memberInfoWrapper,
+                          TypeDetailsInformation typeDetailsInformation,
+                          IniValue iniValue,
+                          IIniParser iniParser,
+                          IIniConverter defaultConverter)
         {
             MemberInfoWrapper = memberInfoWrapper;
             TypeDetailsInformation = typeDetailsInformation;
             IniValue = iniValue;
             IniParser = iniParser;
+            DefaultConverter = defaultConverter;
         }
     }
 }

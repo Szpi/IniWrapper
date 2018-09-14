@@ -28,9 +28,9 @@ namespace IniWrapper.Manager.Save
                 Key = _iniValueManager.GetKey(memberInfoWrapper),
             };
 
-            var (handler, typeinformation) = _iniConverterFactory.GetHandler(memberInfoWrapper.GetMemberType(), value, memberInfoWrapper);
+            var (handler, defaultConverter, typeinformation) = _iniConverterFactory.GetHandler(memberInfoWrapper.GetMemberType(), value, memberInfoWrapper);
 
-            var iniContext = new IniContext(memberInfoWrapper, typeinformation, defaultIniValue, _iniParser);
+            var iniContext = new IniContext(memberInfoWrapper, typeinformation, defaultIniValue, _iniParser, defaultConverter);
 
             var valueToSave = handler.FormatToWrite(value, iniContext);
 
