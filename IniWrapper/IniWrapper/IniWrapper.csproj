@@ -11,7 +11,9 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
     <Authors>Piotr Szkudlarski</Authors>    
     <Copyright>2018 Piotr Szkudlarski</Copyright>    
-    <PackageReleaseNotes>- Added CustomConverterAttribute</PackageReleaseNotes>
+    <PackageReleaseNotes>- Added suppot for CustomConverter
+- Fixed handling IEnumerable and IDictionary
+- Support of ComplexType in IEnumerable</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

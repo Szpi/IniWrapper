@@ -9,7 +9,7 @@ using IniWrapper.Member;
 [assembly: InternalsVisibleTo("IniWrapper.Tests")]
 namespace IniWrapper.Wrapper
 {
-    internal sealed class IniWrapper : IIniWrapper
+    internal sealed class IniWrapper : IIniWrapper, IIniWrapperWithCustomMemberInfo
     {
         private readonly ISavingManager _savingManager;
         private readonly IReadingManager _readingManager;
@@ -33,8 +33,8 @@ namespace IniWrapper.Wrapper
         {
             if (_configurationLoadingChecker.ShouldReadConfigurationFromFile())
             {
-                var result = Activator.CreateInstance(destinationType);
-                return ReadFromFile(result);
+                var destinationConfiguration = Activator.CreateInstance(destinationType);
+                return ReadFromFile(destinationConfiguration, new MemberInfoFactory());
             }
 
             if (!_configurationLoadingChecker.ShouldCreateDefaultConfiguration())
@@ -43,59 +43,75 @@ namespace IniWrapper.Wrapper
             }
 
             var defaultConfiguration = Activator.CreateInstance(destinationType);
-            SaveConfiguration(defaultConfiguration);
+            SaveConfigurationInternal(defaultConfiguration, new MemberInfoFactory());
             return defaultConfiguration;
         }
 
         public void SaveConfiguration(object configuration)
         {
-            SaveProperties(configuration);
-            SaveFields(configuration);
+            SaveConfigurationInternal(configuration, new MemberInfoFactory());
         }
 
-        private object ReadFromFile(object configuration)
+        private void SaveConfigurationInternal(object configuration, IMemberInfoFactory memberInfoFactory)
         {
-            ReadProperties(configuration);
-            ReadFields(configuration);
+            SaveProperties(configuration, memberInfoFactory);
+            SaveFields(configuration, memberInfoFactory);
+        }
+
+        private object ReadFromFile(object configuration, IMemberInfoFactory memberInfoFactory)
+        {
+            ReadProperties(configuration, memberInfoFactory);
+            ReadFields(configuration, memberInfoFactory);
+
             return configuration;
         }
+        public void SaveConfigurationWithCustomMemberInfo(object configuration, IMemberInfoFactory memberInfoFactory)
+        {
+            SaveConfigurationInternal(configuration, memberInfoFactory);
+        }
 
-        private void ReadFields(object configuration)
+        public object LoadConfigurationFromFileWithCustomMemberInfo(Type configurationType, IMemberInfoFactory memberInfoFactory)
+        {
+            var destinationConfiguration = Activator.CreateInstance(configurationType);
+            return ReadFromFile(destinationConfiguration, memberInfoFactory);
+        }
+
+        private void ReadFields(object configuration, IMemberInfoFactory memberInfoFactory)
         {
             var fields = configuration.GetType().GetFields();
             foreach (var field in fields)
             {
-                var fieldInfoWrapper = new FieldInfoWrapper(field);
+                var fieldInfoWrapper = memberInfoFactory.CreateMemberInfo(field);
                 _readingManager.ReadValue(fieldInfoWrapper, configuration);
             }
         }
 
-        private void ReadProperties(object configuration)
+        private void ReadProperties(object configuration, IMemberInfoFactory memberInfoFactory)
         {
             var properties = configuration.GetType().GetProperties();
             foreach (var property in properties)
             {
-                var propertyInfoWrapper = new PropertyInfoWrapper(property);
+                var propertyInfoWrapper = memberInfoFactory.CreateMemberInfo(property);
                 _readingManager.ReadValue(propertyInfoWrapper, configuration);
             }
         }
 
-        private void SaveFields(object configuration)
+        private void SaveFields(object configuration, IMemberInfoFactory memberInfoFactory)
         {
             var fields = configuration.GetType().GetFields();
             foreach (var field in fields)
             {
-                var fieldInfoWrapper = new FieldInfoWrapper(field);
+                var fieldInfoWrapper = memberInfoFactory.CreateMemberInfo(field);
                 _savingManager.SaveValue(fieldInfoWrapper, configuration);
             }
         }
 
-        private void SaveProperties(object configuration)
+        private void SaveProperties(object configuration, IMemberInfoFactory memberInfoFactory)
         {
             var properties = configuration.GetType().GetProperties();
             foreach (var property in properties)
             {
-                var propertyInfoWrapper = new PropertyInfoWrapper(property);
+                var propertyInfoWrapper = memberInfoFactory.CreateMemberInfo(property);
                 _savingManager.SaveValue(propertyInfoWrapper, configuration);
             }
         }

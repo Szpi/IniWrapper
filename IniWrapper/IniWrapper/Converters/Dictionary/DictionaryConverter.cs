@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using IniWrapper.Exceptions;
 using IniWrapper.Manager;
 using IniWrapper.ParserWrapper;
@@ -28,7 +29,20 @@ namespace IniWrapper.Converters.Dictionary
 
             var splitedReadValues = _readSectionsParser.Parse(readValue);
 
-            var returnedDictionary = (IDictionary)Activator.CreateInstance(iniContext.TypeDetailsInformation.Type);
+            var genericType = iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type;
+            if (iniContext.TypeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.Nullable)
+            {
+                genericType = typeof(Nullable<>).MakeGenericType(iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type);
+            }
+
+            var genericKeyType = iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.Type;
+            if (iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.TypeCode == TypeCode.Nullable)
+            {
+                genericKeyType = typeof(Nullable<>).MakeGenericType(iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.Type);
+            }
+            
+            var dictionaryType = typeof(Dictionary<,>).MakeGenericType(genericKeyType, genericType);
+            var returnedDictionary = (IDictionary)Activator.CreateInstance(dictionaryType);
 
             foreach (var splitedReadValue in splitedReadValues)
             {
