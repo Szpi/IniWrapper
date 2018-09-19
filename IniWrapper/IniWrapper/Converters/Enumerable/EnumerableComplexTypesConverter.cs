@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using IniWrapper.Attribute;
 using IniWrapper.Converters.Enumerable.ComplexTypeMemberInfo;
 using IniWrapper.Manager;
-using IniWrapper.Settings;
 using IniWrapper.Wrapper;
 
 namespace IniWrapper.Converters.Enumerable
@@ -12,12 +11,10 @@ namespace IniWrapper.Converters.Enumerable
     internal class EnumerableComplexTypesConverter : IIniConverter
     {
         private readonly IIniWrapperWithCustomMemberInfo _iniWrapperWithCustomMemberInfo;
-        private readonly IIniSettings _iniSettings;
 
-        public EnumerableComplexTypesConverter(IIniWrapperWithCustomMemberInfo iniWrapperWithCustomMemberInfo, IIniSettings iniSettings)
+        public EnumerableComplexTypesConverter(IIniWrapperWithCustomMemberInfo iniWrapperWithCustomMemberInfo)
         {
             _iniWrapperWithCustomMemberInfo = iniWrapperWithCustomMemberInfo;
-            _iniSettings = iniSettings;
         }
 
         public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
@@ -50,8 +47,6 @@ namespace IniWrapper.Converters.Enumerable
             }
             return returnedList;
         }
-
-        
 
         public IniValue FormatToWrite(object objectToFormat, IniContext iniContext)
         {

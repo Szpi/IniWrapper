@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 using IniWrapper.ConfigLoadingChecker;
+using IniWrapper.Creator;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
 using IniWrapper.Member;
@@ -14,17 +15,20 @@ namespace IniWrapper.Wrapper
         private readonly ISavingManager _savingManager;
         private readonly IReadingManager _readingManager;
         private readonly IConfigurationLoadingChecker _configurationLoadingChecker;
+        private readonly IImmutableTypeCreator _immutableTypeCreator;
 
         public IniWrapper(ISavingManager savingManager,
                           IReadingManager readingManager,
-                          IConfigurationLoadingChecker configurationLoadingChecker)
+                          IConfigurationLoadingChecker configurationLoadingChecker,
+                          IImmutableTypeCreator immutableTypeCreator)
         {
             _savingManager = savingManager;
             _readingManager = readingManager;
             _configurationLoadingChecker = configurationLoadingChecker;
+            _immutableTypeCreator = immutableTypeCreator;
         }
 
-        public T LoadConfiguration<T>() where T : new()
+        public T LoadConfiguration<T>()
         {
             return (T)LoadConfiguration(typeof(T));
         }
@@ -41,7 +45,6 @@ namespace IniWrapper.Wrapper
             {
                 return Activator.CreateInstance(destinationType);
             }
-
             var defaultConfiguration = Activator.CreateInstance(destinationType);
             SaveConfigurationInternal(defaultConfiguration, new MemberInfoFactory());
             return defaultConfiguration;

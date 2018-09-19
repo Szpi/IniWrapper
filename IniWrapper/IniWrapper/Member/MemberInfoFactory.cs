@@ -9,9 +9,9 @@ namespace IniWrapper.Member
             return new FieldInfoWrapper(fieldInfo);
         }
 
-        public IMemberInfoWrapper CreateMemberInfo(PropertyInfo propertyInfoInfo)
+        public IMemberInfoWrapper CreateMemberInfo(PropertyInfo propertyInfo)
         {
-            return new PropertyInfoWrapper(propertyInfoInfo);
+            return new PropertyInfoWrapper(propertyInfo);
         }
     }
 }

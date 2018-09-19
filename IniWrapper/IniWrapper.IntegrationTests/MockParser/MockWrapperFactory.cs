@@ -1,6 +1,7 @@
 ﻿using System.IO.Abstractions;
 using IniWrapper.ConfigLoadingChecker;
 using IniWrapper.ConverterFactory;
+using IniWrapper.Creator;
 using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
 using IniWrapper.Manager.Read;
@@ -36,9 +37,10 @@ namespace IniWrapper.IntegrationTests.MockParser
                                                     iniParser);
             var defaultConfigurationCreationStrategy = new ConfigurationLoadingChecker(fileSystem, iniSettings);
 
-            var iniWrapper = new IniWrapper.Wrapper.IniWrapper(savingManager, readingManager, defaultConfigurationCreationStrategy);
+            var iniWrapper = new IniWrapper.Wrapper.IniWrapper(savingManager, readingManager, defaultConfigurationCreationStrategy, new ImmutableTypeCreator());
 
             converterFactory.IniWrapper = iniWrapper;
+            converterFactory.IniWrapperWithCustomMemberInfo = iniWrapper;
 
             return iniWrapper;
         }

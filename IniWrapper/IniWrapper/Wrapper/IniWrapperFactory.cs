@@ -2,6 +2,7 @@
 using System.IO.Abstractions;
 using IniWrapper.ConfigLoadingChecker;
 using IniWrapper.ConverterFactory;
+using IniWrapper.Creator;
 using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
 using IniWrapper.Manager.Read;
@@ -26,9 +27,10 @@ namespace IniWrapper.Wrapper
 
             var defaultConfigurationCreationStrategy = new ConfigurationLoadingChecker(new FileSystem(), iniSettings);
 
-            var iniWrapper = new IniWrapper(savingManager, readingManager, defaultConfigurationCreationStrategy);
+            var iniWrapper = new IniWrapper(savingManager, readingManager, defaultConfigurationCreationStrategy, new ImmutableTypeCreator());
 
             converterFactory.IniWrapper = iniWrapper;
+            converterFactory.IniWrapperWithCustomMemberInfo = iniWrapper;
 
             return iniWrapper;
         }
