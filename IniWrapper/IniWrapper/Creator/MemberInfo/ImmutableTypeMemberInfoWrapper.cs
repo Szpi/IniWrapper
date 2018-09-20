@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace IniWrapper.Creator.MemberInfo
 {
-    public class ImmutableTypeMemberInfoWrapper : IMemberInfoWrapper
+    public class ImmutableTypeMemberInfoWrapper : IMemberInfoWrapper, IConstructorParametersProvider
     {
         private readonly IMemberInfoWrapper _infoWrapper;
         private readonly Dictionary<string, object> _constructorValues = new Dictionary<string, object>();
@@ -12,6 +12,11 @@ namespace IniWrapper.Creator.MemberInfo
         public ImmutableTypeMemberInfoWrapper(IMemberInfoWrapper infoWrapper)
         {
             _infoWrapper = infoWrapper;
+        }
+
+        public IReadOnlyDictionary<string, object> GetConstructorParameters()
+        {
+            return _constructorValues;
         }
 
         public Type GetMemberType()
