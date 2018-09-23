@@ -1,15 +1,18 @@
-﻿using System;
-using System.IO.Abstractions;
-using IniWrapper.ConfigLoadingChecker;
+﻿using IniWrapper.ConfigLoadingChecker;
 using IniWrapper.ConverterFactory;
-using IniWrapper.Creator;
 using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
+using IniWrapper.Member;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
 using IniWrapper.Utils;
+using IniWrapper.Wrapper.Strategy;
+using System;
+using System.IO.Abstractions;
+using IniWrapper.Creator;
+using IniWrapper.Creator.MemberInfo;
 
 namespace IniWrapper.Wrapper
 {
@@ -27,10 +30,22 @@ namespace IniWrapper.Wrapper
 
             var defaultConfigurationCreationStrategy = new ConfigurationLoadingChecker(new FileSystem(), iniSettings);
 
-            var iniWrapper = new IniWrapper(savingManager, readingManager, defaultConfigurationCreationStrategy, new ImmutableTypeCreator());
+            var iniWrapperInternal = new IniWrapperInternal(savingManager, readingManager);
+
+            var iniWrapper = new IniWrapper(defaultConfigurationCreationStrategy, iniWrapperInternal, new MemberInfoFactory(), new NormalLoadingStrategy(iniWrapperInternal));
+
+            var immutableTypeMemberInfoFactory = new ImmutableTypeMemberInfoFactory();
+            var iniWrapperForImmutableType = new IniWrapper(defaultConfigurationCreationStrategy,
+                                                            iniWrapperInternal,
+                                                            immutableTypeMemberInfoFactory,
+                                                            new ImmutableTypeLoadingStrategy(iniWrapperInternal, new ImmutableTypeCreator(immutableTypeMemberInfoFactory)));
+
+            var iniWrapperWithCustomMemberInfo = new IniWrapperWithCustomMemberInfo(iniWrapperInternal);
+
+            var iniWrapperManager = new IniWrapperManager(iniWrapper,);
 
             converterFactory.IniWrapper = iniWrapper;
-            converterFactory.IniWrapperWithCustomMemberInfo = iniWrapper;
+            converterFactory.IniWrapperWithCustomMemberInfo = iniWrapperWithCustomMemberInfo;
 
             return iniWrapper;
         }

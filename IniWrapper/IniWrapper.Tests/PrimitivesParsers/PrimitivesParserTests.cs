@@ -13,7 +13,7 @@ namespace IniWrapper.Tests.PrimitivesParsers
     {
         private PrimitivesConverter _primitivesConverter;
 
-        static object[] TestCaseSource =
+        private static readonly object[] TestCaseSource =
         {
             new object[] { typeof(int), "10", 10 },
             new object[] { typeof(uint), "10", 10 },

@@ -10,7 +10,7 @@ namespace IniWrapper.Tests.Creator
         [Test]
         public void HasConstructorWithAttribute_ShouldReturnTrue_IfConfigurationHasConstructorWithAttribute()
         {
-            var creator = new ImmutableTypeCreator();
+            var creator = new ImmutableTypeCreator(null);
 
             var result = creator.HasConstructorWithAttribute(typeof(ImmutableConfigurationWithAttribute));
 
@@ -20,20 +20,11 @@ namespace IniWrapper.Tests.Creator
         [Test]
         public void HasConstructorWithAttribute_ShouldReturnFalse_IfConfigurationDoesNotHaveConstructorWithAttribute()
         {
-            var creator = new ImmutableTypeCreator();
+            var creator = new ImmutableTypeCreator(null);
 
             var result = creator.HasConstructorWithAttribute(typeof(ImmutableConfiguration));
 
             result.Should().BeFalse();
-        }
-
-        [Test]
-        public void Instantiate_ShouldReturnObject()
-        {
-            var creator = new ImmutableTypeCreator();
-
-            var result = creator.Instantiate(typeof(ImmutableConfigurationWithAttribute));
-
         }
     }
 }

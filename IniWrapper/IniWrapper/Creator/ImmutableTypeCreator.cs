@@ -41,7 +41,7 @@ namespace IniWrapper.Creator
         private object GetParameter(IReadOnlyDictionary<string, object> setParameters, ParameterInfo parameter)
         {
             return setParameters.TryGetValue(parameter.Name, out var result) ? result : 
-                setParameters.FirstOrDefault(x => string.Compare(parameter.Name, x.Key, StringComparison.InvariantCultureIgnoreCase) == 0);
+                setParameters.FirstOrDefault(x => string.Compare(parameter.Name, x.Key, StringComparison.InvariantCultureIgnoreCase) == 0).Value;
         }
     }
 }

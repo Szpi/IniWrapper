@@ -6,10 +6,12 @@ using IniWrapper.Manager;
 using IniWrapper.Manager.Attribute;
 using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
+using IniWrapper.Member;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
 using IniWrapper.Utils;
 using IniWrapper.Wrapper;
+using IniWrapper.Wrapper.Strategy;
 using NSubstitute;
 
 namespace IniWrapper.IntegrationTests.MockParser
@@ -36,11 +38,17 @@ namespace IniWrapper.IntegrationTests.MockParser
             var readingManager = new ReadingManager(new IniValueManager(new IniValueAttributeManager()), converterFactory,
                                                     iniParser);
             var defaultConfigurationCreationStrategy = new ConfigurationLoadingChecker(fileSystem, iniSettings);
+            
+            var iniWrapperInternal = new IniWrapperInternal(savingManager, readingManager);
 
-            var iniWrapper = new IniWrapper.Wrapper.IniWrapper(savingManager, readingManager, defaultConfigurationCreationStrategy, new ImmutableTypeCreator());
+            var iniWrapper = new IniWrapper.Wrapper.IniWrapper(defaultConfigurationCreationStrategy, iniWrapperInternal, new MemberInfoFactory(), new NormalLoadingStrategy(iniWrapperInternal));
+
+            var iniWrapperWithCustomMemberInfo = new IniWrapperWithCustomMemberInfo(iniWrapperInternal);
+
+            //var iniWrapperForImmutableType = new IniWrapperForImmutableType();
 
             converterFactory.IniWrapper = iniWrapper;
-            converterFactory.IniWrapperWithCustomMemberInfo = iniWrapper;
+            converterFactory.IniWrapperWithCustomMemberInfo = iniWrapperWithCustomMemberInfo;
 
             return iniWrapper;
         }
