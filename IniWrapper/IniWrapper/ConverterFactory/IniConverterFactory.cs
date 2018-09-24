@@ -13,6 +13,7 @@ using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
 using IniWrapper.Utils;
 using IniWrapper.Wrapper;
+using IniWrapper.Wrapper.CustomMemberFactory;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.ConverterFactory
@@ -23,7 +24,7 @@ namespace IniWrapper.ConverterFactory
         private readonly IIniSettings _iniSettings;
 
         public IIniWrapper IniWrapper { get; set; }
-        public IIniWrapperWithCustomMemberInfo IniWrapperWithCustomMemberInfo { get; set; }
+        public IIniWrapperWithCustomMemberInfoFactory IniWrapperWithCustomMemberInfoFactory { get; set; }
 
         public IniConverterFactory(ITypeManager typeManager, IIniSettings iniSettings)
         {
@@ -70,7 +71,7 @@ namespace IniWrapper.ConverterFactory
                     {
                         if (typeInformation.UnderlyingTypeInformation?.TypeCode == TypeCode.ComplexObject)
                         {
-                            return new EnumerableComplexTypesConverter(IniWrapperWithCustomMemberInfo);
+                            return new EnumerableComplexTypesConverter(IniWrapperWithCustomMemberInfoFactory);
                         }
                         var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
 

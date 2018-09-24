@@ -11,6 +11,8 @@ using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
 using IniWrapper.Utils;
 using IniWrapper.Wrapper;
+using IniWrapper.Wrapper.CustomMemberFactory;
+using IniWrapper.Wrapper.Immutable;
 using IniWrapper.Wrapper.Strategy;
 using NSubstitute;
 
@@ -43,14 +45,15 @@ namespace IniWrapper.IntegrationTests.MockParser
 
             var iniWrapper = new IniWrapper.Wrapper.IniWrapper(defaultConfigurationCreationStrategy, iniWrapperInternal, new MemberInfoFactory(), new NormalLoadingStrategy(iniWrapperInternal));
 
-            var iniWrapperWithCustomMemberInfo = new IniWrapperWithCustomMemberInfo(iniWrapperInternal);
+            var iniWrapperWithCustomMemberInfo = new IniWrapperWithCustomMemberInfoFactory(iniWrapperInternal);
+            var iniWrapperForImmutableTypeFactory = new IniWrapperForImmutableTypeFactory(iniWrapperInternal, readingManager, defaultConfigurationCreationStrategy);
 
-            //var iniWrapperForImmutableType = new IniWrapperForImmutableType();
+            var iniWrapperManager = new IniWrapperManager(iniWrapper, iniWrapperForImmutableTypeFactory, new ImmutableTypeCreator(null));
 
             converterFactory.IniWrapper = iniWrapper;
-            converterFactory.IniWrapperWithCustomMemberInfo = iniWrapperWithCustomMemberInfo;
+            converterFactory.IniWrapperWithCustomMemberInfoFactory = iniWrapperWithCustomMemberInfo;
 
-            return iniWrapper;
+            return iniWrapperManager;
         }
     }
 }

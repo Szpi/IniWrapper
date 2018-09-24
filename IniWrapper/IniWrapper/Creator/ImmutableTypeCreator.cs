@@ -1,5 +1,4 @@
 ﻿using IniWrapper.Attribute;
-using IniWrapper.Creator.MemberInfo;
 using System;
 using System.Collections.Generic;
 using System.Linq;

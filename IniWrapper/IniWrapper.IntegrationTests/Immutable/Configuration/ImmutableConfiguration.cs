@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using IniWrapper.Attribute;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 
 namespace IniWrapper.IntegrationTests.Immutable.Configuration
@@ -17,6 +18,7 @@ namespace IniWrapper.IntegrationTests.Immutable.Configuration
         public List<TestEnum> TestEnumList { get; }
         public bool TestBool { get; }
 
+        [IniConstructor]
         public ImmutableConfiguration(string testString, int testInt, uint testUint, char testChar,
                                       List<string> testStringList, IEnumerable<int> testIntList,
                                       List<uint> testUintList, TestEnum testEnum, List<TestEnum> testEnumList,

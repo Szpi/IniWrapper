@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace IniWrapper.Creator.MemberInfo
+namespace IniWrapper.Creator
 {
     public interface IConstructorParametersProvider
     {

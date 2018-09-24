@@ -1,4 +1,5 @@
-﻿using IniWrapper.Member;
+﻿using System;
+using IniWrapper.Member;
 
 namespace IniWrapper.Manager
 {
@@ -16,9 +17,9 @@ namespace IniWrapper.Manager
             return _attributeManager.GetKey(memberInfoWrapper) ?? memberInfoWrapper.Name;
         }
 
-        public string GetSection(object configuration, IMemberInfoWrapper memberInfoWrapper)
+        public string GetSection(Type destinationType, IMemberInfoWrapper memberInfoWrapper)
         {
-            return _attributeManager.GetSection(configuration, memberInfoWrapper) ?? configuration.GetType().Name;
+            return _attributeManager.GetSection(destinationType, memberInfoWrapper) ?? destinationType.Name;
         }
     }
 }

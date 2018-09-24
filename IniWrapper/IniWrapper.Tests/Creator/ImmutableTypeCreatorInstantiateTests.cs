@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using IniWrapper.Creator;
-using IniWrapper.Creator.MemberInfo;
 using NSubstitute;
 using NUnit.Framework;
 

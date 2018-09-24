@@ -1,25 +1,29 @@
 ﻿using System;
+using System.Reflection;
 using IniWrapper.Creator;
 using IniWrapper.Member;
+using IniWrapper.Member.Immutable;
+using IniWrapper.Wrapper.Immutable;
 
 namespace IniWrapper.Wrapper.Strategy
 {
     internal class ImmutableTypeLoadingStrategy : ILoadingStrategy
     {
-        private readonly IIniWrapperInternal _iniWrapperInternal;
+        private readonly IIniWrapperInternalForImmutableType _iniWrapperInternalForImmutableType;
         private readonly IImmutableTypeCreator _immutableTypeCreator;
 
-        public ImmutableTypeLoadingStrategy(IIniWrapperInternal iniWrapperInternal, IImmutableTypeCreator immutableTypeCreator)
+        public ImmutableTypeLoadingStrategy(IIniWrapperInternalForImmutableType iniWrapperInternalForImmutableType, IImmutableTypeCreator immutableTypeCreator)
         {
-            _iniWrapperInternal = iniWrapperInternal;
+            _iniWrapperInternalForImmutableType = iniWrapperInternalForImmutableType;
             _immutableTypeCreator = immutableTypeCreator;
         }
 
         public object ReadConfigurationFromFile(Type destinationType, IMemberInfoFactory memberInfoFactory)
         {
-            _iniWrapperInternal.LoadConfigurationInternal(default, memberInfoFactory);
+            var memberInfo = memberInfoFactory.CreateMemberInfo(default(FieldInfo));
+            var immutableMemberInfoWrapper = (IImmutableTypeMemberInfoWrapper)memberInfo;
 
-            return _immutableTypeCreator.Instantiate(destinationType);
+            return _iniWrapperInternalForImmutableType.LoadConfigurationInternal(destinationType, immutableMemberInfoWrapper);
         }
 
         public object CreateDefaultConfigurationObject(Type destinationType)
@@ -31,7 +35,7 @@ namespace IniWrapper.Wrapper.Strategy
         {
             var defaultConfiguration = CreateDefaultConfigurationObject(destinationType);
 
-            _iniWrapperInternal.SaveConfigurationInternal(defaultConfiguration, memberInfoFactory);
+            _iniWrapperInternalForImmutableType.SaveConfigurationInternal(defaultConfiguration, memberInfoFactory);
             return defaultConfiguration;
         }
     }

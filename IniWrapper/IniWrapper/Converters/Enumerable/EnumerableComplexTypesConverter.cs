@@ -5,16 +5,17 @@ using IniWrapper.Attribute;
 using IniWrapper.Converters.Enumerable.ComplexTypeMemberInfo;
 using IniWrapper.Manager;
 using IniWrapper.Wrapper;
+using IniWrapper.Wrapper.CustomMemberFactory;
 
 namespace IniWrapper.Converters.Enumerable
 {
     internal class EnumerableComplexTypesConverter : IIniConverter
     {
-        private readonly IIniWrapperWithCustomMemberInfo _iniWrapperWithCustomMemberInfo;
+        private readonly IIniWrapperWithCustomMemberInfoFactory _iniWrapperWithCustomMemberInfoFactory;
 
-        public EnumerableComplexTypesConverter(IIniWrapperWithCustomMemberInfo iniWrapperWithCustomMemberInfo)
+        public EnumerableComplexTypesConverter(IIniWrapperWithCustomMemberInfoFactory iniWrapperWithCustomMemberInfoFactory)
         {
-            _iniWrapperWithCustomMemberInfo = iniWrapperWithCustomMemberInfo;
+            _iniWrapperWithCustomMemberInfoFactory = iniWrapperWithCustomMemberInfoFactory;
         }
 
         public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
@@ -36,7 +37,7 @@ namespace IniWrapper.Converters.Enumerable
                 }
 
                 var memberInfoFactory = new ComplexTypeMemberInfoFactory(dynamicIniOptionsAttribute);
-                var loadedComplexType = _iniWrapperWithCustomMemberInfo.LoadConfigurationFromFileWithCustomMemberInfo(iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type, memberInfoFactory);
+                var loadedComplexType = _iniWrapperWithCustomMemberInfoFactory.LoadConfigurationFromFileWithCustomMemberInfo(iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type, memberInfoFactory);
 
                 if (loadedComplexType == null)
                 {
@@ -67,7 +68,7 @@ namespace IniWrapper.Converters.Enumerable
                 };
                 var memberInfoFactory = new ComplexTypeMemberInfoFactory(dynamicIniOptionsAttribute);
 
-                _iniWrapperWithCustomMemberInfo.SaveConfigurationWithCustomMemberInfo(item, memberInfoFactory);
+                _iniWrapperWithCustomMemberInfoFactory.SaveConfigurationWithCustomMemberInfo(item, memberInfoFactory);
                 index++;
             }
 

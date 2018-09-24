@@ -1,13 +1,13 @@
 ﻿using System;
 using IniWrapper.Member;
 
-namespace IniWrapper.Wrapper
+namespace IniWrapper.Wrapper.CustomMemberFactory
 {
-    internal class IniWrapperWithCustomMemberInfo : IIniWrapperWithCustomMemberInfo
+    internal class IniWrapperWithCustomMemberInfoFactory : IIniWrapperWithCustomMemberInfoFactory
     {
         private readonly IIniWrapperInternal _iniWrapperInternal;
 
-        public IniWrapperWithCustomMemberInfo(IIniWrapperInternal iniWrapperInternal)
+        public IniWrapperWithCustomMemberInfoFactory(IIniWrapperInternal iniWrapperInternal)
         {
             _iniWrapperInternal = iniWrapperInternal;
         }

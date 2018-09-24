@@ -23,7 +23,7 @@ namespace IniWrapper.Manager.Read
             _iniParser = iniParser;
         }
 
-        public void ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration)
+        public void ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration, Type configurationType)
         {
             var (handler, defaultConverter, typeDetailsInformation) = _iniConverterFactory.GetHandler(memberInfoWrapper.GetMemberType(), 0, memberInfoWrapper);
 
@@ -36,7 +36,7 @@ namespace IniWrapper.Manager.Read
 
             var iniValue = new IniValue()
             {
-                Section = _iniValueManager.GetSection(configuration, memberInfoWrapper),
+                Section = _iniValueManager.GetSection(configurationType, memberInfoWrapper),
                 Key = _iniValueManager.GetKey(memberInfoWrapper)
             };
            

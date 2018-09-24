@@ -32,21 +32,23 @@ namespace IniWrapper.Wrapper
 
         private void ReadFields(object configuration, IMemberInfoFactory memberInfoFactory)
         {
-            var fields = configuration.GetType().GetFields();
+            var configurationType = configuration.GetType();
+            var fields = configurationType.GetFields();
             foreach (var field in fields)
             {
                 var fieldInfoWrapper = memberInfoFactory.CreateMemberInfo(field);
-                _readingManager.ReadValue(fieldInfoWrapper, configuration);
+                _readingManager.ReadValue(fieldInfoWrapper, configuration, configurationType);
             }
         }
 
         private void ReadProperties(object configuration, IMemberInfoFactory memberInfoFactory)
         {
-            var properties = configuration.GetType().GetProperties();
+            var configurationType = configuration.GetType();
+            var properties = configurationType.GetProperties();
             foreach (var property in properties)
             {
                 var propertyInfoWrapper = memberInfoFactory.CreateMemberInfo(property);
-                _readingManager.ReadValue(propertyInfoWrapper, configuration);
+                _readingManager.ReadValue(propertyInfoWrapper, configuration, configurationType);
             }
         }
 
