@@ -1,12 +1,11 @@
 ﻿using System;
 using IniWrapper.Member;
-using IniWrapper.Member.Immutable;
 
 namespace IniWrapper.Wrapper.Immutable
 {
     internal interface IIniWrapperInternalForImmutableType
     {
-        object LoadConfigurationInternal(Type destinationType, IImmutableTypeMemberInfoWrapper memberInfoWrapper);
+        object LoadConfigurationInternal(Type destinationType, IMemberInfoFactory memberInfoFactory);
         void SaveConfigurationInternal(object configuration, IMemberInfoFactory memberInfoFactory);
     }
 }

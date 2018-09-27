@@ -5,6 +5,6 @@ namespace IniWrapper.Manager.Read
 {
     internal interface IReadingManager
     {
-        void ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration, Type configurationType);
+        object ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration, Type configurationType);
     }
 }

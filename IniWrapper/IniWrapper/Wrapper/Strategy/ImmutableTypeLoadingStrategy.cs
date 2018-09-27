@@ -2,7 +2,6 @@
 using System.Reflection;
 using IniWrapper.Creator;
 using IniWrapper.Member;
-using IniWrapper.Member.Immutable;
 using IniWrapper.Wrapper.Immutable;
 
 namespace IniWrapper.Wrapper.Strategy
@@ -20,10 +19,7 @@ namespace IniWrapper.Wrapper.Strategy
 
         public object ReadConfigurationFromFile(Type destinationType, IMemberInfoFactory memberInfoFactory)
         {
-            var memberInfo = memberInfoFactory.CreateMemberInfo(default(FieldInfo));
-            var immutableMemberInfoWrapper = (IImmutableTypeMemberInfoWrapper)memberInfo;
-
-            return _iniWrapperInternalForImmutableType.LoadConfigurationInternal(destinationType, immutableMemberInfoWrapper);
+            return _iniWrapperInternalForImmutableType.LoadConfigurationInternal(destinationType, memberInfoFactory);
         }
 
         public object CreateDefaultConfigurationObject(Type destinationType)

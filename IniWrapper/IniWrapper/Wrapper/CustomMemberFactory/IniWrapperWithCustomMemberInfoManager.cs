@@ -27,8 +27,8 @@ namespace IniWrapper.Wrapper.CustomMemberFactory
         public object LoadConfigurationFromFileWithCustomMemberInfo(Type configurationType, IniOptionsAttribute iniOptionsAttribute)
         {
             return _constructorChecker.HasConstructorWithAttribute(configurationType)
-                ? _immutableIniWrapperWithCustomMemberInfo.LoadConfigurationFromFileWithCustomMemberInfo(configurationType,iniOptionsAttribute)
-                : _iniWrapperWithCustomMemberInfo.LoadConfigurationFromFileWithCustomMemberInfo(configurationType,iniOptionsAttribute);
+                ? _immutableIniWrapperWithCustomMemberInfo.LoadConfigurationFromFileWithCustomMemberInfo(configurationType, iniOptionsAttribute)
+                : _iniWrapperWithCustomMemberInfo.LoadConfigurationFromFileWithCustomMemberInfo(configurationType, iniOptionsAttribute);
         }
     }
 }

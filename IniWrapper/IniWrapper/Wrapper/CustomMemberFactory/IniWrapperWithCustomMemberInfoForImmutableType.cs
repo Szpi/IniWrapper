@@ -5,9 +5,7 @@ using IniWrapper.Converters.Enumerable.ComplexTypeMemberInfo;
 using IniWrapper.Creator;
 using IniWrapper.Manager.Read;
 using IniWrapper.Member;
-using IniWrapper.Member.Immutable;
 using IniWrapper.Wrapper.Immutable;
-using IniWrapper.Wrapper.Strategy;
 
 namespace IniWrapper.Wrapper.CustomMemberFactory
 {
@@ -29,14 +27,12 @@ namespace IniWrapper.Wrapper.CustomMemberFactory
 
         public object LoadConfigurationFromFileWithCustomMemberInfo(Type configurationType, IniOptionsAttribute iniOptionsAttribute)
         {
-            var immutableTypeMemberInfoFactory = new ImmutableTypeMemberInfoFactory(new MemberInfoFactory());
+            var memberInfoFactory = new ComplexTypeMemberInfoFactory(iniOptionsAttribute);
 
-            var immutableMemberInfoWrapper = (IConstructorParametersProvider)immutableTypeMemberInfoFactory.CreateMemberInfo(default(FieldInfo));
-
-            var immutableTypeCreator = new ImmutableTypeCreator(immutableMemberInfoWrapper);
+            var immutableTypeCreator = new ImmutableTypeCreator();
             var iniWrapperInternalForImmutableType = new IniWrapperInternalForImmutableType(_iniWrapperInternal, _readingManager, immutableTypeCreator);
             
-            return iniWrapperInternalForImmutableType.LoadConfigurationInternal(configurationType, (IImmutableTypeMemberInfoWrapper)immutableMemberInfoWrapper);
+            return iniWrapperInternalForImmutableType.LoadConfigurationInternal(configurationType, memberInfoFactory);
         }
     }
 }

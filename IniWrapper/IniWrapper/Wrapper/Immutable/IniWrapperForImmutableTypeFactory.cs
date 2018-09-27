@@ -3,7 +3,6 @@ using IniWrapper.ConfigLoadingChecker;
 using IniWrapper.Creator;
 using IniWrapper.Manager.Read;
 using IniWrapper.Member;
-using IniWrapper.Member.Immutable;
 using IniWrapper.Wrapper.Strategy;
 
 namespace IniWrapper.Wrapper.Immutable
@@ -23,16 +22,14 @@ namespace IniWrapper.Wrapper.Immutable
 
         public IIniWrapper Create()
         {
-            var immutableTypeMemberInfoFactory = new ImmutableTypeMemberInfoFactory(new MemberInfoFactory());
+            var memberInfoFactory = new MemberInfoFactory();
 
-            var immutableMemberInfoWrapper = (IConstructorParametersProvider)immutableTypeMemberInfoFactory.CreateMemberInfo(default(FieldInfo));
-
-            var immutableTypeCreator = new ImmutableTypeCreator(immutableMemberInfoWrapper);
+            var immutableTypeCreator = new ImmutableTypeCreator();
             var iniWrapperInternalForImmutableType = new IniWrapperInternalForImmutableType(_iniWrapperInternal, _readingManager, immutableTypeCreator);
 
             var iniWrapperForImmutableType = new IniWrapper(_configurationLoadingChecker,
                                                             _iniWrapperInternal,
-                                                            immutableTypeMemberInfoFactory,
+                                                            memberInfoFactory,
                                                             new ImmutableTypeLoadingStrategy(iniWrapperInternalForImmutableType, immutableTypeCreator));
 
             return iniWrapperForImmutableType;

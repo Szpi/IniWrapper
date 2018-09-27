@@ -14,8 +14,7 @@ namespace IniWrapper.Tests.Creator
         [Test]
         public void Instantiate_ShouldReturnObject()
         {
-            var constructorParametersProvider = Substitute.For<IConstructorParametersProvider>();
-            var creator = new ImmutableTypeCreator(constructorParametersProvider);
+            var creator = new ImmutableTypeCreator();
 
             var expected = new ImmutableConfigurationWithAttribute("test1",
                                                                    100,
@@ -26,17 +25,14 @@ namespace IniWrapper.Tests.Creator
                                                                    new List<uint>(){12121,2121212,21},
                                                                    true);
 
-            constructorParametersProvider.GetConstructorParameters().Returns(new Dictionary<string, object>()
-            {
-                [nameof(expected.TestString)] = expected.TestString,
-                [nameof(expected.TestInt)] = expected.TestInt,
-                [nameof(expected.TestUint)] = expected.TestUint,
-                [nameof(expected.TestIntList)] = expected.TestIntList,
-                [nameof(expected.TestChar)] = expected.TestChar,
-                [nameof(expected.TestBool)] = expected.TestBool,
-                [nameof(expected.TestStringList)] = expected.TestStringList,
-                [nameof(expected.TestUintList)] = expected.TestUintList,
-            });
+            creator.AddConstructorParameter(nameof(expected.TestString), expected.TestString);
+            creator.AddConstructorParameter(nameof(expected.TestInt), expected.TestInt);
+            creator.AddConstructorParameter(nameof(expected.TestUint), expected.TestUint);
+            creator.AddConstructorParameter(nameof(expected.TestIntList), expected.TestIntList);
+            creator.AddConstructorParameter(nameof(expected.TestChar), expected.TestChar);
+            creator.AddConstructorParameter(nameof(expected.TestBool), expected.TestBool);
+            creator.AddConstructorParameter(nameof(expected.TestStringList), expected.TestStringList);
+            creator.AddConstructorParameter(nameof(expected.TestUintList), expected.TestUintList);
 
             var result = creator.Instantiate(typeof(ImmutableConfigurationWithAttribute));
 
@@ -46,8 +42,7 @@ namespace IniWrapper.Tests.Creator
         [Test]
         public void Instantiate_ShouldReturnObject_WhenPassedWithLessParametersThanConstructor()
         {
-            var constructorParametersProvider = Substitute.For<IConstructorParametersProvider>();
-            var creator = new ImmutableTypeCreator(constructorParametersProvider);
+            var creator = new ImmutableTypeCreator();
 
             var expected = new ImmutableConfigurationWithAttribute(null,
                                                                    100,
@@ -58,14 +53,11 @@ namespace IniWrapper.Tests.Creator
                                                                    new List<uint>() { 12121, 2121212, 21 },
                                                                    false);
 
-            constructorParametersProvider.GetConstructorParameters().Returns(new Dictionary<string, object>()
-            {
-                [nameof(expected.TestInt)] = expected.TestInt,
-                [nameof(expected.TestIntList)] = expected.TestIntList,
-                [nameof(expected.TestChar)] = expected.TestChar,
-                [nameof(expected.TestUintList)] = expected.TestUintList,
-            });
-
+            creator.AddConstructorParameter(nameof(expected.TestInt), expected.TestInt);
+            creator.AddConstructorParameter(nameof(expected.TestIntList), expected.TestIntList);
+            creator.AddConstructorParameter(nameof(expected.TestChar), expected.TestChar);
+            creator.AddConstructorParameter(nameof(expected.TestUintList), expected.TestUintList);
+           
             var result = creator.Instantiate(typeof(ImmutableConfigurationWithAttribute));
 
             result.Should().BeEquivalentTo(expected);
@@ -74,8 +66,7 @@ namespace IniWrapper.Tests.Creator
         [Test]
         public void Instantiate_ShouldReturnObject_WhenPassedWithLessParametersThanConstructor_AndCamelCaseParameters()
         {
-            var constructorParametersProvider = Substitute.For<IConstructorParametersProvider>();
-            var creator = new ImmutableTypeCreator(constructorParametersProvider);
+            var creator = new ImmutableTypeCreator();
 
             var expected = new ImmutableConfigurationWithAttribute(null,
                                                                    100,
@@ -86,13 +77,10 @@ namespace IniWrapper.Tests.Creator
                                                                    new List<uint>() { 12121, 2121212, 21 },
                                                                    false);
 
-            constructorParametersProvider.GetConstructorParameters().Returns(new Dictionary<string, object>()
-            {
-                [char.ToLowerInvariant(nameof(expected.TestInt)[0]) + nameof(expected.TestInt).Substring(1)] = expected.TestInt,
-                [char.ToLowerInvariant(nameof(expected.TestIntList)[0]) + nameof(expected.TestIntList).Substring(1)] = expected.TestIntList,
-                [char.ToLowerInvariant(nameof(expected.TestChar)[0]) + nameof(expected.TestChar).Substring(1)] = expected.TestChar,
-                [char.ToLowerInvariant(nameof(expected.TestUintList)[0]) + nameof(expected.TestUintList).Substring(1)] = expected.TestUintList,
-            });
+            creator.AddConstructorParameter(char.ToLowerInvariant(nameof(expected.TestInt)[0]) + nameof(expected.TestInt).Substring(1), expected.TestInt);
+            creator.AddConstructorParameter(char.ToLowerInvariant(nameof(expected.TestIntList)[0]) + nameof(expected.TestIntList).Substring(1), expected.TestIntList);
+            creator.AddConstructorParameter(char.ToLowerInvariant(nameof(expected.TestChar)[0]) + nameof(expected.TestChar).Substring(1), expected.TestChar);
+            creator.AddConstructorParameter(char.ToLowerInvariant(nameof(expected.TestUintList)[0]) + nameof(expected.TestUintList).Substring(1), expected.TestUintList);
 
             var result = creator.Instantiate(typeof(ImmutableConfigurationWithAttribute));
 
@@ -102,8 +90,7 @@ namespace IniWrapper.Tests.Creator
         [Test]
         public void Instantiate_ShouldReturnObject_WhenPassedWithZeroParameters()
         {
-            var constructorParametersProvider = Substitute.For<IConstructorParametersProvider>();
-            var creator = new ImmutableTypeCreator(constructorParametersProvider);
+            var creator = new ImmutableTypeCreator();
 
             var expected = new ImmutableConfigurationWithAttribute(default,
                                                                    default,
@@ -113,8 +100,6 @@ namespace IniWrapper.Tests.Creator
                                                                    default,
                                                                    default,
                                                                    default);
-
-            constructorParametersProvider.GetConstructorParameters().Returns(new Dictionary<string, object>());
 
             var result = creator.Instantiate(typeof(ImmutableConfigurationWithAttribute));
 

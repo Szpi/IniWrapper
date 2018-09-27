@@ -21,11 +21,7 @@ namespace IniWrapper.Member
         {
             return _fieldInfo.GetValue(configuration);
         }
-
-        public void SetValue(object obj, object value)
-        {
-            _fieldInfo.SetValue(obj, value);
-        }
+        
         public T GetAttribute<T>() where T : System.Attribute
         {
             return _fieldInfo.GetCustomAttribute<T>();

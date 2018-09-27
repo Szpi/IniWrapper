@@ -1,5 +1,4 @@
-﻿using System;
-using IniWrapper.Manager.Read;
+﻿using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
 using IniWrapper.Member;
 
@@ -37,7 +36,14 @@ namespace IniWrapper.Wrapper
             foreach (var field in fields)
             {
                 var fieldInfoWrapper = memberInfoFactory.CreateMemberInfo(field);
-                _readingManager.ReadValue(fieldInfoWrapper, configuration, configurationType);
+                var readValue = _readingManager.ReadValue(fieldInfoWrapper, configuration, configurationType);
+
+                if (readValue == null)
+                {
+                    continue;
+                }
+
+                field.SetValue(configuration, readValue);
             }
         }
 
@@ -48,7 +54,13 @@ namespace IniWrapper.Wrapper
             foreach (var property in properties)
             {
                 var propertyInfoWrapper = memberInfoFactory.CreateMemberInfo(property);
-                _readingManager.ReadValue(propertyInfoWrapper, configuration, configurationType);
+                var readValue = _readingManager.ReadValue(propertyInfoWrapper, configuration, configurationType);
+                if (readValue == null)
+                {
+                    continue;
+                }
+
+                property.SetValue(configuration, readValue);
             }
         }
 

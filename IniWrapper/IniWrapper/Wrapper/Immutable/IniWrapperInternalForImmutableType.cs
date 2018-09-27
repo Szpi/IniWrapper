@@ -1,7 +1,6 @@
 ﻿using IniWrapper.Creator;
 using IniWrapper.Manager.Read;
 using IniWrapper.Member;
-using IniWrapper.Member.Immutable;
 using System;
 
 namespace IniWrapper.Wrapper.Immutable
@@ -21,10 +20,10 @@ namespace IniWrapper.Wrapper.Immutable
             _immutableTypeCreator = immutableTypeCreator;
         }
 
-        public object LoadConfigurationInternal(Type destinationType, IImmutableTypeMemberInfoWrapper memberInfoWrapper)
+        public object LoadConfigurationInternal(Type destinationType, IMemberInfoFactory memberInfoFactory)
         {
-            ReadProperties(destinationType, memberInfoWrapper);
-            ReadFields(destinationType, memberInfoWrapper);
+            ReadProperties(destinationType, memberInfoFactory);
+            ReadFields(destinationType, memberInfoFactory);
 
             return _immutableTypeCreator.Instantiate(destinationType);
         }
@@ -34,23 +33,39 @@ namespace IniWrapper.Wrapper.Immutable
             _iniWrapperInternal.SaveConfigurationInternal(configuration, memberInfoFactory);
         }
 
-        private void ReadFields(Type destinationType, IImmutableTypeMemberInfoWrapper memberInfoWrapper)
+        private void ReadFields(Type destinationType, IMemberInfoFactory memberInfoFactory)
         {
             var fields = destinationType.GetFields();
             foreach (var field in fields)
             {
-                memberInfoWrapper.SetMemberInfo(field);
-                _readingManager.ReadValue(memberInfoWrapper, default, destinationType);
+                var fieldInfoWrapper = memberInfoFactory.CreateMemberInfo(field);
+
+                var readValue = _readingManager.ReadValue(fieldInfoWrapper, default, destinationType);
+
+                if (readValue == null)
+                {
+                    continue;
+                }
+
+               _immutableTypeCreator.AddConstructorParameter(fieldInfoWrapper.Name, readValue);
             }
         }
 
-        private void ReadProperties(Type destinationType, IImmutableTypeMemberInfoWrapper memberInfoWrapper)
+        private void ReadProperties(Type destinationType, IMemberInfoFactory memberInfoFactory)
         {
             var properties = destinationType.GetProperties();
             foreach (var property in properties)
             {
-                memberInfoWrapper.SetMemberInfo(property);
-                _readingManager.ReadValue(memberInfoWrapper, default, destinationType);
+                var propertyInfoWrapper = memberInfoFactory.CreateMemberInfo(property);
+
+                var readValue = _readingManager.ReadValue(propertyInfoWrapper, default, destinationType);
+
+                if (readValue == null)
+                {
+                    continue;
+                }
+
+                _immutableTypeCreator.AddConstructorParameter(propertyInfoWrapper.Name, readValue);
             }
         }
     }

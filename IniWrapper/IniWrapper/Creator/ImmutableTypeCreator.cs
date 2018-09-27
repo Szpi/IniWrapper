@@ -8,28 +8,25 @@ namespace IniWrapper.Creator
 {
     internal class ImmutableTypeCreator : IImmutableTypeCreator
     {
-        private readonly IConstructorParametersProvider _constructorParametersProvider;
-
-        public ImmutableTypeCreator(IConstructorParametersProvider constructorParametersProvider)
-        {
-            _constructorParametersProvider = constructorParametersProvider;
-        }
-
+        private readonly Dictionary<string, object> _constructorParameters = new Dictionary<string, object>();
         public object Instantiate(Type configurationType)
         {
             var constructor = configurationType.GetConstructors().First(x => x.GetCustomAttribute<IniConstructor>() != null);
 
             var parameters = constructor.GetParameters();
 
-            var setParameters = _constructorParametersProvider.GetConstructorParameters();
-
             var constructorParameters = new object[parameters.Length];
             for (var i = 0; i < parameters.Length; i++)
             {
-                var mostFitValueForParameter = GetParameter(setParameters, parameters[i]);
+                var mostFitValueForParameter = GetParameter(_constructorParameters, parameters[i]);
                 constructorParameters[i] = mostFitValueForParameter;
             }
             return constructor.Invoke(constructorParameters);
+        }
+
+        public void AddConstructorParameter(string parameterName, object value)
+        {
+            _constructorParameters.Add(parameterName, value);
         }
 
         private object GetParameter(IReadOnlyDictionary<string, object> setParameters, ParameterInfo parameter)

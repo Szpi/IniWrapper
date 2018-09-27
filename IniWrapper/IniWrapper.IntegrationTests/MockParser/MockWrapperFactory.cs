@@ -1,18 +1,6 @@
-﻿using IniWrapper.ConfigLoadingChecker;
-using IniWrapper.ConverterFactory;
-using IniWrapper.Creator;
-using IniWrapper.Manager;
-using IniWrapper.Manager.Attribute;
-using IniWrapper.Manager.Read;
-using IniWrapper.Manager.Save;
-using IniWrapper.Member;
-using IniWrapper.ParserWrapper;
+﻿using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
-using IniWrapper.Utils;
 using IniWrapper.Wrapper;
-using IniWrapper.Wrapper.CustomMemberFactory;
-using IniWrapper.Wrapper.Immutable;
-using IniWrapper.Wrapper.Strategy;
 using NSubstitute;
 using System.IO.Abstractions;
 
