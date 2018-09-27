@@ -1,34 +1,53 @@
 ﻿using IniWrapper.Attribute;
 using IniWrapper.Creator;
 using System;
+using IniWrapper.Converters.Enumerable.ComplexTypeMemberInfo;
+using IniWrapper.Wrapper.CustomMemberFactory.Factory;
+using IniWrapper.Wrapper.Immutable;
 
 namespace IniWrapper.Wrapper.CustomMemberFactory
 {
     internal class IniWrapperWithCustomMemberInfoManager : IIniWrapperWithCustomMemberInfo
     {
-        private readonly IIniWrapperWithCustomMemberInfo _iniWrapperWithCustomMemberInfo;
-        private readonly IIniWrapperWithCustomMemberInfo _immutableIniWrapperWithCustomMemberInfo;
+        private readonly IIniWrapperInternal _iniWrapperInternal;
         private readonly IIniConstructorChecker _constructorChecker;
 
-        public IniWrapperWithCustomMemberInfoManager(IIniWrapperWithCustomMemberInfo iniWrapperWithCustomMemberInfo,
-                                                     IIniWrapperWithCustomMemberInfo immutableIniWrapperWithCustomMemberInfo,
-                                                     IIniConstructorChecker constructorChecker)
+        private readonly IIniWrapperWithCustomMemberInfoForImmutableTypeFactory _customMemberInfoForImmutableTypeFactory;
+
+        public IniWrapperWithCustomMemberInfoManager(IIniWrapperInternal iniWrapperInternal,
+                                                     IIniConstructorChecker constructorChecker,
+                                                     IIniWrapperWithCustomMemberInfoForImmutableTypeFactory customMemberInfoForImmutableTypeFactory)
         {
-            _iniWrapperWithCustomMemberInfo = iniWrapperWithCustomMemberInfo;
-            _immutableIniWrapperWithCustomMemberInfo = immutableIniWrapperWithCustomMemberInfo;
+            _iniWrapperInternal = iniWrapperInternal;
             _constructorChecker = constructorChecker;
+            _customMemberInfoForImmutableTypeFactory = customMemberInfoForImmutableTypeFactory;
         }
 
         public void SaveConfigurationWithCustomMemberInfo(object configuration, IniOptionsAttribute iniOptionsAttribute)
         {
-            _iniWrapperWithCustomMemberInfo.SaveConfigurationWithCustomMemberInfo(configuration, iniOptionsAttribute);
+            var memberInfoFactory = new ComplexTypeMemberInfoFactory(iniOptionsAttribute);
+            _iniWrapperInternal.SaveConfigurationInternal(configuration, memberInfoFactory);
         }
 
         public object LoadConfigurationFromFileWithCustomMemberInfo(Type configurationType, IniOptionsAttribute iniOptionsAttribute)
         {
+            var memberInfoFactory = new ComplexTypeMemberInfoFactory(iniOptionsAttribute);
+
             return _constructorChecker.HasConstructorWithAttribute(configurationType)
-                ? _immutableIniWrapperWithCustomMemberInfo.LoadConfigurationFromFileWithCustomMemberInfo(configurationType, iniOptionsAttribute)
-                : _iniWrapperWithCustomMemberInfo.LoadConfigurationFromFileWithCustomMemberInfo(configurationType, iniOptionsAttribute);
+                ? ReadForImmutableType(configurationType, memberInfoFactory)
+                : ReadForNormalType(configurationType, memberInfoFactory);
+        }
+
+        private object ReadForImmutableType(Type configurationType, ComplexTypeMemberInfoFactory memberInfoFactory)
+        {
+            var immutableIniWrapperWithCustomMemberInfo = _customMemberInfoForImmutableTypeFactory.Create();
+            return immutableIniWrapperWithCustomMemberInfo.LoadConfigurationInternal(configurationType, memberInfoFactory);
+        }
+
+        private object ReadForNormalType(Type configurationType, ComplexTypeMemberInfoFactory memberInfoFactory)
+        {
+            var destinationConfiguration = Activator.CreateInstance(configurationType);
+            return _iniWrapperInternal.LoadConfigurationInternal(destinationConfiguration, memberInfoFactory);
         }
     }
 }

@@ -14,6 +14,7 @@ using IniWrapper.Wrapper.Immutable;
 using IniWrapper.Wrapper.Strategy;
 using System;
 using System.IO.Abstractions;
+using IniWrapper.Wrapper.CustomMemberFactory.Factory;
 
 namespace IniWrapper.Wrapper
 {
@@ -44,9 +45,10 @@ namespace IniWrapper.Wrapper
 
             var iniWrapperManager = new IniWrapperManager(iniWrapper, iniWrapperForImmutableTypeFactory, new IniConstructorChecker());
 
-            var iniWrapperWithCustomMemberInfo = new IniWrapperWithCustomMemberInfo(iniWrapperInternal);
-            var immutableIniWrapperWithCustomMemberInfo = new IniWrapperWithCustomMemberInfoForImmutableType(iniWrapperInternal, readingManager);
-            var iniWrapperWithCustomMemberInfoManager = new IniWrapperWithCustomMemberInfoManager(iniWrapperWithCustomMemberInfo, immutableIniWrapperWithCustomMemberInfo, new IniConstructorChecker());
+            var iniWrapperWithCustomMemberInfoForImmutableTypeFactory = new IniWrapperWithCustomMemberInfoForImmutableTypeFactory(iniWrapperInternal, readingManager);
+            var iniWrapperWithCustomMemberInfoManager = new IniWrapperWithCustomMemberInfoManager(iniWrapperInternal,
+                                                                                                  new IniConstructorChecker(),
+                                                                                                  iniWrapperWithCustomMemberInfoForImmutableTypeFactory);
 
             converterFactory.IniWrapper = iniWrapper;
             converterFactory.IniWrapperWithCustomMemberInfo = iniWrapperWithCustomMemberInfoManager;
