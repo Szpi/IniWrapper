@@ -11,7 +11,7 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
     <Authors>Piotr Szkudlarski</Authors>    
     <Copyright>2018 Piotr Szkudlarski</Copyright>    
-    <PackageReleaseNotes>- Support for immutable configuration files</PackageReleaseNotes>
+    <PackageReleaseNotes>- Support for creating configuration class by constructor ( immutable configuration files )</PackageReleaseNotes>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

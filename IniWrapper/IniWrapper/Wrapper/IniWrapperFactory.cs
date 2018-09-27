@@ -23,25 +23,33 @@ namespace IniWrapper.Wrapper
         {
             CheckSettings(iniSettings);
 
+            return CreateWithFileSystem(iniSettings, iniParser, new FileSystem());
+        }
+
+        internal IIniWrapper CreateWithFileSystem(IniSettings iniSettings, IIniParser iniParser, IFileSystem fileSystem)
+        {
             var converterFactory = new IniConverterFactory(new TypeManager(), iniSettings);
 
             var savingManager = new SavingManager(new IniValueManager(new IniValueAttributeManager()), iniParser, converterFactory);
 
             var readingManager = new ReadingManager(new IniValueManager(new IniValueAttributeManager()), converterFactory, iniParser);
 
-            var defaultConfigurationCreationStrategy = new ConfigurationLoadingChecker(new FileSystem(), iniSettings);
+            var defaultConfigurationCreationStrategy = new ConfigurationLoadingChecker(fileSystem, iniSettings);
 
             var iniWrapperInternal = new IniWrapperInternal(savingManager, readingManager);
 
             var iniWrapper = new IniWrapper(defaultConfigurationCreationStrategy, iniWrapperInternal, new MemberInfoFactory(), new NormalLoadingStrategy(iniWrapperInternal));
 
-            var iniWrapperWithCustomMemberInfo = new IniWrapperWithCustomMemberInfoFactory(iniWrapperInternal);
             var iniWrapperForImmutableTypeFactory = new IniWrapperForImmutableTypeFactory(iniWrapperInternal, readingManager, defaultConfigurationCreationStrategy);
 
-            var iniWrapperManager = new IniWrapperManager(iniWrapper, iniWrapperForImmutableTypeFactory, new ImmutableTypeCreator(null));
+            var iniWrapperManager = new IniWrapperManager(iniWrapper, iniWrapperForImmutableTypeFactory, new IniConstructorChecker());
+
+            var iniWrapperWithCustomMemberInfo = new IniWrapperWithCustomMemberInfo(iniWrapperInternal);
+            var immutableIniWrapperWithCustomMemberInfo = new IniWrapperWithCustomMemberInfoForImmutableType(iniWrapperInternal, readingManager);
+            var iniWrapperWithCustomMemberInfoManager = new IniWrapperWithCustomMemberInfoManager(iniWrapperWithCustomMemberInfo, immutableIniWrapperWithCustomMemberInfo, new IniConstructorChecker());
 
             converterFactory.IniWrapper = iniWrapper;
-            converterFactory.IniWrapperWithCustomMemberInfoFactory = iniWrapperWithCustomMemberInfo;
+            converterFactory.IniWrapperWithCustomMemberInfo = iniWrapperWithCustomMemberInfoManager;
 
             return iniWrapperManager;
         }
@@ -50,7 +58,6 @@ namespace IniWrapper.Wrapper
         {
             return Create(new IniSettings(), iniParser);
         }
-
 
         public IIniWrapper Create(Action<IniSettings> iniSettings, IIniParser iniParser)
         {

@@ -6,18 +6,13 @@ using System.Reflection;
 
 namespace IniWrapper.Creator
 {
-    public class ImmutableTypeCreator : IImmutableTypeCreator
+    internal class ImmutableTypeCreator : IImmutableTypeCreator
     {
         private readonly IConstructorParametersProvider _constructorParametersProvider;
 
         public ImmutableTypeCreator(IConstructorParametersProvider constructorParametersProvider)
         {
             _constructorParametersProvider = constructorParametersProvider;
-        }
-
-        public bool HasConstructorWithAttribute(Type configurationType)
-        {
-            return configurationType.GetConstructors().Any(x => x.GetCustomAttribute<IniConstructor>() != null);
         }
 
         public object Instantiate(Type configurationType)

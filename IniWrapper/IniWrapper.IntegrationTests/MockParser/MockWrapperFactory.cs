@@ -1,5 +1,4 @@
-﻿using System.IO.Abstractions;
-using IniWrapper.ConfigLoadingChecker;
+﻿using IniWrapper.ConfigLoadingChecker;
 using IniWrapper.ConverterFactory;
 using IniWrapper.Creator;
 using IniWrapper.Manager;
@@ -15,6 +14,7 @@ using IniWrapper.Wrapper.CustomMemberFactory;
 using IniWrapper.Wrapper.Immutable;
 using IniWrapper.Wrapper.Strategy;
 using NSubstitute;
+using System.IO.Abstractions;
 
 namespace IniWrapper.IntegrationTests.MockParser
 {
@@ -34,26 +34,7 @@ namespace IniWrapper.IntegrationTests.MockParser
         }
         public static IIniWrapper Create(IniSettings iniSettings, IIniParser iniParser, IFileSystem fileSystem)
         {
-            var converterFactory = new IniConverterFactory(new TypeManager(), iniSettings);
-
-            var savingManager = new SavingManager(new IniValueManager(new IniValueAttributeManager()), iniParser, converterFactory);
-            var readingManager = new ReadingManager(new IniValueManager(new IniValueAttributeManager()), converterFactory,
-                                                    iniParser);
-            var defaultConfigurationCreationStrategy = new ConfigurationLoadingChecker(fileSystem, iniSettings);
-            
-            var iniWrapperInternal = new IniWrapperInternal(savingManager, readingManager);
-
-            var iniWrapper = new IniWrapper.Wrapper.IniWrapper(defaultConfigurationCreationStrategy, iniWrapperInternal, new MemberInfoFactory(), new NormalLoadingStrategy(iniWrapperInternal));
-
-            var iniWrapperWithCustomMemberInfo = new IniWrapperWithCustomMemberInfoFactory(iniWrapperInternal);
-            var iniWrapperForImmutableTypeFactory = new IniWrapperForImmutableTypeFactory(iniWrapperInternal, readingManager, defaultConfigurationCreationStrategy);
-
-            var iniWrapperManager = new IniWrapperManager(iniWrapper, iniWrapperForImmutableTypeFactory, new ImmutableTypeCreator(null));
-
-            converterFactory.IniWrapper = iniWrapper;
-            converterFactory.IniWrapperWithCustomMemberInfoFactory = iniWrapperWithCustomMemberInfo;
-
-            return iniWrapperManager;
+            return new IniWrapperFactory().CreateWithFileSystem(iniSettings, iniParser, fileSystem);
         }
     }
 }

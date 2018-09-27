@@ -2,20 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using IniWrapper.Attribute;
-using IniWrapper.Converters.Enumerable.ComplexTypeMemberInfo;
 using IniWrapper.Manager;
-using IniWrapper.Wrapper;
 using IniWrapper.Wrapper.CustomMemberFactory;
 
 namespace IniWrapper.Converters.Enumerable
 {
     internal class EnumerableComplexTypesConverter : IIniConverter
     {
-        private readonly IIniWrapperWithCustomMemberInfoFactory _iniWrapperWithCustomMemberInfoFactory;
+        private readonly IIniWrapperWithCustomMemberInfo _iniWrapperWithCustomMemberInfo;
 
-        public EnumerableComplexTypesConverter(IIniWrapperWithCustomMemberInfoFactory iniWrapperWithCustomMemberInfoFactory)
+        public EnumerableComplexTypesConverter(IIniWrapperWithCustomMemberInfo iniWrapperWithCustomMemberInfo)
         {
-            _iniWrapperWithCustomMemberInfoFactory = iniWrapperWithCustomMemberInfoFactory;
+            _iniWrapperWithCustomMemberInfo = iniWrapperWithCustomMemberInfo;
         }
 
         public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
@@ -35,9 +33,10 @@ namespace IniWrapper.Converters.Enumerable
                 {
                     break;
                 }
-
-                var memberInfoFactory = new ComplexTypeMemberInfoFactory(dynamicIniOptionsAttribute);
-                var loadedComplexType = _iniWrapperWithCustomMemberInfoFactory.LoadConfigurationFromFileWithCustomMemberInfo(iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type, memberInfoFactory);
+                
+                var loadedComplexType = _iniWrapperWithCustomMemberInfo.LoadConfigurationFromFileWithCustomMemberInfo(
+                    iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type,
+                    dynamicIniOptionsAttribute);
 
                 if (loadedComplexType == null)
                 {
@@ -66,9 +65,8 @@ namespace IniWrapper.Converters.Enumerable
                 {
                     Section = GenerateDynamicSection(iniContext,index)
                 };
-                var memberInfoFactory = new ComplexTypeMemberInfoFactory(dynamicIniOptionsAttribute);
 
-                _iniWrapperWithCustomMemberInfoFactory.SaveConfigurationWithCustomMemberInfo(item, memberInfoFactory);
+                _iniWrapperWithCustomMemberInfo.SaveConfigurationWithCustomMemberInfo(item, dynamicIniOptionsAttribute);
                 index++;
             }
 

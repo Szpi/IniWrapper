@@ -5,14 +5,14 @@ using NUnit.Framework;
 namespace IniWrapper.Tests.Creator
 {
     [TestFixture]
-    public class ImmutableTypeCreatorTests
+    public class IniConstructorCheckerTests
     {
         [Test]
         public void HasConstructorWithAttribute_ShouldReturnTrue_IfConfigurationHasConstructorWithAttribute()
         {
-            var creator = new ImmutableTypeCreator(null);
+            var checker = new IniConstructorChecker();
 
-            var result = creator.HasConstructorWithAttribute(typeof(ImmutableConfigurationWithAttribute));
+            var result = checker.HasConstructorWithAttribute(typeof(ImmutableConfigurationWithAttribute));
 
             result.Should().BeTrue();
         }
@@ -20,9 +20,9 @@ namespace IniWrapper.Tests.Creator
         [Test]
         public void HasConstructorWithAttribute_ShouldReturnFalse_IfConfigurationDoesNotHaveConstructorWithAttribute()
         {
-            var creator = new ImmutableTypeCreator(null);
+            var checker = new IniConstructorChecker();
 
-            var result = creator.HasConstructorWithAttribute(typeof(ImmutableConfiguration));
+            var result = checker.HasConstructorWithAttribute(typeof(ImmutableConfiguration));
 
             result.Should().BeFalse();
         }

@@ -24,7 +24,7 @@ namespace IniWrapper.ConverterFactory
         private readonly IIniSettings _iniSettings;
 
         public IIniWrapper IniWrapper { get; set; }
-        public IIniWrapperWithCustomMemberInfoFactory IniWrapperWithCustomMemberInfoFactory { get; set; }
+        public IIniWrapperWithCustomMemberInfo IniWrapperWithCustomMemberInfo { get; set; }
 
         public IniConverterFactory(ITypeManager typeManager, IIniSettings iniSettings)
         {
@@ -71,7 +71,7 @@ namespace IniWrapper.ConverterFactory
                     {
                         if (typeInformation.UnderlyingTypeInformation?.TypeCode == TypeCode.ComplexObject)
                         {
-                            return new EnumerableComplexTypesConverter(IniWrapperWithCustomMemberInfoFactory);
+                            return new EnumerableComplexTypesConverter(IniWrapperWithCustomMemberInfo);
                         }
                         var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
 

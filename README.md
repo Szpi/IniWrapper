@@ -2,11 +2,14 @@
 [![Latest version](https://img.shields.io/nuget/v/IniWrapper.svg)](https://www.nuget.org/packages/IniWrapper/) [![codecov](https://codecov.io/gh/Szpi/IniWrapper/branch/master/graph/badge.svg)](https://codecov.io/gh/Szpi/IniWrapper) ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)
 
 ## Build Status
-&nbsp; | `VSTS` | `Travis`
+&nbsp; | `Azure Pipelines` | `Travis`
 --- | --- | --- 
-**master** | ![VSTS](https://iniwrapper.visualstudio.com/_apis/public/build/definitions/9232e33a-db8d-4617-a1b1-8cf3ce4c88f5/3/badge)  | ![Travis](https://travis-ci.org/Szpi/IniWrapper.svg?branch=master)
+**master** | ![Azure Pipelines](https://iniwrapper.visualstudio.com/_apis/public/build/definitions/9232e33a-db8d-4617-a1b1-8cf3ce4c88f5/3/badge)  | ![Travis](https://travis-ci.org/Szpi/IniWrapper.svg?branch=master)
 
 IniWrapper uses reflection to bind value read from ini file to provided model. The purpose of this library is NOT parsing ini file, but to wrap it to provide easier use of existing parsing libraries. In configuration there is possibility to pass IniParser interface, which is used as file access layer. This library provides class that wraps Windows C++ methods to retrieve values from ini file.
+
+***For more information please go to [wiki page](https://github.com/Szpi/IniWrapper/wiki).***
+
 ## Quick start
 ### Loading configuration
 
@@ -88,5 +91,3 @@ Overall rules:
 - Value is taken from Value (from IDictionary)
 
 To override library's default name resolving you can use [IniOptionsAttribute](https://github.com/Szpi/IniWrapper/wiki/Attributes).
-
-***For more information please go to [wiki page](https://github.com/Szpi/IniWrapper/wiki).***

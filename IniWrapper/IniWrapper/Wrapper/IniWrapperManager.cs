@@ -8,32 +8,32 @@ namespace IniWrapper.Wrapper
     {
         private readonly IIniWrapper _iniWrapper;
         private readonly IIniWrapperForImmutableTypeFactory _iniWrapperForImmutableType;
-        private readonly IImmutableTypeCreator _immutableTypeCreator;
+        private readonly IIniConstructorChecker _iniConstructorChecker;
 
-        public IniWrapperManager(IIniWrapper iniWrapper, IIniWrapperForImmutableTypeFactory iniWrapperForImmutableTypeFactory, IImmutableTypeCreator immutableTypeCreator)
+        public IniWrapperManager(IIniWrapper iniWrapper, IIniWrapperForImmutableTypeFactory iniWrapperForImmutableTypeFactory, IIniConstructorChecker iniConstructorChecker)
         {
             _iniWrapper = iniWrapper;
             _iniWrapperForImmutableType = iniWrapperForImmutableTypeFactory;
-            _immutableTypeCreator = immutableTypeCreator;
+            _iniConstructorChecker = iniConstructorChecker;
         }
 
         public T LoadConfiguration<T>()
         {
-            return _immutableTypeCreator.HasConstructorWithAttribute(typeof(T))
+            return _iniConstructorChecker.HasConstructorWithAttribute(typeof(T))
                 ? _iniWrapperForImmutableType.Create().LoadConfiguration<T>()
                 : _iniWrapper.LoadConfiguration<T>();
         }
 
         public object LoadConfiguration(Type destinationType)
         {
-            return _immutableTypeCreator.HasConstructorWithAttribute(destinationType)
+            return _iniConstructorChecker.HasConstructorWithAttribute(destinationType)
                 ? _iniWrapperForImmutableType.Create().LoadConfiguration(destinationType)
                 : _iniWrapper.LoadConfiguration(destinationType);
         }
 
         public void SaveConfiguration(object configuration)
         {
-            if (_immutableTypeCreator.HasConstructorWithAttribute(configuration.GetType()))
+            if (_iniConstructorChecker.HasConstructorWithAttribute(configuration.GetType()))
             {
                 _iniWrapperForImmutableType.Create().SaveConfiguration(configuration);
             }
