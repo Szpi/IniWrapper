@@ -38,11 +38,6 @@ namespace IniWrapper.Converters.Enumerable
                     iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type,
                     dynamicIniOptionsAttribute);
 
-                if (loadedComplexType == null)
-                {
-                    break;
-                }
-
                 returnedList.Add(loadedComplexType);
             }
             return returnedList;
@@ -57,7 +52,6 @@ namespace IniWrapper.Converters.Enumerable
             {
                 if (item == null)
                 {
-                    index++;
                     continue;
                 }
 

@@ -1,38 +1,28 @@
-﻿using System.Reflection;
-using IniWrapper.ConfigLoadingChecker;
+﻿using System;
 using IniWrapper.Creator;
 using IniWrapper.Manager.Read;
-using IniWrapper.Member;
-using IniWrapper.Wrapper.Strategy;
+using IniWrapper.Wrapper.Factory;
+using IniWrapper.Wrapper.Internal;
 
 namespace IniWrapper.Wrapper.Immutable
 {
-    internal class IniWrapperForImmutableTypeFactory : IIniWrapperForImmutableTypeFactory
+    internal class IniWrapperForImmutableTypeFactory : IIniWrapperInternalFactory
     {
         private readonly IIniWrapperInternal _iniWrapperInternal;
         private readonly IReadingManager _readingManager;
-        private readonly IConfigurationLoadingChecker _configurationLoadingChecker;
 
-        public IniWrapperForImmutableTypeFactory(IIniWrapperInternal iniWrapperInternal, IReadingManager readingManager, IConfigurationLoadingChecker configurationLoadingChecker)
+        public IniWrapperForImmutableTypeFactory(IIniWrapperInternal iniWrapperInternal, IReadingManager readingManager)
         {
             _iniWrapperInternal = iniWrapperInternal;
             _readingManager = readingManager;
-            _configurationLoadingChecker = configurationLoadingChecker;
         }
 
-        public IIniWrapper Create()
+        public IIniWrapperInternal Create(Type destinationType)
         {
-            var memberInfoFactory = new MemberInfoFactory();
-
             var immutableTypeCreator = new ImmutableTypeCreator();
             var iniWrapperInternalForImmutableType = new IniWrapperInternalForImmutableType(_iniWrapperInternal, _readingManager, immutableTypeCreator);
 
-            var iniWrapperForImmutableType = new IniWrapper(_configurationLoadingChecker,
-                                                            _iniWrapperInternal,
-                                                            memberInfoFactory,
-                                                            new ImmutableTypeLoadingStrategy(iniWrapperInternalForImmutableType, immutableTypeCreator));
-
-            return iniWrapperForImmutableType;
+            return iniWrapperInternalForImmutableType;
         }
     }
 }

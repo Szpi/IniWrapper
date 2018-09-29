@@ -1,8 +1,9 @@
 ﻿using IniWrapper.ConfigLoadingChecker;
 using IniWrapper.Member;
-using IniWrapper.Wrapper.Strategy;
 using System;
 using System.Runtime.CompilerServices;
+using IniWrapper.Wrapper.Factory;
+using IniWrapper.Wrapper.Internal;
 
 [assembly: InternalsVisibleTo("IniWrapper.IntegrationTests")]
 [assembly: InternalsVisibleTo("IniWrapper.Tests")]
@@ -10,20 +11,17 @@ namespace IniWrapper.Wrapper
 {
     internal sealed class IniWrapper : IIniWrapper
     {
-        private readonly IIniWrapperInternal _iniWrapperInternal;
+        private readonly IIniWrapperInternalFactory _iniWrapperInternalFactory;
         private readonly IConfigurationLoadingChecker _configurationLoadingChecker;
         private readonly IMemberInfoFactory _memberInfoFactory;
-        private readonly ILoadingStrategy _loadingStrategy;
 
         public IniWrapper(IConfigurationLoadingChecker configurationLoadingChecker,
-                          IIniWrapperInternal iniWrapperInternal,
-                          IMemberInfoFactory memberInfoFactory,
-                          ILoadingStrategy loadingStrategy)
+                          IIniWrapperInternalFactory iniWrapperInternalFactory,
+                          IMemberInfoFactory memberInfoFactory)
         {
             _configurationLoadingChecker = configurationLoadingChecker;
-            _iniWrapperInternal = iniWrapperInternal;
+            _iniWrapperInternalFactory = iniWrapperInternalFactory;
             _memberInfoFactory = memberInfoFactory;
-            _loadingStrategy = loadingStrategy;
         }
 
         public T LoadConfiguration<T>()
@@ -33,22 +31,27 @@ namespace IniWrapper.Wrapper
 
         public object LoadConfiguration(Type destinationType)
         {
+            var iniWrapperInternal = _iniWrapperInternalFactory.Create(destinationType);
             if (_configurationLoadingChecker.ShouldReadConfigurationFromFile())
             {
-                return _loadingStrategy.ReadConfigurationFromFile(destinationType, _memberInfoFactory);
+                return iniWrapperInternal.LoadConfigurationInternal(destinationType, _memberInfoFactory);
             }
 
             if (!_configurationLoadingChecker.ShouldCreateDefaultConfiguration())
             {
-                return _loadingStrategy.CreateDefaultConfigurationObject(destinationType);
+                return iniWrapperInternal.CreateDefaultConfigurationObject(destinationType);
             }
 
-            return _loadingStrategy.SaveDefaultConfiguration(destinationType, _memberInfoFactory);
+            var defaultConfiguration = iniWrapperInternal.CreateDefaultConfigurationObject(destinationType);
+
+            iniWrapperInternal.SaveConfigurationInternal(defaultConfiguration, _memberInfoFactory);
+            return defaultConfiguration;
         }
 
         public void SaveConfiguration(object configuration)
         {
-            _iniWrapperInternal.SaveConfigurationInternal(configuration, _memberInfoFactory);
+            var iniWrapperInternal = _iniWrapperInternalFactory.Create(configuration.GetType());
+            iniWrapperInternal.SaveConfigurationInternal(configuration, _memberInfoFactory);
         }
     }
 }

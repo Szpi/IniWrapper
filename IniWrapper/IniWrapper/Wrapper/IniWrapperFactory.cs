@@ -10,11 +10,12 @@ using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
 using IniWrapper.Utils;
 using IniWrapper.Wrapper.CustomMemberFactory;
+using IniWrapper.Wrapper.CustomMemberFactory.Factory;
+using IniWrapper.Wrapper.Factory;
 using IniWrapper.Wrapper.Immutable;
-using IniWrapper.Wrapper.Strategy;
+using IniWrapper.Wrapper.Internal;
 using System;
 using System.IO.Abstractions;
-using IniWrapper.Wrapper.CustomMemberFactory.Factory;
 
 namespace IniWrapper.Wrapper
 {
@@ -39,11 +40,10 @@ namespace IniWrapper.Wrapper
 
             var iniWrapperInternal = new IniWrapperInternal(savingManager, readingManager);
 
-            var iniWrapper = new IniWrapper(defaultConfigurationCreationStrategy, iniWrapperInternal, new MemberInfoFactory(), new NormalLoadingStrategy(iniWrapperInternal));
+            var iniWrapperForImmutableTypeFactory = new IniWrapperForImmutableTypeFactory(iniWrapperInternal, readingManager);
+            var iniInternalFactory = new IniWrapperInternalFactory(new IniConstructorChecker(), iniWrapperInternal, iniWrapperForImmutableTypeFactory);
 
-            var iniWrapperForImmutableTypeFactory = new IniWrapperForImmutableTypeFactory(iniWrapperInternal, readingManager, defaultConfigurationCreationStrategy);
-
-            var iniWrapperManager = new IniWrapperManager(iniWrapper, iniWrapperForImmutableTypeFactory, new IniConstructorChecker());
+            var iniWrapper = new IniWrapper(defaultConfigurationCreationStrategy, iniInternalFactory, new MemberInfoFactory());
 
             var iniWrapperWithCustomMemberInfoForImmutableTypeFactory = new IniWrapperWithCustomMemberInfoForImmutableTypeFactory(iniWrapperInternal, readingManager);
             var iniWrapperWithCustomMemberInfoManager = new IniWrapperWithCustomMemberInfoManager(iniWrapperInternal,
@@ -53,7 +53,7 @@ namespace IniWrapper.Wrapper
             converterFactory.IniWrapper = iniWrapper;
             converterFactory.IniWrapperWithCustomMemberInfo = iniWrapperWithCustomMemberInfoManager;
 
-            return iniWrapperManager;
+            return iniWrapper;
         }
 
         public IIniWrapper Create(IIniParser iniParser)

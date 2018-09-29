@@ -1,6 +1,7 @@
 ﻿using IniWrapper.Creator;
 using IniWrapper.Manager.Read;
 using IniWrapper.Wrapper.Immutable;
+using IniWrapper.Wrapper.Internal;
 
 namespace IniWrapper.Wrapper.CustomMemberFactory.Factory
 {
@@ -14,7 +15,7 @@ namespace IniWrapper.Wrapper.CustomMemberFactory.Factory
             _readingManager = readingManager;
         }
         
-        public IIniWrapperInternalForImmutableType Create()
+        public IIniWrapperInternal Create()
         {
             return new IniWrapperInternalForImmutableType(_iniWrapperInternal, _readingManager, new ImmutableTypeCreator());
         }

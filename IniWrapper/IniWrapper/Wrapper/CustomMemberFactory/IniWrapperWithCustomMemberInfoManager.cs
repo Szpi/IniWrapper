@@ -4,6 +4,7 @@ using System;
 using IniWrapper.Converters.Enumerable.ComplexTypeMemberInfo;
 using IniWrapper.Wrapper.CustomMemberFactory.Factory;
 using IniWrapper.Wrapper.Immutable;
+using IniWrapper.Wrapper.Internal;
 
 namespace IniWrapper.Wrapper.CustomMemberFactory
 {
@@ -46,8 +47,7 @@ namespace IniWrapper.Wrapper.CustomMemberFactory
 
         private object ReadForNormalType(Type configurationType, ComplexTypeMemberInfoFactory memberInfoFactory)
         {
-            var destinationConfiguration = Activator.CreateInstance(configurationType);
-            return _iniWrapperInternal.LoadConfigurationInternal(destinationConfiguration, memberInfoFactory);
+            return _iniWrapperInternal.LoadConfigurationInternal(configurationType, memberInfoFactory);
         }
     }
 }

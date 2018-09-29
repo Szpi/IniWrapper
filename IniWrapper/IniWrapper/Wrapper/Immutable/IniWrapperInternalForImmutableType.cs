@@ -2,10 +2,11 @@
 using IniWrapper.Manager.Read;
 using IniWrapper.Member;
 using System;
+using IniWrapper.Wrapper.Internal;
 
 namespace IniWrapper.Wrapper.Immutable
 {
-    internal class IniWrapperInternalForImmutableType : IIniWrapperInternalForImmutableType
+    internal class IniWrapperInternalForImmutableType : IIniWrapperInternal
     {
         private readonly IIniWrapperInternal _iniWrapperInternal;
         private readonly IReadingManager _readingManager;
@@ -31,6 +32,11 @@ namespace IniWrapper.Wrapper.Immutable
         public void SaveConfigurationInternal(object configuration, IMemberInfoFactory memberInfoFactory)
         {
             _iniWrapperInternal.SaveConfigurationInternal(configuration, memberInfoFactory);
+        }
+
+        public object CreateDefaultConfigurationObject(Type destinationType)
+        {
+           return _immutableTypeCreator.Instantiate(destinationType);
         }
 
         private void ReadFields(Type destinationType, IMemberInfoFactory memberInfoFactory)

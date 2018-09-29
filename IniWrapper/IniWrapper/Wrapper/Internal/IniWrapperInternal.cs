@@ -1,8 +1,10 @@
 ﻿using IniWrapper.Manager.Read;
 using IniWrapper.Manager.Save;
 using IniWrapper.Member;
+using System;
+using System.Reflection;
 
-namespace IniWrapper.Wrapper
+namespace IniWrapper.Wrapper.Internal
 {
     internal class IniWrapperInternal : IIniWrapperInternal
     {
@@ -21,8 +23,22 @@ namespace IniWrapper.Wrapper
             SaveFields(configuration, memberInfoFactory);
         }
 
-        public object LoadConfigurationInternal(object configuration, IMemberInfoFactory memberInfoFactory)
+        public object CreateDefaultConfigurationObject(Type destinationType)
         {
+            try
+            {
+                return Activator.CreateInstance(destinationType);
+            }
+            catch (Exception)
+            {
+                throw new Exception("Please provide parameterless constructor or decorate constructor with IniConstructor attribute.");
+            }
+        }
+
+        public object LoadConfigurationInternal(Type destinationType, IMemberInfoFactory memberInfoFactory)
+        {
+            var configuration = CreateDefaultConfigurationObject(destinationType);
+
             ReadProperties(configuration, memberInfoFactory);
             ReadFields(configuration, memberInfoFactory);
 
@@ -55,9 +71,15 @@ namespace IniWrapper.Wrapper
             {
                 var propertyInfoWrapper = memberInfoFactory.CreateMemberInfo(property);
                 var readValue = _readingManager.ReadValue(propertyInfoWrapper, configuration, configurationType);
+
                 if (readValue == null)
                 {
                     continue;
+                }
+
+                if (!property.CanWrite)
+                {
+                    throw new Exception("Please add setter to this property or decorate it with IniIgnoreAttribute.");
                 }
 
                 property.SetValue(configuration, readValue);
