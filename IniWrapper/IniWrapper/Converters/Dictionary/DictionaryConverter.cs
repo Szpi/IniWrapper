@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using IniWrapper.Exceptions;
+﻿using IniWrapper.Exceptions;
 using IniWrapper.Manager;
 using IniWrapper.ParserWrapper;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Converters.Dictionary
@@ -40,19 +40,15 @@ namespace IniWrapper.Converters.Dictionary
             {
                 genericKeyType = typeof(Nullable<>).MakeGenericType(iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.Type);
             }
-            
+
             var dictionaryType = typeof(Dictionary<,>).MakeGenericType(genericKeyType, genericType);
             var returnedDictionary = (IDictionary)Activator.CreateInstance(dictionaryType);
 
             foreach (var splitedReadValue in splitedReadValues)
             {
                 var key = _underlyingKeyTypeIniConverter.ParseReadValue(splitedReadValue.Key, iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.Type, iniContext);
-                if (key == null)
-                {
-                    continue;
-                }
-
                 var value = _underlyingTypeIniConverter.ParseReadValue(splitedReadValue.Value, iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type, iniContext);
+
                 returnedDictionary.Add(key, value);
             }
 
@@ -82,10 +78,7 @@ namespace IniWrapper.Converters.Dictionary
                 }
 
                 var value = _underlyingTypeIniConverter.FormatToWrite(dictionaryEnumerator.Value, iniContext)?.Value;
-                if (value == null)
-                {
-                    continue;
-                }
+
                 iniContext.IniParser.Write(iniContext.IniValue.Key,
                                            _underlyingKeyTypeIniConverter.FormatToWrite(dictionaryEnumerator.Key, iniContext)?.Value,
                                            value);

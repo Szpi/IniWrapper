@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>    
+    <TargetFramework>netcoreapp2.1</TargetFramework>    
     <ProjectGuid>{906DA6D9-B33E-41C5-B117-7A9FBC001B7D}</ProjectGuid>    
     <PackageProjectUrl>https://github.com/Szpi/IniWrapper</PackageProjectUrl>    
     <RepositoryUrl>https://github.com/Szpi/IniWrapper</RepositoryUrl>    
@@ -11,7 +11,8 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
     <Authors>Piotr Szkudlarski</Authors>    
     <Copyright>2018 Piotr Szkudlarski</Copyright>    
-    <PackageReleaseNotes>- Support for creating configuration class by constructor ( immutable configuration files )</PackageReleaseNotes>
+    <PackageReleaseNotes>- Support for creating configuration class by constructor ( immutable configuration files )</PackageReleaseNotes>    
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

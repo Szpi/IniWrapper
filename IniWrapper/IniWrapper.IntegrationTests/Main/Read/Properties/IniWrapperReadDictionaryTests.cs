@@ -104,5 +104,21 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
 
             result.ValueNullableIntDictionary.Should().BeEquivalentTo(expected);
         }
+
+        [Test]
+        public void LoadConfiguration_CorrectReadNullableKeyDictionary()
+        {
+            _iniParser.Read(nameof(NullableKeyDictionaryConfiguration.KeyNullableIntDictionary), null).Returns("1=1\02=2\03=3");
+            var expected = new Dictionary<int?, int>
+            {
+                [1] = 1,
+                [2] = 2,
+                [3] = 3
+            };
+
+            var result = _iniWrapper.LoadConfiguration<NullableKeyDictionaryConfiguration>();
+
+            result.KeyNullableIntDictionary.Should().BeEquivalentTo(expected);
+        }
     }
 }

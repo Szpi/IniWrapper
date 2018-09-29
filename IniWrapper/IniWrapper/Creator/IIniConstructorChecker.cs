@@ -2,7 +2,7 @@
 
 namespace IniWrapper.Creator
 {
-    public interface IIniConstructorChecker
+    internal interface IIniConstructorChecker
     {
         bool HasConstructorWithAttribute(Type configurationType);
     }

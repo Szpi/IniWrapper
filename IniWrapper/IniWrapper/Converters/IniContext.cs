@@ -12,7 +12,7 @@ namespace IniWrapper.Converters
         public TypeDetailsInformation TypeDetailsInformation { get; }
         public IniValue IniValue { get; }
         public IIniParser IniParser { get;  }
-        public IIniConverter DefaultConverter { get; set; }
+        public IIniConverter DefaultConverter { get; }
 
         public IniContext(IMemberInfoWrapper memberInfoWrapper,
                           TypeDetailsInformation typeDetailsInformation,

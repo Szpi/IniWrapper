@@ -5,7 +5,7 @@ using IniWrapper.Attribute;
 
 namespace IniWrapper.Creator
 {
-    public class IniConstructorChecker : IIniConstructorChecker
+    internal class IniConstructorChecker : IIniConstructorChecker
     {
         public bool HasConstructorWithAttribute(Type configurationType)
         {
