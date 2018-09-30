@@ -4,23 +4,23 @@ using IniWrapper.Manager;
 
 namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute.IniConverter
 {
-
-    public class TestCustomIniHandlerException : Exception
+    public class CustomIniConverterWithConstructor : IIniConverter
     {
-        public TestCustomIniHandlerException(string text) : base(text)
+        private readonly string _test;
+        private readonly int _testInt;
+
+        public CustomIniConverterWithConstructor(string test ,int testInt)
         {
-
+            _test = test;
+            _testInt = testInt;
         }
-    }
 
-    public class CustomIniConverter : IIniConverter
-    {
         public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
         {
             throw new TestCustomIniHandlerException("ParseReadValue");
         }
 
-        public IniValue FormatToWrite(object objectToFormat, IniContext iniContexte)
+        public IniValue FormatToWrite(object objectToFormat, IniContext iniContext)
         {
             throw new TestCustomIniHandlerException("FormatToWrite");
         }

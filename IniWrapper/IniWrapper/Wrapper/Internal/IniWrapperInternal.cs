@@ -29,9 +29,9 @@ namespace IniWrapper.Wrapper.Internal
             {
                 return Activator.CreateInstance(destinationType);
             }
-            catch (Exception)
+            catch (MissingMethodException)
             {
-                throw new Exception("Please provide parameterless constructor or decorate constructor with IniConstructor attribute.");
+                throw new MissingMethodException("Please provide parameterless constructor or decorate constructor with IniConstructor attribute.");
             }
         }
 
@@ -79,7 +79,7 @@ namespace IniWrapper.Wrapper.Internal
 
                 if (!property.CanWrite)
                 {
-                    throw new Exception("Please add setter to this property or decorate it with IniIgnoreAttribute.");
+                    throw new ArgumentException("Please add setter to this property or decorate it with IniIgnoreAttribute.");
                 }
 
                 property.SetValue(configuration, readValue);
