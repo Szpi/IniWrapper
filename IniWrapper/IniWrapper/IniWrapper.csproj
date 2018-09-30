@@ -11,7 +11,9 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
     <Authors>Piotr Szkudlarski</Authors>    
     <Copyright>2018 Piotr Szkudlarski</Copyright>    
-    <PackageReleaseNotes>- Support for creating configuration class by constructor ( immutable configuration files )</PackageReleaseNotes>    
+    <PackageReleaseNotes>- Support for creating configuration class by constructor ( immutable configuration files )
+- Fixed wrong indexing of Enumerable when null was in collection
+- More verbose exception messages</PackageReleaseNotes>    
     <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
