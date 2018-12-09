@@ -43,6 +43,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
             _iniParser.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestInt)).Returns(config.TestConfiguration.TestInt.ToString());
             _iniParser.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestUint)).Returns(config.TestConfiguration.TestUint.ToString());
             _iniParser.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestUintList)).Returns("1,2,3,4");
+            _iniParser.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestUintIList)).Returns("1,2,3,4");
 
             var result = _iniWrapper.LoadConfiguration<ComplexTestConfiguration>();
 
@@ -54,6 +55,7 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
             result.TestConfiguration.TestInt.Should().Be(config.TestConfiguration.TestInt);
             result.TestConfiguration.TestUint.Should().Be(config.TestConfiguration.TestUint);
             result.TestConfiguration.TestUintList.Should().BeEquivalentTo(config.TestConfiguration.TestUintList);
+            result.TestConfiguration.TestUintIList.Should().BeEquivalentTo(config.TestConfiguration.TestUintList);
             result.TestConfiguration.TestString.Should().Be(config.TestConfiguration.TestString);
             result.TestConfiguration.TestIntList.Should().BeEquivalentTo(config.TestConfiguration.TestIntList);
         }

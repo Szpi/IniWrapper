@@ -92,6 +92,16 @@ namespace IniWrapper.IntegrationTests.Main.Read.Properties
 
             result.TestUintList.Should().BeEquivalentTo(expected);
         }
+        [Test]
+        public void LoadConfiguration_CorrectReadUintIList()
+        {
+            _iniParser.Read(nameof(TestConfiguration), nameof(TestConfiguration.TestUintIList)).Returns("1,2,3,4,5,6,7,8");
+            var expected = new List<uint>() { 1u, 2u, 3u, 4u, 5u, 6u, 7u, 8u };
+
+            var result = _iniWrapper.LoadConfiguration<TestConfiguration>();
+
+            result.TestUintIList.Should().BeEquivalentTo(expected);
+        }
 
         [Test]
         public void LoadConfiguration_CorrectReadEnum()

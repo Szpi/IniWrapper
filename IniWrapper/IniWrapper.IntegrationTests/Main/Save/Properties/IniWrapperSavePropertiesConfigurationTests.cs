@@ -96,6 +96,7 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
 
             _iniParser.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestIntList), "1,2,3,4,5,6,7,8");
         }
+
         [Test]
         public void SaveConfiguration_CorrectWriteUintList()
         {
@@ -109,6 +110,21 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             _iniWrapper.SaveConfiguration(config);
 
             _iniParser.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestUintList), "1,2,3,4,5,6,7,8");
+        }
+
+        [Test]
+        public void SaveConfiguration_CorrectWriteUintIList()
+        {
+            var config = new TestConfiguration()
+            {
+                TestUintIList = new List<uint>()
+                {
+                    1u,2u,3u,4u,5u,6u,7u,8u
+                },
+            };
+            _iniWrapper.SaveConfiguration(config);
+
+            _iniParser.Received(1).Write(nameof(TestConfiguration), nameof(TestConfiguration.TestUintIList), "1,2,3,4,5,6,7,8");
         }
 
         [Test]
