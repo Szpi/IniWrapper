@@ -156,9 +156,9 @@ namespace IniWrapper.Utils
 
         private static bool IsDictionaryType(Type type)
         {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>)
-                   || typeof(IDictionary).IsAssignableFrom(type)
-                   || type.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>);
+            return (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(IDictionary<,>)
+                                          || type.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>)))
+                   || typeof(IDictionary).IsAssignableFrom(type);
         }
 
         private static bool IsNullableType(Type t)

@@ -74,7 +74,8 @@ namespace IniWrapper.IntegrationTests.Settings
 
             iniWrapper.SaveConfiguration(config);
 
-            iniParser.Received(10).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
+            var properties = typeof(TestConfiguration).GetProperties().Length;
+            iniParser.Received(properties).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
     }
 }
