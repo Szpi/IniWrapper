@@ -18,7 +18,7 @@ namespace IniWrapper.Creator
             var constructorParameters = new object[parameters.Length];
             for (var i = 0; i < parameters.Length; i++)
             {
-                var mostFitValueForParameter = GetParameter(_constructorParameters, parameters[i]);
+                var mostFitValueForParameter = GetParameter(parameters[i]);
                 constructorParameters[i] = mostFitValueForParameter;
             }
             return constructor.Invoke(constructorParameters);
@@ -29,10 +29,10 @@ namespace IniWrapper.Creator
             _constructorParameters.Add(parameterName, value);
         }
 
-        private object GetParameter(IReadOnlyDictionary<string, object> setParameters, ParameterInfo parameter)
+        private object GetParameter(ParameterInfo parameter)
         {
-            return setParameters.TryGetValue(parameter.Name, out var result) ? result : 
-                setParameters.FirstOrDefault(x => string.Compare(parameter.Name, x.Key, StringComparison.InvariantCultureIgnoreCase) == 0).Value;
+            return _constructorParameters.TryGetValue(parameter.Name, out var result) ? result :
+                _constructorParameters.FirstOrDefault(x => string.Compare(parameter.Name, x.Key, StringComparison.InvariantCultureIgnoreCase) == 0).Value;
         }
     }
 }

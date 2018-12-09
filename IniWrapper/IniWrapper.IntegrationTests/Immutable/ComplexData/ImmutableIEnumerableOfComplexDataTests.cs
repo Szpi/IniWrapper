@@ -2,6 +2,7 @@
 using System.Linq;
 using FluentAssertions;
 using IniWrapper.IntegrationTests.Immutable.Configuration;
+using IniWrapper.IntegrationTests.Main.Configuration.Fields;
 using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
@@ -9,8 +10,9 @@ using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace IniWrapper.IntegrationTests.Immutable
+namespace IniWrapper.IntegrationTests.Immutable.ComplexData
 {
+    [TestFixture]
     public class ImmutableIEnumerableOfComplexDataTests
     {
         private IIniWrapper _iniWrapper;
@@ -25,7 +27,7 @@ namespace IniWrapper.IntegrationTests.Immutable
         }
 
         [Test]
-        public void LoadConfiguration_ShouldLoadComplexType()
+        public void LoadConfiguration_ShouldLoadImmutableListOfComplexType()
         {
             var testString = "xteststring";
             _iniParser.Read($"{nameof(ImmutableListOfComplexDataConfiguration.TestConfigurations)}_0", nameof(ImmutableConfiguration.TestInt)).Returns("20");
@@ -42,7 +44,7 @@ namespace IniWrapper.IntegrationTests.Immutable
             _iniParser.Read($"{nameof(ImmutableListOfComplexDataConfiguration.TestConfigurations)}_1", nameof(ImmutableConfiguration.TestString)).Returns(testString1);
             _iniParser.Read($"{nameof(ImmutableListOfComplexDataConfiguration.TestConfigurations)}_1", nameof(ImmutableConfiguration.TestIntList)).Returns("101,202,303,404");
             _iniParser.Read($"{nameof(ImmutableListOfComplexDataConfiguration.TestConfigurations)}_1", nameof(ImmutableConfiguration.TestStringList)).Returns("10sssaa,xxxrer20,3rewrwwww0,40erwreddd");
-
+                                      
             _iniParser.Read($"{nameof(ImmutableListOfComplexDataConfiguration.TestConfigurations)}_0", null).Returns(x => "notEmptySectionResult");
             _iniParser.Read($"{nameof(ImmutableListOfComplexDataConfiguration.TestConfigurations)}_1", null).Returns(x => "notEmptySectionResult");
 
