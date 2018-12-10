@@ -38,8 +38,4 @@
     <ProjectReference Include="..\IniWrapper\IniWrapper.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Immutable\Save\" />
-  </ItemGroup>
-
 </Project>

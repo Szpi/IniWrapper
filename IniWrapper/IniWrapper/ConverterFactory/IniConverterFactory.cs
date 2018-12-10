@@ -58,7 +58,7 @@ namespace IniWrapper.ConverterFactory
 
                 if (customConverter == null)
                 {
-                    throw new InvalidCastException("Custom converter must implement IIniConverter interface.");
+                    throw new InvalidCastException($"Custom converter of type {customIniHandlerAttribute.IniHandlerType} must implement IIniConverter interface.");
                 }
 
                 return customConverter;
@@ -66,7 +66,7 @@ namespace IniWrapper.ConverterFactory
             catch (MissingMethodException)
             {
                 throw new MissingMethodException(
-                    "Please provide parameterless constructor for custom converter or pass arguments via converterParameters." +
+                    $"Please provide parameterless constructor for custom converter of type {customIniHandlerAttribute.IniHandlerType} or pass arguments via converterParameters." +
                     " (e.g. [IniConverter(typeof(CustomIniConverterWithConstructor), new object[] { \"Argument\", 10 })])");
             }
         }

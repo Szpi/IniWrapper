@@ -26,5 +26,10 @@ namespace IniWrapper.Converters
             IniParser = iniParser;
             DefaultConverter = defaultConverter;
         }
+
+        public override string ToString()
+        {
+            return $"Type {TypeDetailsInformation.Type} Section {IniValue.Section} Key: {IniValue.Key} Value: {IniValue.Value}";
+        }
     }
 }

@@ -41,13 +41,13 @@ namespace IniWrapper.Converters.Dictionary
 
             return returnedDictionary;
         }
-        
+
         public IniValue FormatToWrite(object objectToFormat, IniContext iniContext)
         {
             if (iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.TypeCode == TypeCode.ComplexObject ||
                 iniContext.TypeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ComplexObject)
             {
-                throw new CollectionOfComplexTypeException();
+                throw new CollectionOfComplexTypeException($"Collection of complex type not supported for {iniContext}");
             }
 
             if (!(objectToFormat is IDictionary dictionary))

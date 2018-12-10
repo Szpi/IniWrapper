@@ -1,6 +1,5 @@
 ﻿using FluentAssertions;
 using IniWrapper.IntegrationTests.Exceptions.Configuration;
-using IniWrapper.IntegrationTests.Main.Configuration.Attribute.IniConverter;
 using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
@@ -8,6 +7,7 @@ using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
 using System;
+using IniWrapper.IntegrationTests.Main.Configuration.Attribute.IniConverter;
 
 namespace IniWrapper.IntegrationTests.Exceptions
 {
@@ -29,7 +29,7 @@ namespace IniWrapper.IntegrationTests.Exceptions
         {
             Action loading = () => _iniWrapper.LoadConfiguration<ConfigurationWithoutParameterlessCtorAndAttribute>();
 
-            loading.Should().Throw<MissingMethodException>().WithMessage("Please provide parameterless constructor or decorate constructor with IniConstructor attribute.");
+            loading.Should().Throw<MissingMethodException>().WithMessage("Please provide parameterless constructor or decorate constructor with IniConstructor attribute for type IniWrapper.IntegrationTests.Exceptions.Configuration.ConfigurationWithoutParameterlessCtorAndAttribute.");
         }
 
         [Test]
@@ -40,7 +40,9 @@ namespace IniWrapper.IntegrationTests.Exceptions
 
             Action result = () => iniWrapper.SaveConfiguration(new IniConverterWithConstructorParametersNotSpecified());
 
-            result.Should().Throw<MissingMethodException>().WithMessage("Please provide parameterless constructor for custom converter or pass arguments via converterParameters. (e.g. [IniConverter(typeof(CustomIniConverterWithConstructor), new object[] { \"Argument\", 10 })])");
+            result.Should().Throw<MissingMethodException>().WithMessage($"Please provide parameterless constructor for custom converter of type {typeof(CustomIniConverterWithConstructor)} " +
+                                                                        "or pass arguments via converterParameters." +
+                                                                        " (e.g. [IniConverter(typeof(CustomIniConverterWithConstructor), new object[] { \"Argument\", 10 })])");
         }
         [Test]
         public void ShouldThrow_WhenPropertyIsWithoutSetter_And_WithoutIniIgnoreAttribute()
@@ -48,7 +50,8 @@ namespace IniWrapper.IntegrationTests.Exceptions
             _iniParser.Read(nameof(ConfigurationWithoutSetter), nameof(ConfigurationWithoutSetter.Test)).Returns("1");
             Action loading = () => _iniWrapper.LoadConfiguration<ConfigurationWithoutSetter>();
 
-            loading.Should().Throw<ArgumentException>().WithMessage("Please add setter to this property or decorate it with IniIgnoreAttribute.");
+            loading.Should().Throw<ArgumentException>().WithMessage($"Please add setter to property with name {nameof(ConfigurationWithoutSetter.Test)} in type {typeof(ConfigurationWithoutSetter)} " +
+                                                                    $"or decorate it with IniIgnoreAttribute.");
         }
 
         [Test]
@@ -73,7 +76,9 @@ namespace IniWrapper.IntegrationTests.Exceptions
 
             Action result = () => iniWrapper.LoadConfiguration<IniConverterWithConstructorParametersNotSpecified>();
 
-            result.Should().Throw<MissingMethodException>().WithMessage("Please provide parameterless constructor for custom converter or pass arguments via converterParameters. (e.g. [IniConverter(typeof(CustomIniConverterWithConstructor), new object[] { \"Argument\", 10 })])");
+            result.Should().Throw<MissingMethodException>().WithMessage($"Please provide parameterless constructor for custom converter of type {typeof(CustomIniConverterWithConstructor)}" +
+                                                                        " or pass arguments via converterParameters. " +
+                                                                        "(e.g. [IniConverter(typeof(CustomIniConverterWithConstructor), new object[] { \"Argument\", 10 })])");
         }
         
         [Test]
@@ -85,7 +90,7 @@ namespace IniWrapper.IntegrationTests.Exceptions
             Action result = () => iniWrapper.SaveConfiguration(new CustomConverterWithoutInterface());
 
             result.Should().Throw<InvalidCastException>()
-                  .WithMessage("Custom converter must implement IIniConverter interface.");
+                  .WithMessage($"Custom converter of type {typeof(ConverterWithoutInterface)} must implement IIniConverter interface.");
         }
 
         [Test]
@@ -101,7 +106,7 @@ namespace IniWrapper.IntegrationTests.Exceptions
             }, iniParser);
 
             Action result = () => iniWrapper.LoadConfiguration<CustomConverterWithoutInterface>();
-            result.Should().Throw<InvalidCastException>().WithMessage("Custom converter must implement IIniConverter interface.");
+            result.Should().Throw<InvalidCastException>().WithMessage($"Custom converter of type {typeof(ConverterWithoutInterface)} must implement IIniConverter interface.");
         }
     }
 }
