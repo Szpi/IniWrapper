@@ -1,119 +1,57 @@
-﻿using System;
-using System.Runtime.CompilerServices;
-using IniWrapper.ConfigLoadingChecker;
-using IniWrapper.Manager.Read;
-using IniWrapper.Manager.Save;
+﻿using IniWrapper.ConfigLoadingChecker;
 using IniWrapper.Member;
+using System;
+using System.Runtime.CompilerServices;
+using IniWrapper.Wrapper.Factory;
+using IniWrapper.Wrapper.Internal;
 
 [assembly: InternalsVisibleTo("IniWrapper.IntegrationTests")]
 [assembly: InternalsVisibleTo("IniWrapper.Tests")]
 namespace IniWrapper.Wrapper
 {
-    internal sealed class IniWrapper : IIniWrapper, IIniWrapperWithCustomMemberInfo
+    internal sealed class IniWrapper : IIniWrapper
     {
-        private readonly ISavingManager _savingManager;
-        private readonly IReadingManager _readingManager;
+        private readonly IIniWrapperInternalFactory _iniWrapperInternalFactory;
         private readonly IConfigurationLoadingChecker _configurationLoadingChecker;
+        private readonly IMemberInfoFactory _memberInfoFactory;
 
-        public IniWrapper(ISavingManager savingManager,
-                          IReadingManager readingManager,
-                          IConfigurationLoadingChecker configurationLoadingChecker)
+        public IniWrapper(IConfigurationLoadingChecker configurationLoadingChecker,
+                          IIniWrapperInternalFactory iniWrapperInternalFactory,
+                          IMemberInfoFactory memberInfoFactory)
         {
-            _savingManager = savingManager;
-            _readingManager = readingManager;
             _configurationLoadingChecker = configurationLoadingChecker;
+            _iniWrapperInternalFactory = iniWrapperInternalFactory;
+            _memberInfoFactory = memberInfoFactory;
         }
 
-        public T LoadConfiguration<T>() where T : new()
+        public T LoadConfiguration<T>()
         {
             return (T)LoadConfiguration(typeof(T));
         }
 
         public object LoadConfiguration(Type destinationType)
         {
+            var iniWrapperInternal = _iniWrapperInternalFactory.Create(destinationType);
             if (_configurationLoadingChecker.ShouldReadConfigurationFromFile())
             {
-                var destinationConfiguration = Activator.CreateInstance(destinationType);
-                return ReadFromFile(destinationConfiguration, new MemberInfoFactory());
+                return iniWrapperInternal.LoadConfigurationInternal(destinationType, _memberInfoFactory);
             }
 
             if (!_configurationLoadingChecker.ShouldCreateDefaultConfiguration())
             {
-                return Activator.CreateInstance(destinationType);
+                return iniWrapperInternal.CreateDefaultConfigurationObject(destinationType);
             }
 
-            var defaultConfiguration = Activator.CreateInstance(destinationType);
-            SaveConfigurationInternal(defaultConfiguration, new MemberInfoFactory());
+            var defaultConfiguration = iniWrapperInternal.CreateDefaultConfigurationObject(destinationType);
+
+            iniWrapperInternal.SaveConfigurationInternal(defaultConfiguration, _memberInfoFactory);
             return defaultConfiguration;
         }
 
         public void SaveConfiguration(object configuration)
         {
-            SaveConfigurationInternal(configuration, new MemberInfoFactory());
-        }
-
-        private void SaveConfigurationInternal(object configuration, IMemberInfoFactory memberInfoFactory)
-        {
-            SaveProperties(configuration, memberInfoFactory);
-            SaveFields(configuration, memberInfoFactory);
-        }
-
-        private object ReadFromFile(object configuration, IMemberInfoFactory memberInfoFactory)
-        {
-            ReadProperties(configuration, memberInfoFactory);
-            ReadFields(configuration, memberInfoFactory);
-
-            return configuration;
-        }
-        public void SaveConfigurationWithCustomMemberInfo(object configuration, IMemberInfoFactory memberInfoFactory)
-        {
-            SaveConfigurationInternal(configuration, memberInfoFactory);
-        }
-
-        public object LoadConfigurationFromFileWithCustomMemberInfo(Type configurationType, IMemberInfoFactory memberInfoFactory)
-        {
-            var destinationConfiguration = Activator.CreateInstance(configurationType);
-            return ReadFromFile(destinationConfiguration, memberInfoFactory);
-        }
-
-        private void ReadFields(object configuration, IMemberInfoFactory memberInfoFactory)
-        {
-            var fields = configuration.GetType().GetFields();
-            foreach (var field in fields)
-            {
-                var fieldInfoWrapper = memberInfoFactory.CreateMemberInfo(field);
-                _readingManager.ReadValue(fieldInfoWrapper, configuration);
-            }
-        }
-
-        private void ReadProperties(object configuration, IMemberInfoFactory memberInfoFactory)
-        {
-            var properties = configuration.GetType().GetProperties();
-            foreach (var property in properties)
-            {
-                var propertyInfoWrapper = memberInfoFactory.CreateMemberInfo(property);
-                _readingManager.ReadValue(propertyInfoWrapper, configuration);
-            }
-        }
-
-        private void SaveFields(object configuration, IMemberInfoFactory memberInfoFactory)
-        {
-            var fields = configuration.GetType().GetFields();
-            foreach (var field in fields)
-            {
-                var fieldInfoWrapper = memberInfoFactory.CreateMemberInfo(field);
-                _savingManager.SaveValue(fieldInfoWrapper, configuration);
-            }
-        }
-
-        private void SaveProperties(object configuration, IMemberInfoFactory memberInfoFactory)
-        {
-            var properties = configuration.GetType().GetProperties();
-            foreach (var property in properties)
-            {
-                var propertyInfoWrapper = memberInfoFactory.CreateMemberInfo(property);
-                _savingManager.SaveValue(propertyInfoWrapper, configuration);
-            }
+            var iniWrapperInternal = _iniWrapperInternalFactory.Create(configuration.GetType());
+            iniWrapperInternal.SaveConfigurationInternal(configuration, _memberInfoFactory);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace IniWrapper.Converters
         public TypeDetailsInformation TypeDetailsInformation { get; }
         public IniValue IniValue { get; }
         public IIniParser IniParser { get;  }
-        public IIniConverter DefaultConverter { get; set; }
+        public IIniConverter DefaultConverter { get; }
 
         public IniContext(IMemberInfoWrapper memberInfoWrapper,
                           TypeDetailsInformation typeDetailsInformation,
@@ -25,6 +25,11 @@ namespace IniWrapper.Converters
             IniValue = iniValue;
             IniParser = iniParser;
             DefaultConverter = defaultConverter;
+        }
+
+        public override string ToString()
+        {
+            return $"Type {TypeDetailsInformation.Type} Section {IniValue.Section} Key: {IniValue.Key} Value: {IniValue.Value}";
         }
     }
 }

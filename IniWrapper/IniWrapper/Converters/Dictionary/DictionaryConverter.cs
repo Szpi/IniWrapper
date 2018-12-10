@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using IniWrapper.Exceptions;
+﻿using IniWrapper.Exceptions;
 using IniWrapper.Manager;
 using IniWrapper.ParserWrapper;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.Converters.Dictionary
@@ -27,32 +27,15 @@ namespace IniWrapper.Converters.Dictionary
         {
             readValue = iniContext.IniParser.Read(iniContext.IniValue.Key, null);
 
-            var splitedReadValues = _readSectionsParser.Parse(readValue);
+            var splitReadValues = _readSectionsParser.Parse(readValue);
 
-            var genericType = iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type;
-            if (iniContext.TypeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.Nullable)
+            var returnedDictionary = CreateDictionary(iniContext);
+
+            foreach (var splitReadValue in splitReadValues)
             {
-                genericType = typeof(Nullable<>).MakeGenericType(iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type);
-            }
+                var key = _underlyingKeyTypeIniConverter.ParseReadValue(splitReadValue.Key, iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.Type, iniContext);
+                var value = _underlyingTypeIniConverter.ParseReadValue(splitReadValue.Value, iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type, iniContext);
 
-            var genericKeyType = iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.Type;
-            if (iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.TypeCode == TypeCode.Nullable)
-            {
-                genericKeyType = typeof(Nullable<>).MakeGenericType(iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.Type);
-            }
-            
-            var dictionaryType = typeof(Dictionary<,>).MakeGenericType(genericKeyType, genericType);
-            var returnedDictionary = (IDictionary)Activator.CreateInstance(dictionaryType);
-
-            foreach (var splitedReadValue in splitedReadValues)
-            {
-                var key = _underlyingKeyTypeIniConverter.ParseReadValue(splitedReadValue.Key, iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.Type, iniContext);
-                if (key == null)
-                {
-                    continue;
-                }
-
-                var value = _underlyingTypeIniConverter.ParseReadValue(splitedReadValue.Value, iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type, iniContext);
                 returnedDictionary.Add(key, value);
             }
 
@@ -64,7 +47,7 @@ namespace IniWrapper.Converters.Dictionary
             if (iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.TypeCode == TypeCode.ComplexObject ||
                 iniContext.TypeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.ComplexObject)
             {
-                throw new CollectionOfComplexTypeException();
+                throw new CollectionOfComplexTypeException($"Collection of complex type not supported for {iniContext}");
             }
 
             if (!(objectToFormat is IDictionary dictionary))
@@ -82,10 +65,7 @@ namespace IniWrapper.Converters.Dictionary
                 }
 
                 var value = _underlyingTypeIniConverter.FormatToWrite(dictionaryEnumerator.Value, iniContext)?.Value;
-                if (value == null)
-                {
-                    continue;
-                }
+
                 iniContext.IniParser.Write(iniContext.IniValue.Key,
                                            _underlyingKeyTypeIniConverter.FormatToWrite(dictionaryEnumerator.Key, iniContext)?.Value,
                                            value);
@@ -93,5 +73,27 @@ namespace IniWrapper.Converters.Dictionary
 
             return null;
         }
+
+        private static IDictionary CreateDictionary(IniContext iniContext)
+        {
+            var genericType = iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type;
+            if (iniContext.TypeDetailsInformation.UnderlyingTypeInformation.TypeCode == TypeCode.Nullable)
+            {
+                genericType =
+                    typeof(Nullable<>).MakeGenericType(iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type);
+            }
+
+            var genericKeyType = iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.Type;
+            if (iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.TypeCode == TypeCode.Nullable)
+            {
+                genericKeyType =
+                    typeof(Nullable<>).MakeGenericType(iniContext.TypeDetailsInformation.UnderlyingKeyTypeInformation.Type);
+            }
+
+            var dictionaryType = typeof(Dictionary<,>).MakeGenericType(genericKeyType, genericType);
+            var returnedDictionary = (IDictionary)Activator.CreateInstance(dictionaryType);
+            return returnedDictionary;
+        }
+
     }
 }

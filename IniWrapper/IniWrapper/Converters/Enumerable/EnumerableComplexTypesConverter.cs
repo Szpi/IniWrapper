@@ -2,22 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using IniWrapper.Attribute;
-using IniWrapper.Converters.Enumerable.ComplexTypeMemberInfo;
 using IniWrapper.Manager;
-using IniWrapper.Settings;
-using IniWrapper.Wrapper;
+using IniWrapper.Wrapper.CustomMemberFactory;
 
 namespace IniWrapper.Converters.Enumerable
 {
     internal class EnumerableComplexTypesConverter : IIniConverter
     {
         private readonly IIniWrapperWithCustomMemberInfo _iniWrapperWithCustomMemberInfo;
-        private readonly IIniSettings _iniSettings;
 
-        public EnumerableComplexTypesConverter(IIniWrapperWithCustomMemberInfo iniWrapperWithCustomMemberInfo, IIniSettings iniSettings)
+        public EnumerableComplexTypesConverter(IIniWrapperWithCustomMemberInfo iniWrapperWithCustomMemberInfo)
         {
             _iniWrapperWithCustomMemberInfo = iniWrapperWithCustomMemberInfo;
-            _iniSettings = iniSettings;
         }
 
         public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
@@ -37,21 +33,15 @@ namespace IniWrapper.Converters.Enumerable
                 {
                     break;
                 }
-
-                var memberInfoFactory = new ComplexTypeMemberInfoFactory(dynamicIniOptionsAttribute);
-                var loadedComplexType = _iniWrapperWithCustomMemberInfo.LoadConfigurationFromFileWithCustomMemberInfo(iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type, memberInfoFactory);
-
-                if (loadedComplexType == null)
-                {
-                    break;
-                }
+                
+                var loadedComplexType = _iniWrapperWithCustomMemberInfo.LoadConfigurationFromFileWithCustomMemberInfo(
+                    iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type,
+                    dynamicIniOptionsAttribute);
 
                 returnedList.Add(loadedComplexType);
             }
             return returnedList;
         }
-
-        
 
         public IniValue FormatToWrite(object objectToFormat, IniContext iniContext)
         {
@@ -62,7 +52,6 @@ namespace IniWrapper.Converters.Enumerable
             {
                 if (item == null)
                 {
-                    index++;
                     continue;
                 }
 
@@ -70,9 +59,8 @@ namespace IniWrapper.Converters.Enumerable
                 {
                     Section = GenerateDynamicSection(iniContext,index)
                 };
-                var memberInfoFactory = new ComplexTypeMemberInfoFactory(dynamicIniOptionsAttribute);
 
-                _iniWrapperWithCustomMemberInfo.SaveConfigurationWithCustomMemberInfo(item, memberInfoFactory);
+                _iniWrapperWithCustomMemberInfo.SaveConfigurationWithCustomMemberInfo(item, dynamicIniOptionsAttribute);
                 index++;
             }
 

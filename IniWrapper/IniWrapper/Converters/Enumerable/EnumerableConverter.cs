@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
-using IniWrapper.Exceptions;
 using IniWrapper.Manager;
 using IniWrapper.Settings;
 using TypeCode = IniWrapper.Utils.TypeCode;
@@ -22,11 +21,6 @@ namespace IniWrapper.Converters.Enumerable
 
         public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
         {
-            if (iniContext.TypeDetailsInformation.TypeCode == TypeCode.ComplexObject)
-            {
-                throw new CollectionOfComplexTypeException();
-            }
-
             if (string.IsNullOrEmpty(readValue))
             {
                 return null;
@@ -49,13 +43,6 @@ namespace IniWrapper.Converters.Enumerable
 
         public IniValue FormatToWrite(object objectToFormat, IniContext iniContext)
         {
-            if (!(objectToFormat is IEnumerable))
-            {
-                iniContext.IniValue.Value = string.Empty;
-
-                return iniContext.IniValue;
-            }
-
             var enumerable = objectToFormat as IEnumerable;
 
             var stringBuilder = new StringBuilder();

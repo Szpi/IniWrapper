@@ -23,20 +23,18 @@ namespace IniWrapper.Manager.Read
             _iniParser = iniParser;
         }
 
-        public void ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration)
+        public object ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration, Type configurationType)
         {
             var (handler, defaultConverter, typeDetailsInformation) = _iniConverterFactory.GetHandler(memberInfoWrapper.GetMemberType(), 0, memberInfoWrapper);
 
             if (typeDetailsInformation.TypeCode == TypeCode.ComplexObject)
             {
-                var parsedObjectValue = handler.ParseReadValue(null, typeDetailsInformation.Type, null);
-                memberInfoWrapper.SetValue(configuration, parsedObjectValue);
-                return;
+                return handler.ParseReadValue(null, typeDetailsInformation.Type, null);
             }
 
             var iniValue = new IniValue()
             {
-                Section = _iniValueManager.GetSection(configuration, memberInfoWrapper),
+                Section = _iniValueManager.GetSection(configurationType, memberInfoWrapper),
                 Key = _iniValueManager.GetKey(memberInfoWrapper)
             };
            
@@ -46,14 +44,7 @@ namespace IniWrapper.Manager.Read
 
                 var readValue = _iniParser.Read(iniValue.Section, iniValue.Key);
 
-                var parsedValue = handler.ParseReadValue(readValue, typeDetailsInformation.Type, iniContext);
-
-                if (parsedValue == null)
-                {
-                    return;
-                }
-
-                memberInfoWrapper.SetValue(configuration, parsedValue);
+                return handler.ParseReadValue(readValue, typeDetailsInformation.Type, iniContext);
             }
             catch (FormatException)
             {

@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>    
+    <TargetFrameworks>netcoreapp2.0;netcoreapp2.1</TargetFrameworks>    
     <ProjectGuid>{906DA6D9-B33E-41C5-B117-7A9FBC001B7D}</ProjectGuid>    
     <PackageProjectUrl>https://github.com/Szpi/IniWrapper</PackageProjectUrl>    
     <RepositoryUrl>https://github.com/Szpi/IniWrapper</RepositoryUrl>    
@@ -11,9 +11,10 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
     <Authors>Piotr Szkudlarski</Authors>    
     <Copyright>2018 Piotr Szkudlarski</Copyright>    
-    <PackageReleaseNotes>- Added suppot for CustomConverter
-- Fixed handling IEnumerable and IDictionary
-- Support of ComplexType in IEnumerable</PackageReleaseNotes>
+    <PackageReleaseNotes>- Support for creating configuration class by constructor ( immutable configuration files )
+- Fixed wrong indexing of Enumerable when null was in collection
+- More verbose exception messages</PackageReleaseNotes>    
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -22,6 +23,10 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
+    <DocumentationFile>D:\GIT\INIWrapper\IniWrapper\IniWrapper\IniWrapper.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

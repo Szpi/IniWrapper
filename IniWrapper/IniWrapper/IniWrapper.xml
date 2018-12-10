@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IniWrapper</name>
+    </assembly>
+    <members>
+        <member name="T:IniWrapper.Settings.MissingFileWhenLoadingHandling">
+            <summary>
+            Handling situation when file is missing or FilePath is not set.
+            </summary>
+        </member>
+        <member name="F:IniWrapper.Settings.MissingFileWhenLoadingHandling.ForceLoad">
+            <summary>
+            Library will not check if file exists. It will always try to load from file.
+            </summary>
+        </member>
+        <member name="F:IniWrapper.Settings.MissingFileWhenLoadingHandling.DoNotLoad">
+            <summary>
+            If file is missing library will return instance of given configuration class. It won't neither write nor read anything from file.
+            </summary>
+        </member>
+        <member name="F:IniWrapper.Settings.MissingFileWhenLoadingHandling.CreateWithDefaultValues">
+            <summary>
+            If file is missing library will create instance of given configuration class save it to file and return instance.
+            Note: FilePath has to be set.
+            </summary>
+        </member>
+        <member name="F:IniWrapper.Settings.NullValueHandling.Ignore">
+            <summary>
+            Null values will be not written
+            </summary>
+        </member>
+        <member name="F:IniWrapper.Settings.NullValueHandling.ReplaceWithEmptyString">
+            <summary>
+            Null values will be replaced with empty string, for complex types library will create instance of it and write it
+            </summary>
+        </member>
+    </members>
+</doc>

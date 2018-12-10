@@ -13,7 +13,7 @@ namespace IniWrapper.IntegrationTests.Main.Configuration.Attribute.IniConverter
         }
     }
 
-    public class CustomIniIniConverter : IIniConverter
+    public class CustomIniConverter : IIniConverter
     {
         public object ParseReadValue(string readValue, Type destinationType, IniContext iniContext)
         {

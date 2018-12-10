@@ -26,11 +26,6 @@ namespace IniWrapper.Converters.Enumerable.ComplexTypeMemberInfo
             return _infoWrapper.GetValue(configuration);
         }
 
-        public void SetValue(object obj, object value)
-        {
-            _infoWrapper.SetValue(obj, value);
-        }
-
         public T GetAttribute<T>() where T : System.Attribute
         {
             if (typeof(IniOptionsAttribute).IsAssignableFrom(typeof(T)))
@@ -40,6 +35,5 @@ namespace IniWrapper.Converters.Enumerable.ComplexTypeMemberInfo
 
             return _infoWrapper.GetAttribute<T>();
         }
-
     }
 }

@@ -24,7 +24,7 @@ namespace IniWrapper.Manager.Save
 
             var defaultIniValue = new IniValue()
             {
-                Section = _iniValueManager.GetSection(configuration, memberInfoWrapper),
+                Section = _iniValueManager.GetSection(configuration.GetType(), memberInfoWrapper),
                 Key = _iniValueManager.GetKey(memberInfoWrapper),
             };
 

@@ -80,7 +80,7 @@ namespace IniWrapper.Utils
                 return new TypeDetailsInformation(typeCode, new UnderlyingTypeInformation(typeCode, false, type), null, memberInfoWrapper.GetMemberType());
             }
 
-            if ((type.IsGenericType && type.GetGenericTypeDefinition() == typeof(IDictionary<,>)) || typeof(IDictionary).IsAssignableFrom(type) )
+            if (IsDictionaryType(type) )
             {
                 var underlyingGenericTypeKey = type.GenericTypeArguments[0];
                 var underlyingGenericTypeValue = type.GenericTypeArguments[1];
@@ -152,6 +152,13 @@ namespace IniWrapper.Utils
                                                                             nullable),
                                               null,
                                               memberInfoWrapper.GetMemberType());
+        }
+
+        private static bool IsDictionaryType(Type type)
+        {
+            return (type.IsGenericType && (type.GetGenericTypeDefinition() == typeof(IDictionary<,>)
+                                          || type.GetGenericTypeDefinition() == typeof(IReadOnlyDictionary<,>)))
+                   || typeof(IDictionary).IsAssignableFrom(type);
         }
 
         private static bool IsNullableType(Type t)

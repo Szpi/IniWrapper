@@ -6,7 +6,7 @@ namespace IniWrapper.Exceptions
     [Serializable]
     public class CollectionOfComplexTypeException : Exception
     {
-        public CollectionOfComplexTypeException() : base("Collection of complex type not supported")
+        public CollectionOfComplexTypeException(string message) : base(message)
         {
         }
 

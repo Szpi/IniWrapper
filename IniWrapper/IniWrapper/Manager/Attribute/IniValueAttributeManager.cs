@@ -1,4 +1,5 @@
-﻿using IniWrapper.Attribute;
+﻿using System;
+using IniWrapper.Attribute;
 using IniWrapper.Member;
 
 namespace IniWrapper.Manager.Attribute
@@ -12,7 +13,7 @@ namespace IniWrapper.Manager.Attribute
             return iniOptionsAttribute?.Key;
         }
 
-        public string GetSection(object configuration, IMemberInfoWrapper memberInfoWrapper)
+        public string GetSection(Type destinationType, IMemberInfoWrapper memberInfoWrapper)
         {
             var iniOptionsAttribute = memberInfoWrapper.GetAttribute<IniOptionsAttribute>();
 

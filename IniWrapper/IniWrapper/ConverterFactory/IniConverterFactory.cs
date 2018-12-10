@@ -1,5 +1,4 @@
-﻿using System;
-using IniWrapper.Attribute;
+﻿using IniWrapper.Attribute;
 using IniWrapper.Converters;
 using IniWrapper.Converters.ComplexType;
 using IniWrapper.Converters.Dictionary;
@@ -13,6 +12,8 @@ using IniWrapper.ParserWrapper;
 using IniWrapper.Settings;
 using IniWrapper.Utils;
 using IniWrapper.Wrapper;
+using IniWrapper.Wrapper.CustomMemberFactory;
+using System;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.ConverterFactory
@@ -23,6 +24,7 @@ namespace IniWrapper.ConverterFactory
         private readonly IIniSettings _iniSettings;
 
         public IIniWrapper IniWrapper { get; set; }
+        public IIniWrapperWithCustomMemberInfo IniWrapperWithCustomMemberInfo { get; set; }
 
         public IniConverterFactory(ITypeManager typeManager, IIniSettings iniSettings)
         {
@@ -37,7 +39,8 @@ namespace IniWrapper.ConverterFactory
             var customIniHandlerAttribute = memberInfoWrapper.GetAttribute<IniConverterAttribute>();
             if (customIniHandlerAttribute != null)
             {
-                var customHandler = (IIniConverter)Activator.CreateInstance(customIniHandlerAttribute.IniHandlerType, customIniHandlerAttribute.ConverterParameters);
+                var customHandler = CreateCustomConverter(customIniHandlerAttribute);
+
                 var handlerWithDecorator = GetHandlerWithIgnoreAttributeHandlerDecorator(typeInformation, memberInfoWrapper);
                 return (customHandler, handlerWithDecorator, typeInformation);
             }
@@ -45,6 +48,27 @@ namespace IniWrapper.ConverterFactory
             var handlerWithIgnoreAttributeHandlerDecorator = GetHandlerWithIgnoreAttributeHandlerDecorator(typeInformation, memberInfoWrapper);
 
             return (handlerWithIgnoreAttributeHandlerDecorator, null, typeInformation);
+        }
+
+        private static IIniConverter CreateCustomConverter(IniConverterAttribute customIniHandlerAttribute)
+        {
+            try
+            {
+                var customConverter = Activator.CreateInstance(customIniHandlerAttribute.IniHandlerType, customIniHandlerAttribute.ConverterParameters) as IIniConverter;
+
+                if (customConverter == null)
+                {
+                    throw new InvalidCastException($"Custom converter of type {customIniHandlerAttribute.IniHandlerType} must implement IIniConverter interface.");
+                }
+
+                return customConverter;
+            }
+            catch (MissingMethodException)
+            {
+                throw new MissingMethodException(
+                    $"Please provide parameterless constructor for custom converter of type {customIniHandlerAttribute.IniHandlerType} or pass arguments via converterParameters." +
+                    " (e.g. [IniConverter(typeof(CustomIniConverterWithConstructor), new object[] { \"Argument\", 10 })])");
+            }
         }
 
         private IIniConverter GetHandlerWithIgnoreAttributeHandlerDecorator(TypeDetailsInformation typeInformation, IMemberInfoWrapper memberInfoWrapper)
@@ -69,7 +93,7 @@ namespace IniWrapper.ConverterFactory
                     {
                         if (typeInformation.UnderlyingTypeInformation?.TypeCode == TypeCode.ComplexObject)
                         {
-                            return new EnumerableComplexTypesConverter(IniWrapper as IIniWrapperWithCustomMemberInfo, _iniSettings);
+                            return new EnumerableComplexTypesConverter(IniWrapperWithCustomMemberInfo);
                         }
                         var underlyingTypeHandler = GetBaseHandler(typeInformation.UnderlyingTypeInformation.TypeCode, typeInformation.UnderlyingTypeInformation.IsEnum);
 

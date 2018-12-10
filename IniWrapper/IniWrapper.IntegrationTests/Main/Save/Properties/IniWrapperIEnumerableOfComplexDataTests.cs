@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using FluentAssertions;
-using IniWrapper.Exceptions;
-using IniWrapper.IntegrationTests.Main.Configuration.Properties;
+﻿using IniWrapper.IntegrationTests.Main.Configuration.Properties;
 using IniWrapper.IntegrationTests.MockParser;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Wrapper;
 using NSubstitute;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace IniWrapper.IntegrationTests.Main.Save.Properties
 {
@@ -65,6 +62,47 @@ namespace IniWrapper.IntegrationTests.Main.Save.Properties
             _iniParser.Received(1).Write($"{nameof(ListOfComplexDataConfiguration.TestConfigurations)}_1", nameof(TestConfiguration.TestEnum), "3");
             _iniParser.Received(1).Write($"{nameof(ListOfComplexDataConfiguration.TestConfigurations)}_1", nameof(TestConfiguration.TestStringList), "sdaxxxxxxxx,sda23223232");
             _iniParser.Received(1).Write($"{nameof(ListOfComplexDataConfiguration.TestConfigurations)}_1", nameof(TestConfiguration.TestString), "teststringsadxxx");
+        }
+
+        [Test]
+        public void SaveConfiguration_ShouldSaveListOfComplexType_NullableTypes()
+        {
+            var config = new ListOfComplexDataNullableConfiguration()
+            {
+                TestConfigurations = new List<NullableConfiguration>()
+                {
+                    new NullableConfiguration
+                    {
+                        TestNullableChar = 'x',
+                        TestNullableEnum = TestEnum.Five,
+                        TestNullableInt = null,
+                        TestNullableUint = 10,
+                    },
+                    null,
+                    new NullableConfiguration
+                    {
+                        TestNullableChar = 'y',
+                        TestNullableEnum = TestEnum.Three,
+                        TestNullableInt = 100,
+                        TestNullableUint = null,
+                    },
+                    null
+                }
+            };
+
+            _iniWrapper.SaveConfiguration(config);
+
+            _iniParser.Received(1).Write($"{nameof(ListOfComplexDataNullableConfiguration.TestConfigurations)}_0", nameof(NullableConfiguration.TestNullableChar), "x");
+            _iniParser.Received(1).Write($"{nameof(ListOfComplexDataNullableConfiguration.TestConfigurations)}_0", nameof(NullableConfiguration.TestNullableEnum), "5");
+            _iniParser.Received(1).Write($"{nameof(ListOfComplexDataNullableConfiguration.TestConfigurations)}_0", nameof(NullableConfiguration.TestNullableUint), "10");
+            _iniParser.Received(1).Write($"{nameof(ListOfComplexDataNullableConfiguration.TestConfigurations)}_0", nameof(NullableConfiguration.TestNullableInt), string.Empty);
+
+            _iniParser.Received(1).Write($"{nameof(ListOfComplexDataNullableConfiguration.TestConfigurations)}_1", nameof(NullableConfiguration.TestNullableChar), "y");
+            _iniParser.Received(1).Write($"{nameof(ListOfComplexDataNullableConfiguration.TestConfigurations)}_1", nameof(NullableConfiguration.TestNullableEnum), "3");
+            _iniParser.Received(1).Write($"{nameof(ListOfComplexDataNullableConfiguration.TestConfigurations)}_1", nameof(NullableConfiguration.TestNullableInt), "100");
+            _iniParser.Received(1).Write($"{nameof(ListOfComplexDataNullableConfiguration.TestConfigurations)}_1", nameof(NullableConfiguration.TestNullableUint), string.Empty);
+
+            _iniParser.Received(8).Write(Arg.Any<string>(), Arg.Any<string>(), Arg.Any<string>());
         }
     }
 }
