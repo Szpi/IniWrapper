@@ -13,8 +13,9 @@
     <Copyright>2018 Piotr Szkudlarski</Copyright>    
     <PackageReleaseNotes>- Support for creating configuration class by constructor ( immutable configuration files )
 - Fixed wrong indexing of Enumerable when null was in collection
-- More verbose exception messages</PackageReleaseNotes>    
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+- More verbose exception messages
+- Support for IReadonly (List, Dictionary, Collection)</PackageReleaseNotes>    
+    <AssemblyVersion>2.2.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

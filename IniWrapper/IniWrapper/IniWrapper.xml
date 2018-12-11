@@ -4,6 +4,31 @@
         <name>IniWrapper</name>
     </assembly>
     <members>
+        <member name="P:IniWrapper.Settings.IniSettings.EnumerableEntitySeparator">
+            <summary>
+            Separator of IEnumerable collection. Default value ','.
+            </summary>
+        </member>
+        <member name="P:IniWrapper.Settings.IniSettings.IniFilePath">
+            <summary>
+            Path to ini file.
+            </summary>
+        </member>
+        <member name="P:IniWrapper.Settings.IniSettings.MissingFileWhenLoadingHandling">
+            <summary>
+            Default value MissingFileWhenLoadingHandling.ForceLoad.
+            </summary>
+        </member>
+        <member name="P:IniWrapper.Settings.IniSettings.NullValueHandling">
+            <summary>
+            Default value NullValueHandling.ReplaceWithEmptyString.
+            </summary>
+        </member>
+        <member name="P:IniWrapper.Settings.IniSettings.DefaultIniWrapperBufferSize">
+            <summary>
+            Buffer size when reading from file. Default value 1024
+            </summary>
+        </member>
         <member name="T:IniWrapper.Settings.MissingFileWhenLoadingHandling">
             <summary>
             Handling situation when file is missing or FilePath is not set.
