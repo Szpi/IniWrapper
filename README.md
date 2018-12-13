@@ -10,6 +10,8 @@ IniWrapper uses reflection to bind value read from ini file to provided model. T
 
 ***For more information please go to [wiki page](https://github.com/Szpi/IniWrapper/wiki).***
 
+If you found any bug or come up with an idea how to make this library better, feel free to raise an issue.
+
 ## Quick start
 ### Loading configuration
 
