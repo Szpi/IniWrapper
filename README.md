@@ -53,7 +53,7 @@ In version 1.1.0 and 1.0.0 you have to call IniWrapperFactory with CreateWithDef
 var iniWrapper = iniWrapperFactory.CreateWithDefaultIniWrapper("test.ini");
 ```
 ### Saving configuration
-To save configuration just call Save method and pass configuration class.
+To save configuration just call SaveConfiguration method and pass configuration class.
 ``` csharp
 var iniWrapperFactory = new IniWrapperFactory();
 var inisettings = new IniSettings()
@@ -70,7 +70,7 @@ In version 1.1.0 and 1.0.0 you have to call IniWrapperFactory with CreateWithDef
 ``` csharp
 var iniWrapper = iniWrapperFactory.CreateWithDefaultIniWrapper("test.ini");
 ```
-## How does it work?
+## How does library work?
 For given configuration class:
 ``` csharp
 public struct TestConfiguration
