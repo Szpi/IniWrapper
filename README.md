@@ -93,3 +93,6 @@ Overall rules:
 - Value is taken from Value (from IDictionary)
 
 To override library's default name resolving you can use [IniOptionsAttribute](https://github.com/Szpi/IniWrapper/wiki/Attributes).
+
+## Generate configuration class with ease
+If you already have ini file you can use [IniWrapper.ConfigurationGenerator](https://github.com/Szpi/IniWrapper.ConfigurationGenerator) console application to automatically generate classes for you.
