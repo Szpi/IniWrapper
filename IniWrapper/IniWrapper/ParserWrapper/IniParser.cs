@@ -28,7 +28,7 @@ namespace IniWrapper.ParserWrapper
         {
             var buffer = new byte[_bufferSize];
 
-            GetPrivateProfileSection(section, buffer, 2048, _filePath);
+            GetPrivateProfileSection(section, buffer, buffer.Length, _filePath);
             return Encoding.ASCII.GetString(buffer).Trim('\0');
         }
 

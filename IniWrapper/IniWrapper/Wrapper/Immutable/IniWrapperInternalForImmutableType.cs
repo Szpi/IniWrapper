@@ -1,8 +1,8 @@
 ﻿using IniWrapper.Creator;
 using IniWrapper.Manager.Read;
 using IniWrapper.Member;
-using System;
 using IniWrapper.Wrapper.Internal;
+using System;
 
 namespace IniWrapper.Wrapper.Immutable
 {
@@ -36,7 +36,7 @@ namespace IniWrapper.Wrapper.Immutable
 
         public object CreateDefaultConfigurationObject(Type destinationType)
         {
-           return _immutableTypeCreator.Instantiate(destinationType);
+            return _immutableTypeCreator.Instantiate(destinationType);
         }
 
         private void ReadFields(Type destinationType, IMemberInfoFactory memberInfoFactory)
@@ -53,7 +53,7 @@ namespace IniWrapper.Wrapper.Immutable
                     continue;
                 }
 
-               _immutableTypeCreator.AddConstructorParameter(fieldInfoWrapper.Name, readValue);
+                _immutableTypeCreator.AddConstructorParameter(fieldInfoWrapper.Name, readValue);
             }
         }
 
