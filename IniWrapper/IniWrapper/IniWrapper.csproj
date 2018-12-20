@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.0;netcoreapp2.1</TargetFrameworks>    
+    <TargetFrameworks>netstandard2.0;netcoreapp2.0;netcoreapp2.1;net45;net451;net452;net46;net461;net462;net47;net471</TargetFrameworks>    
     <ProjectGuid>{906DA6D9-B33E-41C5-B117-7A9FBC001B7D}</ProjectGuid>    
     <PackageProjectUrl>https://github.com/Szpi/IniWrapper</PackageProjectUrl>    
     <RepositoryUrl>https://github.com/Szpi/IniWrapper</RepositoryUrl>    
@@ -11,11 +11,8 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
     <Authors>Piotr Szkudlarski</Authors>    
     <Copyright>2018 Piotr Szkudlarski</Copyright>    
-    <PackageReleaseNotes>- Support for creating configuration class by constructor ( immutable configuration files )
-- Fixed wrong indexing of Enumerable when null was in collection
-- More verbose exception messages
-- Support for IReadonly (List, Dictionary, Collection)</PackageReleaseNotes>    
-    <AssemblyVersion>2.2.0.0</AssemblyVersion>
+    <PackageReleaseNotes>- Support multiple target frameworks</PackageReleaseNotes>    
+    <AssemblyVersion>3.0.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -27,12 +24,21 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netcoreapp2.0|AnyCPU'">
+    <DocumentationFile></DocumentationFile>
+    <NoWarn>1701;1702;1591</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
     <DocumentationFile>D:\GIT\INIWrapper\IniWrapper\IniWrapper\IniWrapper.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.IO.Abstractions" Version="2.1.0.178" />
     <PackageReference Include="System.Reflection" Version="4.3.0" />
+    
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetFramework)' == 'net45' or '$(TargetFramework)' == 'net451' or '$(TargetFramework)' == 'net452' or '$(TargetFramework)' == 'net46' or '$(TargetFramework)' == 'net461' or '$(TargetFramework)' == 'net462'">
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+  </ItemGroup>
 </Project>
