@@ -10,7 +10,7 @@ env:
     - DOTNET_CLI_TELEMETRY_OPTOUT: 1
 script:
   - dotnet restore ./IniWrapper/
-  - dotnet build ./IniWrapper/ -f netstandard2.0
+  - dotnet build ./IniWrapper/ -f netcoreapp2.1
   - dotnet test ./IniWrapper/IniWrapper.IntegrationTests/IniWrapper.IntegrationTests.csproj --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit*]*
   - dotnet test ./IniWrapper/IniWrapper.Tests/IniWrapper.Tests.csproj --no-build /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:Exclude=[NUnit*]*
   - curl -s https://codecov.io/bash > codecov
