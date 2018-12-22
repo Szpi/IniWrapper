@@ -68,7 +68,7 @@ namespace IniWrapper.Converters.Enumerable
         }
         private static string GenerateDynamicSection(IniContext iniContext, int i)
         {
-            return $"{iniContext.IniValue.Key}_{i}";
+            return $"{iniContext.TypeDetailsInformation.UnderlyingTypeInformation.Type.Name}_{i}";
         }
     }
 }
