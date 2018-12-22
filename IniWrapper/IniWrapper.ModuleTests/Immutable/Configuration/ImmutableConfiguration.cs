@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using IniWrapper.Attribute;
+using IniWrapper.ModuleTests.Main.Configuration.Properties;
 
-namespace IniWrapper.Tests.Creator.Configuration
+namespace IniWrapper.ModuleTests.Immutable.Configuration
 {
     public class ImmutableConfiguration
-    { 
+    {
         public string TestString { get; }
         public int TestInt { get; }
         public uint TestUint { get; }
@@ -12,17 +14,15 @@ namespace IniWrapper.Tests.Creator.Configuration
         public IEnumerable<int> TestIntList { get; }
         public List<uint> TestUintList { get; }
 
+        public TestEnum TestEnum { get; }
+        public List<TestEnum> TestEnumList { get; }
         public bool TestBool { get; }
 
-        public ImmutableConfiguration()
-        {
-            
-        }
-
-        
+        [IniConstructor]
         public ImmutableConfiguration(string testString, int testInt, uint testUint, char testChar,
                                       List<string> testStringList, IEnumerable<int> testIntList,
-                                      List<uint> testUintList, bool testBool)
+                                      List<uint> testUintList, TestEnum testEnum, List<TestEnum> testEnumList,
+                                      bool testBool)
         {
             TestString = testString;
             TestInt = testInt;
@@ -31,6 +31,8 @@ namespace IniWrapper.Tests.Creator.Configuration
             TestStringList = testStringList;
             TestIntList = testIntList;
             TestUintList = testUintList;
+            TestEnum = testEnum;
+            TestEnumList = testEnumList;
             TestBool = testBool;
         }
     }

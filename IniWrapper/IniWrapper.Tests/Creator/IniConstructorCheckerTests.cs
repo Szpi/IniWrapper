@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using IniWrapper.Creator;
+using IniWrapper.Tests.Creator.Configuration;
 using NUnit.Framework;
 
 namespace IniWrapper.Tests.Creator
