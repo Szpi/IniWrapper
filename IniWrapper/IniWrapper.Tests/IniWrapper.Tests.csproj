@@ -5,6 +5,7 @@
 	 <ProjectGuid>{6f043076-3119-4d65-a954-934c6ba0ed8b}</ProjectGuid>
 	 <DebugType>Full</DebugType>
     <IsPackable>false</IsPackable>
+    <Configurations>Debug;Release;ReleaseBenchmark</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -13,6 +14,11 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseBenchmark|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+    <Optimize>true</Optimize>
   </PropertyGroup>
 
   <ItemGroup>

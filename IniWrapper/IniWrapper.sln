@@ -9,24 +9,37 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IniWrapper.Tests", "IniWrap
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IniWrapper.ModuleTests", "IniWrapper.ModuleTests\IniWrapper.ModuleTests.csproj", "{0FEAC12E-672B-4819-957B-5260804C7BDA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IniWrapper.Benchmark", "IniWrapper.Benchmark\IniWrapper.Benchmark.csproj", "{F9FB675E-5BB1-4A19-8923-C33FE230831E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Benchmark|Any CPU = Benchmark|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{906DA6D9-B33E-41C5-B117-7A9FBC001B7D}.Benchmark|Any CPU.ActiveCfg = Release|Any CPU
+		{906DA6D9-B33E-41C5-B117-7A9FBC001B7D}.Benchmark|Any CPU.Build.0 = Release|Any CPU
 		{906DA6D9-B33E-41C5-B117-7A9FBC001B7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{906DA6D9-B33E-41C5-B117-7A9FBC001B7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{906DA6D9-B33E-41C5-B117-7A9FBC001B7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{906DA6D9-B33E-41C5-B117-7A9FBC001B7D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F043076-3119-4D65-A954-934C6BA0ED8B}.Benchmark|Any CPU.ActiveCfg = Release|Any CPU
+		{6F043076-3119-4D65-A954-934C6BA0ED8B}.Benchmark|Any CPU.Build.0 = Release|Any CPU
 		{6F043076-3119-4D65-A954-934C6BA0ED8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6F043076-3119-4D65-A954-934C6BA0ED8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F043076-3119-4D65-A954-934C6BA0ED8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F043076-3119-4D65-A954-934C6BA0ED8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0FEAC12E-672B-4819-957B-5260804C7BDA}.Benchmark|Any CPU.ActiveCfg = Release|Any CPU
+		{0FEAC12E-672B-4819-957B-5260804C7BDA}.Benchmark|Any CPU.Build.0 = Release|Any CPU
 		{0FEAC12E-672B-4819-957B-5260804C7BDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0FEAC12E-672B-4819-957B-5260804C7BDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FEAC12E-672B-4819-957B-5260804C7BDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FEAC12E-672B-4819-957B-5260804C7BDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9FB675E-5BB1-4A19-8923-C33FE230831E}.Benchmark|Any CPU.ActiveCfg = ReleaseBenchmark|Any CPU
+		{F9FB675E-5BB1-4A19-8923-C33FE230831E}.Benchmark|Any CPU.Build.0 = ReleaseBenchmark|Any CPU
+		{F9FB675E-5BB1-4A19-8923-C33FE230831E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9FB675E-5BB1-4A19-8923-C33FE230831E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
