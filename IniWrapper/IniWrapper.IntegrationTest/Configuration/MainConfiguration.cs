@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using IniWrapper.ModuleTests.Main.Configuration.Fields;
 using IniWrapper.ModuleTests.Main.Configuration.Properties;
 
@@ -12,7 +13,8 @@ namespace IniWrapper.IntegrationTest.Configuration
         public DictionaryConfigurationField DictionaryConfigurationField { get; set; }
 
         public ListOfComplexDataNullableConfiguration ListOfComplexDataNullableConfiguration { get; set; }
-        public TestConfiguration TestConfiguration { get; set; }
+        public IntegrationTestConfiguration IntegrationTestConfiguration { get; set; }
+
         public ReadonlyCollectionsConfiguration ReadonlyCollectionsConfiguration { get; set; }
         public NullableConfiguration NullableConfiguration { get; set; }
         public NullableIEnumerableConfiguration NullableIEnumerableConfiguration { get; set; }
