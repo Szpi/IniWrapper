@@ -11,7 +11,7 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
     <Authors>Piotr Szkudlarski</Authors>    
     <Copyright>2018 Piotr Szkudlarski</Copyright>    
-    <PackageReleaseNotes>- Support multiple target frameworks</PackageReleaseNotes>    
+    <PackageReleaseNotes>- Reuse buffers in default IniParser</PackageReleaseNotes>    
     <AssemblyVersion>3.0.1.0</AssemblyVersion>    
     <Configurations>Debug;Release;ReleaseBenchmark</Configurations>
   </PropertyGroup>
