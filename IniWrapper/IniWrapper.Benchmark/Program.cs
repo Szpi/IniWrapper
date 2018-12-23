@@ -11,6 +11,8 @@ namespace IniWrapper.Benchmark
         {
             BenchmarkRunner.Run<WriteBenchmark>();
             BenchmarkRunner.Run<ReadBenchmark>();
+            BenchmarkRunner.Run<ReadToOneBufferBenchmark>();
+            BenchmarkRunner.Run<ReadFromSectionBenchmark>();
 
             Console.ReadKey();
         }

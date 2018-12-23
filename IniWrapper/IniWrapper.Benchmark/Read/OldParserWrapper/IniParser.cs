@@ -1,7 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 using System.Text;
+using IniWrapper.ParserWrapper;
 
-namespace IniWrapper.ParserWrapper
+namespace IniWrapper.Benchmark.Read.OldParserWrapper
 {
     public sealed class IniParser : IIniParser
     {
@@ -18,25 +19,18 @@ namespace IniWrapper.ParserWrapper
         [DllImport("kernel32.dll")]
         private static extern int GetPrivateProfileSection(string lpAppName, byte[] lpszReturnBuffer, int nSize, string lpFileName);
 
-        private readonly StringBuilder _readStringBuilderBuffer;
-        private byte[] _readAllFromSectionBuffer;
-
         public IniParser(string iniPath, int bufferSize)
         {
             _filePath = iniPath;
             _bufferSize = bufferSize;
-            _readStringBuilderBuffer = new StringBuilder(_bufferSize);
         }
 
         public string ReadAllFromSection(string section)
         {
-            if (_readAllFromSectionBuffer == null)
-            {
-                _readAllFromSectionBuffer = new byte[_bufferSize];
-            }
+            var buffer = new byte[_bufferSize];
 
-            var readBufferSize = GetPrivateProfileSection(section, _readAllFromSectionBuffer, _readAllFromSectionBuffer.Length, _filePath);
-            return Encoding.ASCII.GetString(_readAllFromSectionBuffer, 0, readBufferSize).Trim('\0');
+            GetPrivateProfileSection(section, buffer, buffer.Length, _filePath);
+            return Encoding.ASCII.GetString(buffer).Trim('\0');
         }
 
         public string Read(string section, string key)
@@ -46,9 +40,10 @@ namespace IniWrapper.ParserWrapper
                 return ReadAllFromSection(section);
             }
 
-            var readCharacters = GetPrivateProfileString(section, key, string.Empty, _readStringBuilderBuffer, _readStringBuilderBuffer.Capacity, _filePath);
+            var returnValueBuffer = new StringBuilder(_bufferSize);
+            GetPrivateProfileString(section, key, string.Empty, returnValueBuffer, returnValueBuffer.Capacity, _filePath);
 
-            return _readStringBuilderBuffer.ToString(0, readCharacters);
+            return returnValueBuffer.ToString();
         }
 
         public void Write(string section, string key, string value)

@@ -4,6 +4,7 @@ using IniWrapper.Wrapper;
 using System.Collections.Generic;
 using System.IO;
 using IniWrapper.Benchmark.Configuration;
+using IniParser = IniWrapper.Benchmark.Read.OldParserWrapper.IniParser;
 
 namespace IniWrapper.Benchmark.Write
 {

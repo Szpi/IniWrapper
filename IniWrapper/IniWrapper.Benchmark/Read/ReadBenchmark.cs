@@ -5,12 +5,13 @@ using BenchmarkDotNet.Attributes;
 using IniWrapper.Benchmark.Configuration;
 using IniWrapper.ParserWrapper;
 using IniWrapper.Wrapper;
+using IniParser = IniWrapper.Benchmark.Read.OldParserWrapper.IniParser;
 
 namespace IniWrapper.Benchmark.Read
 {
     public class ReadBenchmark
     {
-        private const string TestDirectory = "test\\";
+        private const string TestDirectory = "test4491beef-3682-4a5f-b26f-7fe924179c43\\";
         private const int BufferSize = 1024;
 
         private readonly IIniWrapper _iniWrapper;
