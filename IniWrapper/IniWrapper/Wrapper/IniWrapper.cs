@@ -3,9 +3,8 @@ using IniWrapper.Member;
 using System;
 using System.Runtime.CompilerServices;
 using IniWrapper.Wrapper.Factory;
-using IniWrapper.Wrapper.Internal;
 
-[assembly: InternalsVisibleTo("IniWrapper.IntegrationTests")]
+[assembly: InternalsVisibleTo("IniWrapper.ModuleTests")]
 [assembly: InternalsVisibleTo("IniWrapper.Tests")]
 namespace IniWrapper.Wrapper
 {

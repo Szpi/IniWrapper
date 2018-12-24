@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using FluentAssertions;
 using IniWrapper.Creator;
+using IniWrapper.Tests.Creator.Configuration;
 using NSubstitute;
 using NUnit.Framework;
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using IniWrapper.Attribute;
 
-namespace IniWrapper.Tests.Creator
+namespace IniWrapper.Tests.Creator.Configuration
 {
     public class ImmutableConfiguration
     { 

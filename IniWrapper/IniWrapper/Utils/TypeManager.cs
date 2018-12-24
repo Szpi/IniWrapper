@@ -143,7 +143,7 @@ namespace IniWrapper.Utils
                                                                                 true,
                                                                                 nullableUnderlyingType),
                                                   null,
-                                                  memberInfoWrapper.GetMemberType());
+                                                  nullable);
             }
 
             return new TypeDetailsInformation(TypeCode.Nullable,
@@ -151,7 +151,7 @@ namespace IniWrapper.Utils
                                                                             false,
                                                                             nullable),
                                               null,
-                                              memberInfoWrapper.GetMemberType());
+                                              nullable);
         }
 
         private static bool IsDictionaryType(Type type)
