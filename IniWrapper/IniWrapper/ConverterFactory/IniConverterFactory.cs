@@ -32,7 +32,7 @@ namespace IniWrapper.ConverterFactory
             _iniSettings = iniSettings;
         }
 
-        public (IIniConverter handler, IIniConverter defaultHandler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
+        public (IIniConverter converter, IIniConverter defaultHandler, TypeDetailsInformation typeDetailsInformation) GetConverter(Type type, object value, IMemberInfoWrapper memberInfoWrapper)
         {
             var typeInformation = _typeManager.GetTypeInformation(type, value, memberInfoWrapper);
 
