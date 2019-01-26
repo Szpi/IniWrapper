@@ -25,11 +25,11 @@ namespace IniWrapper.Manager.Read
 
         public object ReadValue(IMemberInfoWrapper memberInfoWrapper, object configuration, Type configurationType)
         {
-            var (handler, defaultConverter, typeDetailsInformation) = _iniConverterFactory.GetHandler(memberInfoWrapper.GetMemberType(), 0, memberInfoWrapper);
+            var (converter, defaultConverter, typeDetailsInformation) = _iniConverterFactory.GetConverter(memberInfoWrapper.GetMemberType(), 0, memberInfoWrapper);
 
             if (typeDetailsInformation.TypeCode == TypeCode.ComplexObject)
             {
-                return handler.ParseReadValue(null, typeDetailsInformation.Type, null);
+                return converter.ParseReadValue(null, typeDetailsInformation.Type, null);
             }
 
             var iniValue = new IniValue()
@@ -44,7 +44,7 @@ namespace IniWrapper.Manager.Read
 
                 var readValue = _iniParser.Read(iniValue.Section, iniValue.Key);
 
-                return handler.ParseReadValue(readValue, typeDetailsInformation.Type, iniContext);
+                return converter.ParseReadValue(readValue, typeDetailsInformation.Type, iniContext);
             }
             catch (FormatException)
             {

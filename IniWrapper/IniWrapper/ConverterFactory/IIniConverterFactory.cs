@@ -7,6 +7,6 @@ namespace IniWrapper.ConverterFactory
 {
     internal interface IIniConverterFactory
     {
-        (IIniConverter handler, IIniConverter defaultHandler, TypeDetailsInformation typeDetailsInformation) GetHandler(Type type, object value, IMemberInfoWrapper memberInfoWrapper);
+        (IIniConverter converter, IIniConverter defaultHandler, TypeDetailsInformation typeDetailsInformation) GetConverter(Type type, object value, IMemberInfoWrapper memberInfoWrapper);
     }
 }

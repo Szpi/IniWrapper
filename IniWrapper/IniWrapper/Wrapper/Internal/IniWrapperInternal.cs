@@ -31,7 +31,7 @@ namespace IniWrapper.Wrapper.Internal
             }
             catch (MissingMethodException)
             {
-                throw new MissingMethodException($"Please provide parameterless constructor or decorate constructor with IniConstructor attribute for type {destinationType}.");
+                throw new MissingMethodException($"Please provide parameterless constructor or decorate constructor with IniConstructorAttribute attribute for type {destinationType}.");
             }
         }
 

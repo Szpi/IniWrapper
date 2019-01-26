@@ -3,7 +3,7 @@
 namespace IniWrapper.Attribute
 {
     [AttributeUsage(AttributeTargets.Constructor, AllowMultiple = false)]
-    public class IniConstructor : System.Attribute
+    public class IniConstructorAttribute : System.Attribute
     {
     }
 }
