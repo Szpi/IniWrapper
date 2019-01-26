@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IniWrapper.ModuleTests", "I
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IniWrapper.Benchmark", "IniWrapper.Benchmark\IniWrapper.Benchmark.csproj", "{F9FB675E-5BB1-4A19-8923-C33FE230831E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IniWrapper.IntegrationTest", "IniWrapper.IntegrationTest\IniWrapper.IntegrationTest.csproj", "{7B246278-8C9F-4BE2-9B6F-EC50A0C4D5D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IniWrapper.IntegrationTests", "IniWrapper.IntegrationTests\IniWrapper.IntegrationTests.csproj", "{4A5ABA23-EA96-4F2E-8E68-CC12C459E684}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,6 +48,12 @@ Global
 		{7B246278-8C9F-4BE2-9B6F-EC50A0C4D5D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7B246278-8C9F-4BE2-9B6F-EC50A0C4D5D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7B246278-8C9F-4BE2-9B6F-EC50A0C4D5D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A5ABA23-EA96-4F2E-8E68-CC12C459E684}.Benchmark|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A5ABA23-EA96-4F2E-8E68-CC12C459E684}.Benchmark|Any CPU.Build.0 = Debug|Any CPU
+		{4A5ABA23-EA96-4F2E-8E68-CC12C459E684}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A5ABA23-EA96-4F2E-8E68-CC12C459E684}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A5ABA23-EA96-4F2E-8E68-CC12C459E684}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A5ABA23-EA96-4F2E-8E68-CC12C459E684}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
