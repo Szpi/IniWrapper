@@ -11,7 +11,7 @@ namespace IniWrapper.Creator
         private readonly Dictionary<string, object> _constructorParameters = new Dictionary<string, object>();
         public object Instantiate(Type configurationType)
         {
-            var constructor = configurationType.GetConstructors().First(x => x.GetCustomAttribute<IniConstructor>() != null);
+            var constructor = configurationType.GetConstructors().First(x => x.GetCustomAttribute<IniConstructorAttribute>() != null);
 
             var parameters = constructor.GetParameters();
 

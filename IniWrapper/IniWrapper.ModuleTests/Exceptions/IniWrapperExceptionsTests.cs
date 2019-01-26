@@ -29,7 +29,7 @@ namespace IniWrapper.ModuleTests.Exceptions
         {
             Action loading = () => _iniWrapper.LoadConfiguration<ConfigurationWithoutParameterlessCtorAndAttribute>();
 
-            loading.Should().Throw<MissingMethodException>().WithMessage($"Please provide parameterless constructor or decorate constructor with IniConstructor attribute for type {typeof(ConfigurationWithoutParameterlessCtorAndAttribute)}.");
+            loading.Should().Throw<MissingMethodException>().WithMessage($"Please provide parameterless constructor or decorate constructor with IniConstructorAttribute attribute for type {typeof(ConfigurationWithoutParameterlessCtorAndAttribute)}.");
         }
 
         [Test]

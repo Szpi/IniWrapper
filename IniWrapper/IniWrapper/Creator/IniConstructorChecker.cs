@@ -9,7 +9,7 @@ namespace IniWrapper.Creator
     {
         public bool HasConstructorWithAttribute(Type configurationType)
         {
-            return configurationType.GetConstructors().Any(x => x.GetCustomAttribute<IniConstructor>() != null);
+            return configurationType.GetConstructors().Any(x => x.GetCustomAttribute<IniConstructorAttribute>() != null);
         }
     }
 }

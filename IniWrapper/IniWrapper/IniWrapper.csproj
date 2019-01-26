@@ -3,16 +3,17 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netcoreapp2.0;netcoreapp2.1;net45;net451;net452;net46;net461;net462;net47;net471</TargetFrameworks>    
     <ProjectGuid>{906DA6D9-B33E-41C5-B117-7A9FBC001B7D}</ProjectGuid>    
-    <PackageProjectUrl>https://github.com/Szpi/IniWrapper</PackageProjectUrl>    
+    <PackageProjectUrl>https://github.com/Szpi/IniWrapper/wiki</PackageProjectUrl>    
     <RepositoryUrl>https://github.com/Szpi/IniWrapper</RepositoryUrl>    
     <PackageTags>Ini, ini file, configuration</PackageTags>    
     <PackageLicenseUrl>https://raw.githubusercontent.com/Szpi/IniWrapper/master/License.txt</PackageLicenseUrl>    
     <Description>IniWrapper uses reflection to bind value read from ini file to provided model. The purpose of this library is NOT parsing ini file, but to wrap it to provide easier use of existing parsing libraries. In configuration there is possibility to pass IniParser interface, which is used as file access layer. This library provides class that wraps Windows C++ methods to retrieve values from ini file.</Description>    
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
     <Authors>Piotr Szkudlarski</Authors>    
-    <Copyright>2018 Piotr Szkudlarski</Copyright>    
-    <PackageReleaseNotes>- Reuse buffers in default IniParser</PackageReleaseNotes>    
-    <AssemblyVersion>3.0.1.0</AssemblyVersion>    
+    <Copyright>2019 Piotr Szkudlarski</Copyright>    
+    <PackageReleaseNotes>Breaking change:
+-  Fixed Key and Section evaluation in Enumerable of complex type</PackageReleaseNotes>    
+    <AssemblyVersion>4.0.0.0</AssemblyVersion>    
     <Configurations>Debug;Release;ReleaseBenchmark</Configurations>
   </PropertyGroup>
 

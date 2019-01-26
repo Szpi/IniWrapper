@@ -28,11 +28,11 @@ namespace IniWrapper.Manager.Save
                 Key = _iniValueManager.GetKey(memberInfoWrapper),
             };
 
-            var (handler, defaultConverter, typeinformation) = _iniConverterFactory.GetHandler(memberInfoWrapper.GetMemberType(), value, memberInfoWrapper);
+            var (converter, defaultConverter, typeDetailsInformation) = _iniConverterFactory.GetConverter(memberInfoWrapper.GetMemberType(), value, memberInfoWrapper);
 
-            var iniContext = new IniContext(memberInfoWrapper, typeinformation, defaultIniValue, _iniParser, defaultConverter);
+            var iniContext = new IniContext(memberInfoWrapper, typeDetailsInformation, defaultIniValue, _iniParser, defaultConverter);
 
-            var valueToSave = handler.FormatToWrite(value, iniContext);
+            var valueToSave = converter.FormatToWrite(value, iniContext);
 
             if (valueToSave?.Value == null)
             {

@@ -15,6 +15,9 @@ If you find any bug or come up with an idea how to make this library better, fee
 ## Generate configuration class with ease
 If you already have ini file you can use [IniWrapper.ConfigurationGenerator](https://github.com/Szpi/IniWrapper.ConfigurationGenerator) console application to automatically generate classes for you.
 
+## Integration with ini-parser
+If you want IniWrapper to support multiplatform please use [IniWrapper.ini-parser](https://github.com/Szpi/IniWrapper.ini-parser) extension to IniWrapper, which uses ini-parser to parse ini file.
+
 ## Quick start
 ### Loading configuration
 
