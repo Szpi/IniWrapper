@@ -11,8 +11,7 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
     <Authors>Piotr Szkudlarski</Authors>    
     <Copyright>2019 Piotr Szkudlarski</Copyright>    
-    <PackageReleaseNotes>Breaking change:
--  Fixed Key and Section evaluation in Enumerable of complex type</PackageReleaseNotes>    
+    <PackageReleaseNotes>- Support DateTime, TimeSpan, DateTimeOffset, Guid, Uri</PackageReleaseNotes>    
     <AssemblyVersion>4.0.0.0</AssemblyVersion>    
     <Configurations>Debug;Release;ReleaseBenchmark</Configurations>
   </PropertyGroup>
