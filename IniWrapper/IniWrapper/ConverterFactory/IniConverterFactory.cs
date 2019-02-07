@@ -14,6 +14,7 @@ using IniWrapper.Utils;
 using IniWrapper.Wrapper;
 using IniWrapper.Wrapper.CustomMemberFactory;
 using System;
+using IniWrapper.Converters.Guid;
 using IniWrapper.Converters.Time;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
@@ -140,6 +141,11 @@ namespace IniWrapper.ConverterFactory
             if (typeCode == TypeCode.TimeSpan)
             {
                 return new TimeSpanConverter();
+            }
+
+            if (typeCode == TypeCode.Guid)
+            {
+                return new GuidConverter();
             }
 
             return new PrimitivesConverter();
