@@ -28,14 +28,17 @@ namespace IniWrapper.ModuleTests.Main.Read.Properties
         {
             var configuration = new GuidConfiguration()
             {
-                Guid = Guid.NewGuid()
+                Guid = Guid.NewGuid(),
+                Uri = new Uri("http://testttt.com/")
             };
 
             _iniParser.Read(nameof(GuidConfiguration), nameof(GuidConfiguration.Guid)).Returns(configuration.Guid.ToString());
+            _iniParser.Read(nameof(GuidConfiguration), nameof(GuidConfiguration.Uri)).Returns(configuration.Uri.ToString());
         
             var result = _iniWrapper.LoadConfiguration<GuidConfiguration>();
 
             result.Guid.Should().Be(configuration.Guid);
+            result.Uri.Should().Be(configuration.Uri);
         }
     }
 }

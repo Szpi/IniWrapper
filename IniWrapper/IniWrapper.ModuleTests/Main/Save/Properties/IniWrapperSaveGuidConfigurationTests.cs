@@ -27,11 +27,13 @@ namespace IniWrapper.ModuleTests.Main.Save.Properties
         {
             var config = new GuidConfiguration()
             {
-                Guid = Guid.NewGuid()
+                Guid = Guid.NewGuid(),
+                Uri = new Uri("http://testttt.com/")
             };
 
             _iniWrapper.SaveConfiguration(config);
             _iniParser.Received(1).Write(nameof(GuidConfiguration), nameof(GuidConfiguration.Guid), config.Guid.ToString());
+            _iniParser.Received(1).Write(nameof(GuidConfiguration), nameof(GuidConfiguration.Uri), config.Uri.ToString());
         }
     }
 }

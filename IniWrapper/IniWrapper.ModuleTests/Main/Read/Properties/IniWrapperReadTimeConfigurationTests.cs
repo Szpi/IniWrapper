@@ -28,14 +28,17 @@ namespace IniWrapper.ModuleTests.Main.Read.Properties
         {
             var dateTime = new DateTime(2019, 02, 07, 18, 58, 58);
             var timeSpan = new TimeSpan(10, 10, 10);
+            var datetimeOffset = new DateTimeOffset(2019, 02, 07, 18, 58,10,TimeSpan.FromMinutes(20));
 
             _iniParser.Read(nameof(TimeConfiguration), nameof(TimeConfiguration.DateTime)).Returns(dateTime.ToString("O"));
             _iniParser.Read(nameof(TimeConfiguration), nameof(TimeConfiguration.TimeSpan)).Returns(timeSpan.ToString());
+            _iniParser.Read(nameof(TimeConfiguration), nameof(TimeConfiguration.DateTimeOffset)).Returns(datetimeOffset.ToString());
 
             var result = _iniWrapper.LoadConfiguration<TimeConfiguration>();
 
             result.DateTime.Should().Be(dateTime);
             result.TimeSpan.Should().Be(timeSpan);
+            result.DateTimeOffset.Should().Be(datetimeOffset);
         }
     }
 }

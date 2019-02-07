@@ -16,6 +16,7 @@ using IniWrapper.Wrapper.CustomMemberFactory;
 using System;
 using IniWrapper.Converters.Guid;
 using IniWrapper.Converters.Time;
+using IniWrapper.Converters.Uri;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.ConverterFactory
@@ -146,6 +147,16 @@ namespace IniWrapper.ConverterFactory
             if (typeCode == TypeCode.Guid)
             {
                 return new GuidConverter();
+            }
+
+            if (typeCode == TypeCode.DateTimeOffset)
+            {
+                return new DateTimeOffsetConverter();
+            }
+
+            if (typeCode == TypeCode.Uri)
+            {
+                return new UriConverter();
             }
 
             return new PrimitivesConverter();

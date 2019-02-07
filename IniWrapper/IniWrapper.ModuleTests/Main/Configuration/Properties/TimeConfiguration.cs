@@ -7,5 +7,7 @@ namespace IniWrapper.ModuleTests.Main.Configuration.Properties
         public DateTime DateTime { get; set; }
 
         public TimeSpan TimeSpan { get; set; }
+
+        public DateTimeOffset DateTimeOffset { get; set; }
     }
 }
