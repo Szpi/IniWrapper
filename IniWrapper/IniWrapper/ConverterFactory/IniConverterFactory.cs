@@ -14,6 +14,9 @@ using IniWrapper.Utils;
 using IniWrapper.Wrapper;
 using IniWrapper.Wrapper.CustomMemberFactory;
 using System;
+using IniWrapper.Converters.Guid;
+using IniWrapper.Converters.Time;
+using IniWrapper.Converters.Uri;
 using TypeCode = IniWrapper.Utils.TypeCode;
 
 namespace IniWrapper.ConverterFactory
@@ -129,6 +132,31 @@ namespace IniWrapper.ConverterFactory
             if (isEnum != null && isEnum.Value)
             {
                 return new EnumConverter(typeCode);
+            }
+
+            if (typeCode == TypeCode.DateTime)
+            {
+                return new DateTimeConverter();
+            }
+
+            if (typeCode == TypeCode.TimeSpan)
+            {
+                return new TimeSpanConverter();
+            }
+
+            if (typeCode == TypeCode.Guid)
+            {
+                return new GuidConverter();
+            }
+
+            if (typeCode == TypeCode.DateTimeOffset)
+            {
+                return new DateTimeOffsetConverter();
+            }
+
+            if (typeCode == TypeCode.Uri)
+            {
+                return new UriConverter();
             }
 
             return new PrimitivesConverter();
