@@ -6,7 +6,7 @@
 --- | --- | --- 
 **master** | ![Azure Pipelines](https://iniwrapper.visualstudio.com/_apis/public/build/definitions/9232e33a-db8d-4617-a1b1-8cf3ce4c88f5/3/badge)  | ![Travis](https://travis-ci.org/Szpi/IniWrapper.svg?branch=master)
 
-IniWrapper uses reflection to bind value read from ini file to provided model. The purpose of this library is NOT parsing ini file, but to wrap it to provide easier use of existing parsing libraries. In configuration there is possibility to pass IniParser interface, which is used as file access layer. This library provides class that wraps Windows C++ methods to retrieve values from ini file.
+IniWrapper uses provided model to save / read values from ini file and bind them to this model. The purpose of this library is NOT parsing ini file, but to wrap it to provide easier use of existing parsing libraries. In configuration there is possibility to pass IniParser interface, which is used as file access layer. This library provides class that wraps Windows C++ methods to retrieve values from ini file.
 
 ***For more information please go to [wiki page](https://github.com/Szpi/IniWrapper/wiki).***
 
