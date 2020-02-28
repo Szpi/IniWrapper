@@ -7,7 +7,7 @@
     <RepositoryUrl>https://github.com/Szpi/IniWrapper</RepositoryUrl>    
     <PackageTags>Ini, ini file, configuration</PackageTags>    
     <PackageLicenseUrl>https://raw.githubusercontent.com/Szpi/IniWrapper/master/License.txt</PackageLicenseUrl>    
-    <Description>IniWrapper uses reflection to bind value read from ini file to provided model. The purpose of this library is NOT parsing ini file, but to wrap it to provide easier use of existing parsing libraries. In configuration there is possibility to pass IniParser interface, which is used as file access layer. This library provides class that wraps Windows C++ methods to retrieve values from ini file.</Description>    
+    <Description>IniWrapper uses provided model to save / read values from ini file and bind them to this model. The purpose of this library is to easier work with ini files with strongly typed model, instead of storing magic strings and manually parsing them. This Library doesn NOT parse ini file, but to wrap it to provide easier use of existing parsing libraries. In configuration there is possibility to pass IniParser interface, which is used as file access layer. This library provides class that wraps Windows C++ methods to retrieve values from ini file.</Description>    
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>    
     <Authors>Piotr Szkudlarski</Authors>    
     <Copyright>2019 Piotr Szkudlarski</Copyright>    
